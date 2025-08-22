@@ -1,0 +1,38 @@
+<section class="space-showcase container" aria-labelledby="space-title">
+  <header class="space-head">
+    <div>
+      <h2 id="space-title" class="space-title">The Space</h2>
+      <!-- <p class="space-tagline">Modern market • cozy wine bar • artisan studio</p> -->
+    </div>
+    <button class="space-toggle" type="button" (click)="toggleGrid()">
+      {{ asGrid ? 'Show carousel' : 'Show grid' }}
+    </button>
+  </header>
+
+  <!-- Carousel / Grid -->
+  <div
+    class="track"
+    [class.grid]="asGrid"
+    #track
+    tabindex="0"
+    role="list"
+    (keydown)="onKey($event)"
+  >
+    <article class="card" role="listitem" *ngFor="let s of items; let i = index">
+      <div class="media">
+        <img [src]="s.imageUrl" [alt]="s.alt || ('Photo ' + (i+1))" loading="lazy" decoding="async" />
+        <div class="grain" aria-hidden="true"></div>
+      </div>
+      <footer class="caption">
+        <h3 class="label">{{ s.label }}</h3>
+        <p class="desc" *ngIf="s.desc">{{ s.desc }}</p>
+      </footer>
+    </article>
+  </div>
+
+  <!-- Arrows (carousel mode only) -->
+  <div class="nav-buttons" *ngIf="!asGrid">
+    <button class="nav prev" type="button" aria-label="Previous" (click)="scroll(-1)">‹</button>
+    <button class="nav next" type="button" aria-label="Next" (click)="scroll(1)">›</button>
+  </div>
+</section>

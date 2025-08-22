@@ -1,0 +1,46 @@
+<section class="exp" aria-labelledby="exp-title">
+  <div class="exp__wrap container">
+    <div class="exp__head">
+      <div>
+        <p class="exp__eyebrow">Tea • Candle • Dessert • Workshops</p>
+        <h2 id="exp-title">Featured Experiences</h2>
+        <p class="exp__sub">Handpicked gatherings you can mix & match.</p>
+      </div>
+      <a routerLink="/experiences" class="exp__all">Browse all</a>
+    </div>
+
+    <!-- Empty state / skeleton -->
+    <ul class="exp__grid" role="list" *ngIf="experiences?.length; else skeleton">
+      <li class="card" *ngFor="let e of experiences">
+        <figure class="card__media">
+          <img [src]="e.imageUrl" [alt]="e.title" loading="lazy" decoding="async" />
+          <figcaption class="sr-only">{{ e.title }}</figcaption>
+
+          <span class="card__badge" *ngIf="e.category">{{ e.category }}</span>
+          <span class="card__price" *ngIf="e.pricePerHead">
+            ${{ e.pricePerHead }}<span class="unit">/person</span>
+          </span>
+        </figure>
+
+        <div class="card__body">
+          <h3 class="card__title">
+            <a [routerLink]="e.link" [attr.aria-label]="'View ' + e.title">
+              {{ e.title }}
+            </a>
+          </h3>
+          <p class="muted" *ngIf="e.vendor">by {{ e.vendor }}</p>
+        </div>
+      </li>
+    </ul>
+
+    <ng-template #skeleton>
+      <ul class="exp__grid" role="list" aria-busy="true" aria-live="polite">
+        <li class="card is-skel" *ngFor="let i of [0,1,2]">
+          <div class="skel skel--media"></div>
+          <div class="skel skel--line"></div>
+          <div class="skel skel--line short"></div>
+        </li>
+      </ul>
+    </ng-template>
+  </div>
+</section>

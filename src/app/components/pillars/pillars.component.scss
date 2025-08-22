@@ -1,0 +1,86 @@
+.pillars {
+  position: relative;
+  padding: 56px 0 100px;
+}
+
+/* Linen/grain vibe behind the cards */
+.pillars::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+}
+.pillars::after {
+  /* subtle paper grain */
+  content: "";
+  position: absolute; inset: 0;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.pillars__head { max-width: 56ch; }
+.pillars__eyebrow {
+  display: inline-block;
+  background: var(--sg-terracotta);
+  color: #fff;
+  padding: .28rem .6rem;
+  border-radius: 999px;
+  font-size: .78rem;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.pillars__title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin: 0 0 6px;
+}
+.pillars__blurb {
+  margin: 0 0 18px;
+  color: var(--sg-ink-70);
+}
+
+.pillars__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+@media (min-width: 860px) {
+  .pillars__grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.pillars__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--sg-sand);
+  padding: 16px 16px 18px;
+  border-radius: calc(var(--sg-radius) + 2px);
+  border: 1px solid var(--sg-border);
+  box-shadow: 0 8px 26px rgba(0,0,0,.04);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.pillars__item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 34px rgba(0,0,0,.06);
+  background: #fff;
+}
+
+.pillars__icon {
+  flex: 0 0 auto;
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--sg-rose), var(--sg-terracotta));
+  color: #fff;
+  display: grid; place-items: center;
+  box-shadow: 0 6px 18px rgba(186, 127, 110, .28);
+}
+.pillars__icon svg { width: 22px; height: 22px; }
+
+.pillars__copy { display: grid; gap: 4px; }
+.pillars__label { font-weight: 700; letter-spacing: .2px; }
+.pillars__desc  { margin: 0; color: var(--sg-ink-70); line-height: 1.35; font-size: .98rem; }
+
+/* Small screens: single column if needed */
+@media (max-width: 420px){
+  .pillars__grid { grid-template-columns: 1fr; }
+}
+

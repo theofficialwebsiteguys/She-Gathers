@@ -1,0 +1,24 @@
+<app-hero
+  imageUrl="assets/store3.jpeg"
+  title="Gather beautifully."
+  subtitle="A warm, elevated space where community, creativity, and femininity meet."
+  [primaryCta]="{label:'Plan an Event', link:'/plan'}"
+  [secondaryCta]="{label:'Browse Experiences', link:'/experiences'}"
+  variant="main">
+</app-hero>
+
+<app-pillars></app-pillars>
+
+<svg class="divider-wave" viewBox="0 0 1440 80" preserveAspectRatio="none">
+  <path d="M0,10 C240,120 480,0 720,24 960,48 1200,100 1440,0 L1440,80 L0,80 Z" fill="currentColor"/>
+</svg>
+
+<app-experiences [experiences]="featured"></app-experiences>
+
+<div class="divider-block"></div>
+
+<app-space
+  [images]="spaceImgs"
+  [style.--space-focal-y]="'60%'"  
+></app-space>
+<!-- <app-how></app-how> -->

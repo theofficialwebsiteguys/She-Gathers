@@ -1,0 +1,15 @@
+<app-hero
+  imageUrl="assets/store3.jpeg"
+  title="Plan a Candle Making Event"
+  [showCurve]="true"
+  [showBadge]="false"
+  variant="sub">
+</app-hero>
+
+<app-event-wizard
+  [settings]="{
+    allowedVendorIds: ['sg-candles'],
+    preselectVendorId: 'sg-candles',
+    depositPercent: 0.2
+  }">
+</app-event-wizard>

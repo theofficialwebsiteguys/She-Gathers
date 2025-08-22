@@ -1,0 +1,19 @@
+import { Routes } from '@angular/router';
+import { HomeComponent } from './components/home/home.component';
+import { EventPlanComponent } from './components/event-plan/event-plan.component';
+import { PaintNightComponent } from './components/paint-night/paint-night.component';
+import { CandleMakingComponent } from './components/candle-making/candle-making.component';
+import { FlowerMakingComponent } from './components/flower-making/flower-making.component';
+import { WorkshopComponent } from './components/workshop/workshop.component';
+import { ContactComponent } from './components/contact/contact.component';
+
+export const routes: Routes = [
+    { path: '', component: HomeComponent },
+    { path: 'plan', component: EventPlanComponent },
+    { path: 'paint-night', component: PaintNightComponent },
+    { path: 'candle-making', component: CandleMakingComponent },
+    { path: 'flower-making', component: FlowerMakingComponent },
+    { path: 'workshop', component: WorkshopComponent },
+    { path: 'contact', component: ContactComponent },
+    
+];

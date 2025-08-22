@@ -1,0 +1,54 @@
+<app-hero
+  imageUrl="assets/store3.jpeg"
+  title="Sip, Shop, & Support"
+  [showCurve]="true"
+  [showBadge]="false"
+  variant="sub">
+</app-hero>
+
+<section class="contact-section">
+  <div class="contact-header">
+    <p class="section-label">Contact</p>
+    <h2>Let’s Talk About Your Goals</h2>
+  </div>
+
+ <div class="contact-content">
+  <!-- LEFT: Contact Form -->
+  <form class="contact-form" (submit)="onSubmit()">
+    <div class="form-group">
+      <input type="text" placeholder="Full Name" [(ngModel)]="name" name="name" required />
+    </div>
+    <div class="form-group">
+      <input type="email" placeholder="Email Address" [(ngModel)]="email" name="email" required />
+    </div>
+    <div class="form-group">
+      <input type="tel" placeholder="Phone" [(ngModel)]="phone" name="phone" />
+    </div>
+    <div class="form-group">
+      <textarea placeholder="How can we help?" [(ngModel)]="message" name="message" rows="5" required></textarea>
+    </div>
+    <button class="btn primary" type="submit">Send Message</button>
+  </form>
+
+  <!-- RIGHT: Contact Info + Map -->
+  <div class="contact-info-wrapper">
+    <div class="contact-info">
+      <h3>Reach Out Directly?</h3>
+      <p>Email us at <a href="mailto:shegathersinnt@gmail.com">shegathersinnt&#64;gmail.com    </a></p>
+      <p>Or call us: <a href="tel:+16788797278">(716) 247-1583</a></p>
+    </div>
+
+    <div #mapWrapper class="map-container">
+      <google-map
+        [center]="{ lat: latitude, lng: longitude }"
+        [zoom]="zoom"
+        height="300px"
+        width="100%"
+      >
+        <map-marker [position]="{ lat: latitude, lng: longitude }" title="ABC Group ATL"></map-marker>
+      </google-map>
+    </div>
+  </div>
+</div>
+
+</section>

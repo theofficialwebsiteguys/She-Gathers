@@ -1,0 +1,144 @@
+<!-- event-wizard.component.html -->
+<section class="wizard">
+  <div class="wizard__progress">
+    <span>Step {{ step() + 1 }} of {{ steps().length }}</span>
+    <div class="bar"><i [style.width.%]="(step() / (steps().length - 1)) * 100"></i></div>
+  </div>
+
+  <!-- Step: intro -->
+    <div *ngIf="steps()[step()].key === 'intro'" class="panel panel--intro">
+    <img *ngIf="currentVendor()?.banner" 
+        [src]="currentVendor()?.banner" 
+        alt="{{ currentVendor()?.name }}" 
+        class="intro-banner"/>
+
+    <div class="intro-content">
+        <h2>{{ currentVendor()?.name }}</h2>
+        <p class="muted">{{ currentVendor()?.blurb }}</p>
+        <button class="btn btn-primary" (click)="next()">Start Planning</button>
+    </div>
+    </div>
+
+
+  <!-- Step: vendor -->
+  <div *ngIf="!vendorId()" class="panel">
+    <h2 class="eyebrow">Pick your partner</h2>
+    <p class="sub">Choose a vendor to host your gathering.</p>
+
+    <div class="cards">
+      <button class="card" *ngFor="let v of vendors()"
+              (click)="vendorId.set(v.id)">
+        <img *ngIf="v.banner" [src]="v.banner" alt="" />
+        <div class="card__body">
+          <h3>{{ v.name }}</h3>
+          <p class="muted">{{ v.blurb }}</p>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Step: guests -->
+  <div *ngIf="vendorId() && steps()[step()].key === 'guests'" class="panel">
+    <h2>How many humans?</h2>
+    <input type="number"
+       [min]="currentVendor()?.minGuests || 1"
+       [max]="currentVendor()?.maxGuests || null"
+       [ngModel]="attendees()"
+       (ngModelChange)="attendees.set($event)" />
+
+    <p class="hint" *ngIf="currentVendor()?.minGuests">Min {{ currentVendor()?.minGuests }}</p>
+  </div>
+
+  <!-- Step: type -->
+  <div *ngIf="steps()[step()].key === 'type'" class="panel">
+    <h2>What type of event?</h2>
+    <div class="chips">
+      <button [class.is-active]="eventType()==='Birthday'" (click)="eventType.set('Birthday')">Birthday</button>
+      <button [class.is-active]="eventType()==='Bachelorette'" (click)="eventType.set('Bachelorette')">Bachelorette</button>
+      <button [class.is-active]="eventType()==='Other'" (click)="eventType.set('Other')">Other</button>
+    </div>
+  </div>
+
+  <!-- Step: activity -->
+  <div *ngIf="steps()[step()].key === 'activity'" class="panel">
+    <h2>Select an activity</h2>
+    <div class="cards">
+      <button class="card" *ngFor="let a of activities()"
+              [class.is-active]="activityId()===a.id"
+              (click)="activityId.set(a.id)">
+        <img *ngIf="a.image" [src]="a.image" alt="" />
+        <div class="card__body">
+          <h3>{{ a.title }}</h3>
+          <p class="muted" *ngIf="a.durationMinutes">{{ a.durationMinutes }} min</p>
+          <p class="price">${{ (a.pricePerHead ?? currentVendor()?.defaultPricePerHead)! | number:'1.0-2' }} / person</p>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Step: food -->
+  <div *ngIf="steps()[step()].key === 'food'" class="panel">
+    <h2>What is everyone eating?</h2>
+    <div class="options">
+      <label *ngFor="let opt of currentVendor()?.foodOptions">
+        <input type="checkbox" [checked]="selFood().has(opt.id)" (change)="toggle(selFood, opt.id)"/>
+        <span>{{ opt.label }}</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Step: dessert -->
+  <div *ngIf="steps()[step()].key === 'dessert'" class="panel">
+    <h2>Dessert?</h2>
+    <div class="options">
+      <label *ngFor="let opt of currentVendor()?.dessertOptions">
+        <input type="checkbox" [checked]="selDessert().has(opt.id)" (change)="toggle(selDessert, opt.id)"/>
+        <span>{{ opt.label }}</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Step: favors -->
+  <div *ngIf="steps()[step()].key === 'favors'" class="panel">
+    <h2>Favors</h2>
+    <div class="options">
+      <label *ngFor="let opt of currentVendor()?.favorOptions">
+        <input type="checkbox" [checked]="selFavors().has(opt.id)" (change)="toggle(selFavors, opt.id)"/>
+        <span>{{ opt.label }}</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Step: review -->
+  <div *ngIf="steps()[step()].key === 'review'" class="panel panel--review">
+    <h2>Review & Deposit</h2>
+    <ul class="lines">
+      <li *ngFor="let li of lineItems()">
+        <span>{{ li.label }}</span>
+        <strong>${{ li.amount | number:'1.0-2' }}</strong>
+      </li>
+      <li class="total">
+        <span>Subtotal</span>
+        <strong>${{ subtotal() | number:'1.0-2' }}</strong>
+      </li>
+      <li>
+        <span>Deposit ({{ (depositPercent()*100) | number:'1.0-0' }}%)</span>
+        <strong>${{ depositAmount() | number:'1.0-2' }}</strong>
+      </li>
+    </ul>
+
+    <div class="actions">
+      <button class="btn btn-ghost" (click)="back()">Back</button>
+      <button class="btn btn-primary" (click)="submit()">Submit & Pay Deposit</button>
+    </div>
+  </div>
+
+  <!-- Nav -->
+    <ng-container *ngIf="steps() as s" >
+        <div class="wizard__nav" *ngIf="s[step()].key !== 'review' && s[step()].key !== 'intro'">
+        <button class="btn btn-ghost" (click)="back()" [disabled]="step()===0">Back</button>
+        <button class="btn btn-primary" (click)="next()" [disabled]="step() >= s.length-1">Next</button>
+        </div>
+    </ng-container>
+
+</section>

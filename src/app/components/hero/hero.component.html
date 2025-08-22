@@ -1,0 +1,33 @@
+<section class="hero" [class.hero--sub]="variant === 'sub'">
+  <div class="hero__media" *ngIf="imageUrl">
+    <img [src]="imageUrl" alt="Hero background" />
+    <div class="hero__grain" aria-hidden="true"></div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+  </div>
+
+  <div class="container hero__content">
+    <div class="hero__badge" *ngIf="showBadge && variant === 'main'">
+      women-led • community-made
+    </div>
+
+    <h1>{{ title }}</h1>
+    <p class="hero__sub">{{ subtitle }}</p>
+
+    <div class="hero__actions" *ngIf="primaryCta || secondaryCta && variant == 'main'">
+      <a *ngIf="primaryCta" class="btn btn-primary" [routerLink]="primaryCta.link">
+        {{ primaryCta.label }}
+      </a>
+      <a *ngIf="secondaryCta" class="btn btn-ghost" [routerLink]="secondaryCta.link">
+        {{ secondaryCta.label }}
+      </a>
+    </div>
+  </div>
+
+  <svg *ngIf="showCurve"
+       class="hero__curve"
+       viewBox="0 0 1440 120"
+       preserveAspectRatio="none"
+       aria-hidden="true">
+    <path d="M0,64 C240,120 480,0 720,40 960,80 1200,64 1440,24 L1440,120 L0,120 Z" fill="var(--sg-bone)" />
+  </svg>
+</section>
