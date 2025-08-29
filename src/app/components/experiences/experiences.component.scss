@@ -64,8 +64,9 @@
 
 .exp-card__media {
   position: relative;
-  aspect-ratio: 16/10;
+  // aspect-ratio: 16/10;
   overflow: hidden;
+  margin: 0;
 
   img {
     width: 100%;
