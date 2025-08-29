@@ -8,4 +8,14 @@
 
 <app-how></app-how>
 
-<app-experiences></app-experiences>
+
+<app-event-wizard
+  id="wizard"
+  [settings]="{
+    allowedVendorIds: ['sg-paint'],
+    preselectVendorId: 'sg-paint',
+    depositPercent: 0.2
+  }">
+</app-event-wizard>
+
+<!-- <app-experiences></app-experiences> -->

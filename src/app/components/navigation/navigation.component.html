@@ -1,83 +1,43 @@
-<!-- <nav class="nav" aria-label="Primary">
-    <div class="container nav__inner">
-        <a routerLink="/" class="nav__brand" aria-label="She Gathers home">
-            <img src="assets/logo.png" alt="" class="nav__mark" />
-        </a>
-
-        <ul class="nav__links hide-on-mobile">
-            <li><a routerLink="/plan">Plan An Event</a></li>
-            <li><a routerLink="/paint-night">Paint Night</a></li>
-            <li><a routerLink="/candle-making">Candle Making</a></li>
-            <li><a routerLink="/flower-making">Flower Making</a></li>
-            <li><a routerLink="/workshop">Attend a workshop</a></li>
-            <li><a routerLink="/contact">Sip, Shop, & Support</a></li>
-        </ul>
-
-
-        <div class="nav__cta hide-on-mobile">
-            <a routerLink="/plan" class="btn btn-primary">Start Planning</a>
-        </div>
-    </div>
-
-
-</nav> -->
-
-
 <div class="top-header">
+  <!-- Logo -->
   <div class="logo-area">
-    <a routerLink="/"><img src="assets/logo.png" alt="Stony Point Logo" class="logo" /></a>
+    <a routerLink="/">
+      <img src="assets/logo.png" alt="She Gathers Logo" class="logo" />
+    </a>
   </div>
 
-  <!-- Hamburger for mobile -->
+  <!-- Hamburger (mobile) -->
   <div class="hamburger" (click)="toggleMenu()">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </div>
 
   <!-- Desktop Nav -->
-  <nav class="main-nav" *ngIf="!isMobileMenuOpen">
+  <nav class="main-nav">
     <ul>
-            <li><a routerLink="/plan">Plan An Event</a></li>
-            <li><a routerLink="/paint-night">Paint Night</a></li>
-            <li><a routerLink="/candle-making">Candle Making</a></li>
-            <li><a routerLink="/flower-making">Flower Making</a></li>
-            <li><a routerLink="/workshop">Attend a workshop</a></li>
-            <li><a routerLink="/contact">Sip, Shop, & Support</a></li>
+      <li><a routerLink="/plan">Plan an Event</a></li>
+      <li><a routerLink="/experiences">Experiences</a></li>
+      <li><a routerLink="/about">About</a></li>
     </ul>
   </nav>
 
-  <!-- <div class="top-right">
-    <div class="social-icons">
-      <a target="_blank" href="https://www.facebook.com/abcgroupatl/"><i class="fab fa-facebook-f"></i></a>
-      <a target="_blank" href="https://www.instagram.com/abcgroupatl/?hl=en"><i class="fab fa-instagram"></i></a>
-      <a target="_blank" href="https://www.linkedin.com/company/abc-consultants-group-atl/"><i class="fab fa-linkedin"></i></a>
-    </div>
-  </div> -->
-
-    <div class="nav__cta hide-on-mobile">
-        <a routerLink="/plan" class="btn btn-primary">Start Planning</a>
-    </div>
+  <!-- CTA -->
+  <div class="nav__cta hide-on-mobile">
+    <a routerLink="/plan" class="btn btn-primary">Start Planning</a>
+  </div>
 </div>
 
+<!-- Mobile Menu -->
 <div class="mobile-menu" [class.open]="isMobileMenuOpen">
   <button class="close-btn" (click)="toggleMenu()">×</button>
-
   <ul>
-            <li><a routerLink="/plan">Plan An Event</a></li>
-            <li><a routerLink="/paint-night">Paint Night</a></li>
-            <li><a routerLink="/candle-making">Candle Making</a></li>
-            <li><a routerLink="/flower-making">Flower Making</a></li>
-            <li><a routerLink="/workshop">Attend a workshop</a></li>
-            <li><a routerLink="/contact">Sip, Shop, & Support</a></li>
+    <li><a routerLink="/plan">Plan an Event</a></li>
+    <li><a routerLink="/experiences">Experiences</a></li>
+    <li><a routerLink="/about">About</a></li>
   </ul>
-
-  <!-- Logo + Social Icons -->
   <div class="mobile-footer">
     <a routerLink="/">
-      <img src="assets/logo.png" alt="Stony Point Logo" class="mobile-logo" />
+      <img src="assets/logo.png" alt="She Gathers Logo" class="mobile-logo" />
     </a>
-
     <div class="social-icons">
       <i class="fab fa-facebook-f"></i>
       <i class="fab fa-instagram"></i>
@@ -86,10 +46,4 @@
   </div>
 </div>
 
-
-
 <div class="nav-accent-bar"></div>
-
-
-<!-- Bottom Navigation Bar -->
-

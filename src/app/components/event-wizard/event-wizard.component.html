@@ -1,27 +1,34 @@
 <!-- event-wizard.component.html -->
-<section class="wizard">
+<section class="wizard-section">
+    <div class="wizard-bg"></div>
+<div class="wizard">
   <div class="wizard__progress">
     <span>Step {{ step() + 1 }} of {{ steps().length }}</span>
     <div class="bar"><i [style.width.%]="(step() / (steps().length - 1)) * 100"></i></div>
   </div>
 
   <!-- Step: intro -->
-    <div *ngIf="steps()[step()].key === 'intro'" class="panel panel--intro">
-    <img *ngIf="currentVendor()?.banner" 
-        [src]="currentVendor()?.banner" 
-        alt="{{ currentVendor()?.name }}" 
-        class="intro-banner"/>
+<div *ngIf="steps()[step()].key === 'intro'" class="panel panel--intro">
+  <img 
+    src="assets/store2.jpeg" 
+    alt="Celebrate with She Gathers" 
+    class="intro-banner"/>
 
-    <div class="intro-content">
-        <h2>{{ currentVendor()?.name }}</h2>
-        <p class="muted">{{ currentVendor()?.blurb }}</p>
-        <button class="btn btn-primary" (click)="next()">Start Planning</button>
-    </div>
-    </div>
+  <div class="intro-content">
+    <h2>Plan Your Perfect Gathering</h2>
+    <p class="muted">
+      From birthdays to bachelorettes, team nights to tea socials — 
+      we’ll guide you step-by-step to create the celebration that fits you best. 
+      Pick your occasion, customize the details, and then see the vendors who can bring it to life.
+    </p>
+    <button class="btn btn-primary" (click)="next()">Start Planning</button>
+  </div>
+</div>
+
 
 
   <!-- Step: vendor -->
-  <div *ngIf="!vendorId()" class="panel">
+  <!-- <div *ngIf="!vendorId()" class="panel">
     <h2 class="eyebrow">Pick your partner</h2>
     <p class="sub">Choose a vendor to host your gathering.</p>
 
@@ -35,7 +42,7 @@
         </div>
       </button>
     </div>
-  </div>
+  </div> -->
 
   <!-- Step: guests -->
   <div *ngIf="vendorId() && steps()[step()].key === 'guests'" class="panel">
@@ -62,7 +69,14 @@
   <!-- Step: activity -->
   <div *ngIf="steps()[step()].key === 'activity'" class="panel">
     <h2>Select an activity</h2>
-    <div class="cards">
+    <div class="chips">
+      <button [class.is-active]="eventType()==='Birthday'" (click)="eventType.set('Birthday')">Candle Making</button>
+      <button [class.is-active]="eventType()==='Bachelorette'" (click)="eventType.set('Bachelorette')">Paint Night</button>
+      <button [class.is-active]="eventType()==='Other'" (click)="eventType.set('Other')">Tea Class</button>
+      <button [class.is-active]="eventType()==='Other'" (click)="eventType.set('Other')">Paper Flowers</button>
+      <button [class.is-active]="eventType()==='Other'" (click)="eventType.set('Other')">Sip, Shop, & Support</button>
+    </div>
+    <!-- <div class="cards">
       <button class="card" *ngFor="let a of activities()"
               [class.is-active]="activityId()===a.id"
               (click)="activityId.set(a.id)">
@@ -73,7 +87,7 @@
           <p class="price">${{ (a.pricePerHead ?? currentVendor()?.defaultPricePerHead)! | number:'1.0-2' }} / person</p>
         </div>
       </button>
-    </div>
+    </div> -->
   </div>
 
   <!-- Step: food -->
@@ -109,14 +123,37 @@
     </div>
   </div>
 
+  <!-- Step: vendors -->
+  <div *ngIf="steps()[step()].key === 'vendors'" class="panel">
+    <h2>Vendors Matching Your Event</h2>
+    <p>Select one or more vendors to compare pricing.</p>
+
+    <div class="cards">
+      <button class="card"
+              *ngFor="let v of matchedVendors()"
+              [class.is-active]="selectedVendorIds().has(v.id)"
+              (click)="toggleVendor(v.id)">
+        <img *ngIf="v.banner" [src]="v.banner" alt="" />
+        <div class="card__body">
+          <h3>{{ v.name }}</h3>
+          <p class="muted">{{ v.blurb }}</p>
+          <p class="price">Base: ${{ v.defaultPricePerHead }} / person</p>
+        </div>
+      </button>
+    </div>
+  </div>
+
+
   <!-- Step: review -->
   <div *ngIf="steps()[step()].key === 'review'" class="panel panel--review">
     <h2>Review & Deposit</h2>
     <ul class="lines">
-      <li *ngFor="let li of lineItems()">
-        <span>{{ li.label }}</span>
-        <strong>${{ li.amount | number:'1.0-2' }}</strong>
-      </li>
+      <ng-container *ngFor="let v of matchedVendors()">
+        <li *ngFor="let li of getVendorLineItems(v.name)">
+          <span>{{ v.name }} — {{ li.label }}</span>
+          <strong>${{ li.amount | number:'1.0-2' }}</strong>
+        </li>
+      </ng-container>
       <li class="total">
         <span>Subtotal</span>
         <strong>${{ subtotal() | number:'1.0-2' }}</strong>
@@ -126,6 +163,7 @@
         <strong>${{ depositAmount() | number:'1.0-2' }}</strong>
       </li>
     </ul>
+
 
     <div class="actions">
       <button class="btn btn-ghost" (click)="back()">Back</button>
@@ -141,4 +179,5 @@
         </div>
     </ng-container>
 
+  </div>
 </section>

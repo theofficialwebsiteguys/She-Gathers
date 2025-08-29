@@ -2,14 +2,13 @@
   <header class="space-head">
     <div>
       <h2 id="space-title" class="space-title">The Space</h2>
-      <!-- <p class="space-tagline">Modern market • cozy wine bar • artisan studio</p> -->
+      <p class="space-tagline">Take a look inside our cozy, creative venues</p>
     </div>
     <button class="space-toggle" type="button" (click)="toggleGrid()">
       {{ asGrid ? 'Show carousel' : 'Show grid' }}
     </button>
   </header>
 
-  <!-- Carousel / Grid -->
   <div
     class="track"
     [class.grid]="asGrid"
@@ -21,6 +20,9 @@
     <article class="card" role="listitem" *ngFor="let s of items; let i = index">
       <div class="media">
         <img [src]="s.imageUrl" [alt]="s.alt || ('Photo ' + (i+1))" loading="lazy" decoding="async" />
+        <div class="overlay">
+          <h3 class="overlay-label">{{ s.label }}</h3>
+        </div>
         <div class="grain" aria-hidden="true"></div>
       </div>
       <footer class="caption">
@@ -30,7 +32,6 @@
     </article>
   </div>
 
-  <!-- Arrows (carousel mode only) -->
   <div class="nav-buttons" *ngIf="!asGrid">
     <button class="nav prev" type="button" aria-label="Previous" (click)="scroll(-1)">‹</button>
     <button class="nav next" type="button" aria-label="Next" (click)="scroll(1)">›</button>

@@ -22,36 +22,13 @@ export interface ExperienceCard {
   styleUrl: './experiences.component.scss'
 })
 export class ExperiencesComponent {
- @Input() experiences: ExperienceCard[] = [
-    {
-      id: 'tea',
-      title: 'Tea Tasting',
-      vendor: 'Cup of Communitea',
-      category: 'Tea',
-      pricePerHead: 30,
-      minGuests: 6,
-      durationMinutes: 60,
-      imageUrl: 'assets/store1.jpeg',
-      link: '/experiences/tea-tasting',
-    },
-    {
-      id: 'candle',
-      title: 'Candle Workshop',
-      vendor: 'Noir Flames',
-      category: 'Candle',
-      pricePerHead: 35,
-      imageUrl: 'assets/store2.jpeg',
-      link: '/experiences/candle-workshop',
-    },
-    {
-      id: 'dessert',
-      title: 'Dessert Social',
-      vendor: 'Quokka Sweets',
-      category: 'Dessert',
-      pricePerHead: 12,
-      imageUrl: 'assets/store3.jpeg',
-      link: '/experiences/dessert-social',
-    },
+  experiences = [
+    { title: 'Paint Night', desc: 'Sip wine and create a masterpiece.', imageUrl: 'assets/store1.jpeg' },
+    { title: 'Candle Making', desc: 'Blend scents, pour, and personalize.', imageUrl: 'assets/store2.jpeg' },
+    { title: 'Flower Workshop', desc: 'Design floral arrangements to take home.', imageUrl: 'assets/store3.jpeg' },
+    { title: 'Luncheon', desc: 'Curate special dishes for a luncheon/gathering.', imageUrl: 'assets/store3.jpeg' },
+    { title: 'Tea Nights', desc: 'Taste and pair seasonal teas.', imageUrl: 'assets/store2.jpeg' },
+    { title: 'Sip, Shop & Support', desc: 'Local vendors meet community night.', imageUrl: 'assets/store1.jpeg' }
   ];
-  @Output() addToPlan = new EventEmitter<ExperienceCard>();
+
 }

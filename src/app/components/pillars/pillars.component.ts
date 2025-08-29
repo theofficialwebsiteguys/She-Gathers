@@ -16,26 +16,26 @@ export interface PillarItem {
   styleUrl: './pillars.component.scss'
 })
 export class PillarsComponent {
-  @Input() items: Array<string | PillarItem> = [
+  @Input() items: PillarItem[] = [
     {
       label: 'Community',
-      desc: 'A space to connect, celebrate, and support one another.',
+      desc: 'Rooted in connection. A place where friends, families, and neighbors come together to create memories.',
       icon: 'community'
     },
     {
-      label: 'Craft',
-      desc: 'Handmade details and thoughtful touches in everything we do.',
+      label: 'Women-Led Collective',
+      desc: 'A network of women-owned businesses working together to make your event unforgettable.',
+      icon: 'women'
+    },
+    {
+      label: 'Crafted Experiences',
+      desc: 'Every detail—candles, flowers, or tea—is handcrafted with intention by our artisans.',
       icon: 'craft'
     },
     {
-      label: 'Curated',
-      desc: 'Intentional selections—quality over quantity, always.',
+      label: 'Curated Space',
+      desc: 'A cozy, modern venue—thoughtfully designed for your celebration.',
       icon: 'curated'
-    },
-    {
-      label: 'Women-Led',
-      desc: 'Built by women, welcoming to all.',
-      icon: 'women'
     }
   ];
 

@@ -70,45 +70,44 @@
     }
   }
 }
+.main-nav ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 
-.main-nav {
+  li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 1.05rem;
+    position: relative;
+    transition: color 0.3s ease;
 
-  ul {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    list-style: none;
-    margin: 0;
-    padding: 1rem 0;
+    &:hover {
+      color: var(--sg-terracotta);
+    }
 
-    li a {
-      text-decoration: none;
-      color: #333;
-      font-weight: 600;
-      font-size: 1.2rem;
-      position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      background: var(--sg-rose);
+      left: 0;
+      bottom: -4px;
+      transition: width 0.3s ease;
+    }
 
-      &:hover {
-        color: var(--sg-terracotta);
-      }
-
-      &::after {
-        content: '';
-        position: absolute;
-        width: 0%;
-        height: 2px;
-        background: var(--sg-rose);
-        left: 0;
-        bottom: -4px;
-        transition: width 0.3s ease;
-      }
-
-      &:hover::after {
-        width: 100%;
-      }
+    &:hover::after {
+      width: 100%;
     }
   }
 }
+
 
 .nav-accent-bar {
   height: 6px;

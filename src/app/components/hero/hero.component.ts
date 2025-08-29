@@ -18,4 +18,6 @@ export class HeroComponent {
   @Input() variant: 'main' | 'sub' = 'main';   // controls style
   @Input() showBadge = true;                   // toggle badge
   @Input() showCurve = true;                   // toggle curve
+  @Input() curveColor = 'var(--sg-bone)';
+
 }

@@ -8,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './how.component.scss'
 })
 export class HowComponent {
-
+  scrollToWizard() {
+    const el = document.getElementById('wizard');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
 }

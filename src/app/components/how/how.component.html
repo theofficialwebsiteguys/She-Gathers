@@ -2,65 +2,61 @@
   <header class="how__head">
     <span class="how__eyebrow">Plan in 3 steps</span>
     <h2 id="how-title">How it works</h2>
-    <p class="how__sub">From idea to “cheers” in three easy steps.</p>
+    <p class="how__sub">Your perfect gathering, from idea to booked, in three easy steps.</p>
   </header>
 
   <ol class="how__steps" aria-label="Steps to plan an event">
     <!-- Step 1 -->
     <li class="step">
       <div class="step__icon" aria-hidden="true">
-        <!-- sparkles / selection -->
+        <!-- clipboard / plan -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <polygon points="12,3 13.8,9 20,11 13.8,13 12,19 10.2,13 4,11 10.2,9" stroke-width="1.6"/>
-          <path d="M5 6l1 2M19 7l-1 2M7 18l1-2" stroke-width="1.4" stroke-linecap="round"/>
+          <rect x="6" y="4" width="12" height="16" rx="2" ry="2" stroke-width="1.6"/>
+          <line x1="9" y1="9" x2="15" y2="9" stroke-width="1.6"/>
+          <line x1="9" y1="13" x2="15" y2="13" stroke-width="1.6"/>
         </svg>
         <span class="step__num">1</span>
       </div>
-      <h3 class="step__title">Pick</h3>
+      <h3 class="step__title">Plan</h3>
       <p class="step__desc">
-        Choose a tea class, candle workshop, dessert social—one or mix &amp; match.
+        Tell us what you’re celebrating, how many guests, and which activities, food, extra, etc.
       </p>
     </li>
 
     <!-- Step 2 -->
     <li class="step">
       <div class="step__icon" aria-hidden="true">
-        <!-- sliders / personalize -->
+        <!-- magnifier / match -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round">
-          <line x1="4" y1="8" x2="20" y2="8" stroke-width="1.6"/>
-          <circle cx="9" cy="8" r="2"/>
-          <line x1="4" y1="12" x2="20" y2="12" stroke-width="1.6"/>
-          <circle cx="14" cy="12" r="2"/>
-          <line x1="4" y1="16" x2="20" y2="16" stroke-width="1.6"/>
-          <circle cx="7" cy="16" r="2"/>
+          <circle cx="11" cy="11" r="6" stroke-width="1.6"/>
+          <line x1="16.5" y1="16.5" x2="21" y2="21" stroke-width="1.6"/>
         </svg>
         <span class="step__num">2</span>
       </div>
-      <h3 class="step__title">Personalize</h3>
+      <h3 class="step__title">Match</h3>
       <p class="step__desc">
-        Tell us the occasion, headcount, and any dietary or style notes.
+        We’ll show you vendors that fit your plan. Compare options and select your favorites.
       </p>
     </li>
 
     <!-- Step 3 -->
     <li class="step">
       <div class="step__icon" aria-hidden="true">
-        <!-- confetti / party -->
+        <!-- checkmark / confirm -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M4 18l3-8 8-3-3 8-8 3z" stroke-width="1.6"/>
-          <path d="M14 10l6 6M16 6l3 3M18 12l2-2" stroke-width="1.6" stroke-linecap="round"/>
+          <polyline points="4 12 10 18 20 6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <span class="step__num">3</span>
       </div>
-      <h3 class="step__title">Party</h3>
+      <h3 class="step__title">Confirm</h3>
       <p class="step__desc">
-        Secure your date with a deposit, then show up and enjoy.
+        Review your summary and secure the date with a deposit. The rest is all fun.
       </p>
     </li>
   </ol>
 
   <div class="how__cta">
-    <a routerLink="/plan" class="btn btn-primary">Start Planning</a>
-    <a routerLink="/experiences" class="how__browse">or browse experiences</a>
+    <a (click)="scrollToWizard()" class="btn btn-primary">Start Planning</a>
   </div>
+
 </section>
