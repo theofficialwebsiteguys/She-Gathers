@@ -42,9 +42,11 @@ body {
 }
 
 .container {
-  width: min(100%, var(--sg-max));
+  max-width: var(--sg-max);   // let it shrink below max
+  width: 100%;                // respect viewport
   margin-inline: auto;
   padding-inline: 20px;
+  box-sizing: border-box;     // ensures padding stays inside width
 }
 .btn {
   display: inline-flex;

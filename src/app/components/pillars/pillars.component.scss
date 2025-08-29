@@ -1,23 +1,50 @@
 .pillars {
   background: var(--sg-bone);
   position: relative;
+  padding: clamp(40px, 6vw, 80px) 0; // scales padding for small vs large screens
+  overflow-x: hidden; // prevent horizontal scroll
 }
 
 .pillars__head {
   max-width: 60ch;
-  margin: 0 auto 40px;
+  margin: 0 auto clamp(24px, 5vw, 40px);
+  padding: 0 16px; // breathing room on mobile
   text-align: center;
+
+  .pillars__eyebrow {
+    display: inline-block;
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    color: var(--sg-terracotta);
+  }
+
+  .pillars__title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--sg-ink);
+  }
+
+  .pillars__blurb {
+    font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+    color: var(--sg-ink-70);
+    line-height: 1.5;
+  }
 }
 
 .pillars__grid {
   display: grid;
-  gap: 24px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 0 16px; // prevent edge collisions
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+  // ensures nice stacking below ~500px
 }
 
 .pillars__item {
   background: #fff;
-  padding: 24px;
+  padding: clamp(16px, 4vw, 24px);
   border-radius: 18px;
   border: 1px solid var(--sg-border);
   box-shadow: 0 8px 28px rgba(0,0,0,0.05);
@@ -34,8 +61,8 @@
 }
 
 .pillars__icon {
-  width: 56px;
-  height: 56px;
+  width: clamp(48px, 8vw, 56px);
+  height: clamp(48px, 8vw, 56px);
   border-radius: 14px;
   background: linear-gradient(135deg, var(--sg-rose), var(--sg-terracotta));
   display: grid;
@@ -43,21 +70,21 @@
   margin-bottom: 14px;
 
   svg {
-    width: 28px;
-    height: 28px;
+    width: clamp(22px, 6vw, 28px);
+    height: clamp(22px, 6vw, 28px);
     stroke: #fff;
   }
 }
 
 .pillars__label {
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
   margin-bottom: 6px;
   color: var(--sg-ink);
 }
 
 .pillars__desc {
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 2.2vw, 0.95rem);
   color: var(--sg-ink-70);
-  line-height: 1.4;
+  line-height: 1.5;
 }
