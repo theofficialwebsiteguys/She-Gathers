@@ -59,10 +59,6 @@
           <div class="card__body">
             <h3>{{ a.title }}</h3>
             <p class="muted" *ngIf="a.durationMinutes">{{ a.durationMinutes }} min</p>
-            <p class="price">
-              ${{ (a.pricePerHead ?? catalog.getVendorById(a.vendorId)?.defaultPricePerHead)! | number:'1.0-2' }}
-              / person
-            </p>
           </div>
         </button>
       </div>
