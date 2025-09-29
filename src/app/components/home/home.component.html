@@ -1,5 +1,5 @@
 <app-hero
-  imageUrl="assets/store3.jpeg"
+  imageUrl="assets/gallery/10.jpg"
   title="Gather beautifully."
   subtitle="A warm, elevated space where community, creativity, and femininity meet."
   [primaryCta]="{label:'Plan an Event', link:'/plan'}"
@@ -9,16 +9,40 @@
 
 <app-pillars></app-pillars>
 
-<svg class="divider-wave" viewBox="0 0 1440 80" preserveAspectRatio="none">
-  <path d="M0,10 C240,120 480,0 720,24 960,48 1200,100 1440,0 L1440,80 L0,80 Z" fill="currentColor"/>
-</svg>
+    <app-banner
+          background="assets/gallery/8.jpg"
+          title="Curated by Women. Crafted for You."
+          subtitle="Tap into our exclusive network of vetted, women-led vendors to build an event that breaks the mold."
+          buttonText="Find Your Vendors"
+          buttonLink="/plan">
+        </app-banner>
 
 <app-experiences></app-experiences>
 
-<div class="divider-block"></div>
+
+
+<!-- <div class="divider-block"></div> -->
+
+    <app-banner
+          background="assets/gallery/5.jpg"
+          title="Effortless Events, Powered by Purpose."
+          subtitle="We eliminate the vendor search chaos. Get everything you need, seamlessly packaged by our collective."
+          buttonText="Start Planning Now"
+          buttonLink="/plan">
+        </app-banner>
 
 <app-space
   [images]="spaceImgs"
   [style.--space-focal-y]="'60%'"  
 ></app-space>
+
+<app-about></app-about>
+    <app-banner
+          background="assets/gallery/45.jpg"
+          title="Events That Don't Just Happen. They're Curated."
+          subtitle="Move beyond standard packages. Our collective delivers completely bespoke experiences built from the ground up by proven experts."
+          buttonText="Design Your Event"
+          buttonLink="/plan">
+        </app-banner>
+
 <!-- <app-how></app-how> -->

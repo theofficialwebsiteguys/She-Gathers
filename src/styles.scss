@@ -16,7 +16,7 @@
   --sg-terracotta-600: #A96F63; /* hover on brand buttons */
   --sg-terracotta-100: #F1E2DD; /* subtle backgrounds */
 
-  --sg-max: 1180px;
+  --sg-max: 1200px;
   --sg-radius: 18px;
   --sg-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
 }
@@ -59,7 +59,7 @@ body {
   cursor: pointer;
   transition: 0.25s ease;
 }
-.btn-primary { background: var(--sg-terracotta); color: #fff; }
+.btn-primary { background: var(--sg-terracotta); color: #fff; text-decoration: none; }
 .btn-primary:hover { background: var(--sg-terracotta-600); }
 .btn-ghost { border-color: var(--sg-border); }
 .btn-ghost:hover { background: var(--sg-terracotta-100); }

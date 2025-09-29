@@ -6,10 +6,22 @@ import { ExperiencesComponent } from '../experiences/experiences.component';
 import { SpaceComponent } from '../space/space.component';
 import { HowComponent } from '../how/how.component';
 import { FooterComponent } from '../footer/footer.component';
+import { BannerComponent } from '../banner/banner.component';
+import { AboutComponent } from '../about/about.component';
 
 @Component({
   selector: 'app-home',
-  imports: [NavigationComponent, HeroComponent, PillarsComponent, ExperiencesComponent, SpaceComponent, HowComponent, FooterComponent],
+  imports: [
+    NavigationComponent,
+    HeroComponent,
+    PillarsComponent,
+    ExperiencesComponent,
+    SpaceComponent,
+    HowComponent,
+    FooterComponent,
+    BannerComponent,
+    AboutComponent
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -47,9 +59,25 @@ export class HomeComponent {
   ];
 
   spaceImgs = [
-    'assets/store1.jpeg',
-    'assets/store2.jpeg',
-    'assets/store3.jpeg',
+    'assets/gallery/2.jpg',
+    'assets/gallery/10.jpg',
+    'assets/gallery/14.jpg',
+    'assets/gallery/26.jpg',
+    'assets/gallery/27.jpg',
+    'assets/gallery/31.jpg',
+    'assets/gallery/34.jpg',
+    'assets/gallery/37.jpg',
+    'assets/gallery/39.jpg',
+    'assets/gallery/46.jpg',
+    'assets/gallery/51.jpg',
+    'assets/gallery/52.jpg',
+    'assets/gallery/53.jpg',
+    'assets/gallery/54.jpg',
+    'assets/gallery/55.jpg',
+    'assets/gallery/56.jpg',
+    'assets/gallery/62.jpg',
+    'assets/gallery/63.jpg',
+    'assets/gallery/64.jpg',
   ];
 
   brandLogos = [

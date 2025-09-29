@@ -1,16 +1,17 @@
-<section class="pillars container" aria-labelledby="pillars-title">
-  <div class="pillars__head">
-    <p class="pillars__eyebrow">Community • Craft • Curated • Women-Led</p>
-    <h2 id="pillars-title" class="pillars__title">What we stand for</h2>
-    <p class="pillars__blurb">
-      A warm, elevated studio-meets-market—handcrafted experiences, thoughtful details,
-      and space to connect.
-    </p>
-  </div>
+<section class="pillars" aria-labelledby="pillars-title">
+  <div class="pillars__inner container">
+    <div class="pillars__head">
+      <p class="pillars__eyebrow">Community • Craft • Curated • Women-Led</p>
+      <h2 id="pillars-title" class="pillars__title">What we stand for</h2>
+      <p class="pillars__blurb">
+        A warm, elevated studio-meets-market—handcrafted experiences, thoughtful details,
+        and space to connect.
+      </p>
+    </div>
 
-  <ul class="pillars__grid" role="list">
-    <li class="pillars__item" *ngFor="let p of viewItems">
-      <div class="pillars__icon" aria-hidden="true">
+    <ul class="pillars__grid" role="list">
+      <li class="pillars__item" *ngFor="let p of viewItems">
+        <div class="pillars__icon" aria-hidden="true">
         <!-- Simple, handcrafted SVGs that match the brand -->
         <ng-container [ngSwitch]="p.icon">
           <!-- Community / heart -->
@@ -40,12 +41,11 @@
         </ng-container>
       </div>
 
-      <div class="pillars__copy">
-        <div class="pillars__label">{{ p.label }}</div>
-        <p class="pillars__desc">{{ p.desc }}</p>
-      </div>
-    </li>
-  </ul>
-
-
+     <div class="pillars__copy">
+          <div class="pillars__label">{{ p.label }}</div>
+          <p class="pillars__desc">{{ p.desc }}</p>
+        </div>
+      </li>
+    </ul>
+  </div>
 </section>

@@ -78,7 +78,7 @@ export class EventWizardComponent {
   depositAmount = computed(() => round2(this.subtotal() * this.depositPercent()));
   total = computed(() => round2(this.subtotal()));
 
-  constructor(private catalog: VendorService) {
+  constructor(public catalog: VendorService) {
     effect(() => {
       const pre = this.settings.preselectVendorId;
       if (pre && !this.vendorId()) {
@@ -98,6 +98,7 @@ openWizard() {
   this.isOpen.set(true);
   document.body.style.overflow = 'hidden';
 }
+
 
 closeWizard() {
   this.isOpen.set(false);
@@ -176,7 +177,26 @@ closeWizard() {
     console.log('SUBMIT', plan);
     // TODO: send to API + Stripe
   }
+
+  // Collect unique event types from all vendors
+  allEventTypes = computed(() => {
+    const set = new Set<string>();
+    this.catalog.vendors().forEach(v => {
+      (v.supportedEventTypes ?? []).forEach(t => set.add(t));
+    });
+    return [...set];
+  });
+
+  // Collect all activities across vendors
+  allActivities = computed<Activity[]>(() => {
+    const acts: Activity[] = [];
+    this.catalog.vendors().forEach(v => acts.push(...v.activities));
+    return acts;
+  });
+
 }
+
+
 
 function round2(n: number) { return Math.round(n * 100) / 100; }
 function currency(n: number) { return `$${n.toFixed(2)}`; }

@@ -17,23 +17,25 @@
     role="list"
     (keydown)="onKey($event)"
   >
-    <article class="card" role="listitem" *ngFor="let s of items; let i = index">
+    <article class="card" role="listitem" *ngFor="let s of items; let i = index" (click)="openModal(s)">
       <div class="media">
         <img [src]="s.imageUrl" [alt]="s.alt || ('Photo ' + (i+1))" loading="lazy" decoding="async" />
-        <div class="overlay">
-          <h3 class="overlay-label">{{ s.label }}</h3>
         </div>
-        <div class="grain" aria-hidden="true"></div>
-      </div>
-      <footer class="caption">
-        <h3 class="label">{{ s.label }}</h3>
-        <p class="desc" *ngIf="s.desc">{{ s.desc }}</p>
-      </footer>
     </article>
   </div>
+
 
   <div class="nav-buttons" *ngIf="!asGrid">
     <button class="nav prev" type="button" aria-label="Previous" (click)="scroll(-1)">‹</button>
     <button class="nav next" type="button" aria-label="Next" (click)="scroll(1)">›</button>
   </div>
 </section>
+
+<div class="lightbox" [class.is-open]="isModalOpen" *ngIf="isModalOpen" (click)="closeModal()">
+    <div class="lightbox-content" (click)="$event.stopPropagation()">
+        <button class="lightbox-close" aria-label="Close image viewer" (click)="closeModal()">
+            &times;
+        </button>
+        <img [src]="selectedImage!.imageUrl" [alt]="selectedImage!.alt" class="lightbox-image" />
+    </div>
+</div>

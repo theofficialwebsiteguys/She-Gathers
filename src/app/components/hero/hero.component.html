@@ -1,33 +1,36 @@
-<section class="hero" [class.hero--sub]="variant === 'sub'">
-  <div class="hero__media" *ngIf="imageUrl">
-    <img [src]="imageUrl" alt="Hero background" />
-    <div class="hero__grain" aria-hidden="true"></div>
-    <div class="hero__scrim" aria-hidden="true"></div>
-  </div>
+    <section class="hero" [class.hero--sub]="variant === 'sub'">
+      <!-- Image Carousel Block -->
+      <div class="hero__media">
+        <!-- Iterate over all images. The 'active' class controls visibility and transition. -->
+        @for (url of imageUrls; track $index) {
+          <img [src]="url" 
+               alt="Hero background image {{ $index + 1 }}"
+               [class.active]="$index === currentImageIndex()" />
+        }
+        
+        <!-- Scrim and Grain are absolutely positioned overlays -->
+        <div class="hero__grain" aria-hidden="true"></div>
+        <div class="hero__scrim" aria-hidden="true"></div>
+        <div class="hero__fade-out" aria-hidden="true" *ngIf="showFade"></div>
+      </div>
 
-  <div class="container hero__content">
-    <div class="hero__badge" *ngIf="showBadge && variant === 'main'">
-      women-led • community-made
-    </div>
+      <!-- Content Overlay -->
+      <div class="container hero__content">
+        <div class="hero__badge" *ngIf="showBadge && variant === 'main'">
+          women-led • community-made
+        </div>
 
-    <h1>{{ title }}</h1>
-    <p class="hero__sub">{{ subtitle }}</p>
+        <h1>{{ title }}</h1>
+        <p class="hero__sub">{{ subtitle }}</p>
 
-    <div class="hero__actions" *ngIf="primaryCta || secondaryCta && variant == 'main'">
-      <a *ngIf="primaryCta" class="btn btn-primary" [routerLink]="primaryCta.link">
-        {{ primaryCta.label }}
-      </a>
-      <a *ngIf="secondaryCta" class="btn btn-ghost" [routerLink]="secondaryCta.link">
-        {{ secondaryCta.label }}
-      </a>
-    </div>
-  </div>
+        <div class="hero__actions" *ngIf="primaryCta || (secondaryCta && variant == 'main')">
+          <a *ngIf="primaryCta" class="btn btn-primary" [routerLink]="primaryCta.link">
+            {{ primaryCta.label }}
+          </a>
+          <a *ngIf="secondaryCta" class="btn btn-ghost" [routerLink]="secondaryCta.link">
+            {{ secondaryCta.label }}
+          </a>
+        </div>
+      </div>
 
-  <svg *ngIf="showCurve"
-       class="hero__curve"
-       viewBox="0 0 1440 120"
-       preserveAspectRatio="none"
-       aria-hidden="true">
-    <path d="M0,64 C240,120 480,0 720,40 960,80 1200,64 1440,24 L1440,120 L0,120 Z" [attr.fill]="curveColor" />
-  </svg>
-</section>
+    </section>

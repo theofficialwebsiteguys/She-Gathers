@@ -1,24 +1,50 @@
+.top-info-bar {
+  background: radial-gradient(
+    circle at top left,
+    rgba(226, 114, 91, 0.35) 0%,
+    rgba(226, 114, 91, 0.25) 20%,
+    rgba(226, 114, 91, 0.1) 50%,
+    transparent 90%
+  ),
+  radial-gradient(
+    circle at bottom right,
+    rgba(226, 114, 91, 0.35) 0%,
+    rgba(226, 114, 91, 0.25) 25%,
+    rgba(226, 114, 91, 0.1) 55%,
+    transparent 90%
+  );
+    color: rgb(0, 0, 0);
+    padding: 0.05rem 2rem; /* Keep it thin */
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    z-index: 1001; /* Ensure it stays above everything */
+    top: 0; 
+}
+
 .top-header {
   position: sticky;
   top: 0;
   z-index: 1000;
   background: linear-gradient(
     to bottom,
-    rgba(255, 253, 249, 0.8),
-    rgba(255, 253, 249, 0.55)
+    rgba(255, 253, 249, 1),
+    rgba(255, 253, 249, 0.80)
   );
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.2rem 2rem;
-  box-shadow: 0 2px 8px var(--sg-terracotta);
+  padding: .8rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   
   .logo-area {
     display: flex;
     align-items: center;
 
     .logo {
-      width: 100px;
+      width: 120px;
+      /* Reduced from 150px to better fit the thinner bar */
       height: auto;
       margin-right: 10px;
     }
@@ -70,6 +96,7 @@
     }
   }
 }
+
 .main-nav ul {
   display: flex;
   justify-content: center;
@@ -83,7 +110,7 @@
     text-decoration: none;
     color: #333;
     font-weight: 600;
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     position: relative;
     transition: color 0.3s ease;
 
@@ -211,7 +238,7 @@
   text-align: center;
 
   .mobile-logo {
-    width: 80px;
+    width: 150px;
     height: auto;
     margin-bottom: 1rem;
     animation: bounce 2.5s infinite ease-in-out;

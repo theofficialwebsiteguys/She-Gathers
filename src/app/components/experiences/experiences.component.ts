@@ -23,12 +23,8 @@ export interface ExperienceCard {
 })
 export class ExperiencesComponent {
   experiences = [
-    { title: 'Paint Night', desc: 'Sip wine and create a masterpiece.', imageUrl: 'assets/store1.jpeg' },
-    { title: 'Candle Making', desc: 'Blend scents, pour, and personalize.', imageUrl: 'assets/store2.jpeg' },
-    { title: 'Flower Workshop', desc: 'Design floral arrangements to take home.', imageUrl: 'assets/store3.jpeg' },
-    { title: 'Luncheon', desc: 'Curate special dishes for a luncheon/gathering.', imageUrl: 'assets/store3.jpeg' },
-    { title: 'Tea Nights', desc: 'Taste and pair seasonal teas.', imageUrl: 'assets/store2.jpeg' },
-    { title: 'Sip, Shop & Support', desc: 'Local vendors meet community night.', imageUrl: 'assets/store1.jpeg' }
+    { title: 'Noir Candles', desc: 'Learn how to craft your own custom soy candles from start to finish.', imageUrl: 'assets/gallery/58.jpg' },
+    { title: 'Cup of Communitea', desc: 'Step into the delicious  world of tea with a guided, one-hour tasting experience hosted by Cup of Communitea.', imageUrl: 'assets/gallery/4.jpg' },
   ];
 
 }

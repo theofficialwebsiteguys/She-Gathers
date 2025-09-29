@@ -1,94 +1,174 @@
-.hero {
-  position: relative;
-  isolation: isolate;
+    // @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    
+    :host {
+      display: block;
+      font-family: 'Inter', sans-serif;
+    }
 
-  &--sub {
-    min-height: 40vh; // shorter height for sub-hero
-  }
-}
-.hero__media {
-  position: relative;
-  height: clamp(520px, 58vw, 720px);
-  overflow: hidden;
-}
+    .hero {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden; /* Ensure curve doesn't bleed */
+    }
 
-.hero--sub .hero__media {
-  height: 40vh;   /* or clamp(...) with smaller values */
-}
-/* Center the image — adjust Y with --hero-focal-y if needed (0% top, 100% bottom) */
-.hero__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: var(--hero-focal-x, 50%) var(--hero-focal-y, 60%); /* centered, slightly lower */
-  transform: scale(1.02);
-}
+    .hero--sub {
+      min-height: 40vh; /* shorter height for sub-hero */
+    }
 
-/* Dark scrim that boosts legibility across all photos */
-.hero__scrim {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.35) 100%),
-    radial-gradient(120% 100% at 70% 10%, transparent 0 60%, rgba(0,0,0,.30) 85%);
-  pointer-events: none;
-}
+    .hero__media {
+      position: relative;
+      height: clamp(520px, 58vw, 760px);
+      overflow: hidden;
+    }
 
-/* Keep the subtle grain on top of the image but under the text */
-.hero__grain { position:absolute; inset:0; mix-blend-mode: multiply; opacity: .6; }
+    .hero--sub .hero__media {
+      height: 40vh;
+    }
 
-/* Make the secondary button visible on dark imagery */
-.hero .btn-ghost {
-  color: #fff;
-  border: 1px solid rgba(255,255,255,.55);
-  background: rgba(255,255,255,.10);
-}
-.hero .btn-ghost:hover { background: rgba(255,255,255,.18); }
+    /* --- CAROUSEL STYLING --- */
+    .hero__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      
+      /* Position all images to stack on top of each other */
+      position: absolute; 
+      top: 0;
+      left: 0;
 
+      /* Image focusing (still top-aligned by default) */
+      object-position: var(--hero-focal-x, 50%) var(--hero-focal-y, 0%);
+      
+      /* Initial state and transition for smooth cross-fade */
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
 
-.hero__content {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  align-content: center;
-  gap: 16px;
-  color: white;
-}
-.hero__badge {
-  align-self: start;
-  justify-self: start;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  backdrop-filter: blur(8px);
-  padding: 0.4rem 0.8rem;
-  border-radius: 999px;
-  letter-spacing: 0.6px;
-  font-size: 0.82rem;
-  text-transform: uppercase;
-}
-.hero h1 {
-  max-width: 16ch;
-  font-size: clamp(2.4rem, 5vw, 4.2rem);
-  line-height: 1.08;
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
-  margin: 0;
-}
-.hero__sub {
-  max-width: 52ch;
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  opacity: 0.95;
-}
-.hero__actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
+    /* Only the active image is visible */
+    .hero__media img.active {
+      opacity: 1; 
+      z-index: 1; /* Ensure active image is on top */
+    }
+    /* --- END CAROUSEL STYLING --- */
 
-.hero__curve {
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 100%;
-  height: 120px;
-}
+    /* Dark scrim that boosts legibility across all photos */
+    .hero__scrim {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.35) 100%),
+        radial-gradient(120% 100% at 70% 10%, transparent 0 60%, rgba(0,0,0,.30) 85%);
+      pointer-events: none;
+      z-index: 2; /* Overlay on images */
+    }
 
+    /* Keep the subtle grain on top of the image but under the text */
+    .hero__grain { 
+      position:absolute; 
+      inset:0; 
+      mix-blend-mode: multiply; 
+      opacity: .6;
+      z-index: 3; /* Overlay on images and scrim */
+    }
+
+    /* Make the secondary button visible on dark imagery */
+    .hero .btn-primary, .hero .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .hero .btn-primary {
+      background-color: #BA7F6E; /* Tailwind orange-600 mock */
+      color: #fff;
+    }
+    .hero .btn-primary:hover {
+      background-color: #a87263; /* Tailwind orange-700 mock */
+    }
+    
+    .hero .btn-ghost {
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.55);
+      background: rgba(255,255,255,.10);
+      backdrop-filter: blur(2px);
+      transition: background 0.2s ease;
+    }
+    .hero .btn-ghost:hover { 
+      background: rgba(255,255,255,.18); 
+    }
+
+    .hero__content {
+      position: absolute;
+      inset: 0;
+      
+      /* Uses Grid to center content vertically */
+      display: grid; 
+      align-content: center; 
+      
+      gap: 16px;
+      color: white;
+      z-index: 4; /* On top of all overlays */
+      
+      /* Responsive Padding/Container Mockup */
+      padding: 2rem;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .hero__badge {
+      align-self: start;
+      justify-self: start;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      backdrop-filter: blur(8px);
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      letter-spacing: 0.6px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      max-width: 16ch;
+      font-size: clamp(2.4rem, 5vw, 4.2rem);
+      line-height: 1.08;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+      margin: 0;
+    }
+    .hero__sub {
+      max-width: 52ch;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      opacity: 0.95;
+    }
+    .hero__actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .hero__curve {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      z-index: 5; /* Ensure curve is above main content */
+    }
+
+    .hero__fade-out {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        /* Adjust height as needed, 100px is a good starting point for a soft fade */
+        height: 100px; 
+        
+        /* The z-index must be above the scrim and grain */
+        z-index: 4; 
+        
+        /* Linear gradient from transparent at the top to white (#ffffff) at the bottom. */
+        /* This white color should match the underlying base color of the next component. */
+        background: linear-gradient(to top, #f2ccc4, transparent);
+    }

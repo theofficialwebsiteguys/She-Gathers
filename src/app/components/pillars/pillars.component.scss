@@ -1,9 +1,60 @@
 .pillars {
-  background: var(--sg-bone);
   position: relative;
-  padding: clamp(40px, 6vw, 80px) 0; // scales padding for small vs large screens
-  overflow-x: hidden; // prevent horizontal scroll
+  background: radial-gradient(
+    circle at top left,
+    rgba(226, 114, 91, 0.35) 0%,
+    rgba(226, 114, 91, 0.25) 20%,
+    rgba(226, 114, 91, 0.1) 50%,
+    transparent 90%
+  ),
+  radial-gradient(
+    circle at bottom right,
+    rgba(226, 114, 91, 0.35) 0%,
+    rgba(226, 114, 91, 0.25) 25%,
+    rgba(226, 114, 91, 0.1) 55%,
+    transparent 90%
+  );
+  background-color: #fffdfc; /* warm off-white base */
+  z-index: 1;
+  padding: clamp(20px, 3vw, 40px) 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
+
+.pillars__inner {
+  max-width: 1200px; /* match your site container */
+  margin: 0 auto;
+  padding: 0 16px; /* safe breathing room */
+}
+
+/* blobs stay in section, not constrained */
+.pillars::before,
+.pillars::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.pillars::before {
+  top: -80px;
+  left: -80px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle at center, var(--sg-terracotta), transparent 70%);
+  opacity: 0.25;
+}
+
+.pillars::after {
+  bottom: -100px;
+  right: -100px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle at center, var(--sg-rose), transparent 70%);
+  opacity: 0.3;
+}
+
+
 
 .pillars__head {
   max-width: 60ch;
@@ -24,12 +75,12 @@
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     font-weight: 700;
     margin-bottom: 10px;
-    color: var(--sg-ink);
+    color: #333;
   }
 
   .pillars__blurb {
     font-size: clamp(0.95rem, 2.2vw, 1.1rem);
-    color: var(--sg-ink-70);
+    color: #333;
     line-height: 1.5;
   }
 }
@@ -42,6 +93,7 @@
   // ensures nice stacking below ~500px
 }
 
+
 .pillars__item {
   background: #fff;
   padding: clamp(16px, 4vw, 24px);
@@ -53,12 +105,14 @@
   align-items: center;
   text-align: center;
   transition: transform .25s ease, box-shadow .25s ease;
-
+  z-index: 1;
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 14px 40px rgba(0,0,0,0.08);
   }
 }
+
+
 
 .pillars__icon {
   width: clamp(48px, 8vw, 56px);

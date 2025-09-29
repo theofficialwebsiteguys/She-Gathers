@@ -1,0 +1,125 @@
+:host {
+  // 1. Fill the viewport and center the content
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh; /* Fill the vertical height of the viewport */
+  width: 100%;
+  background-color: #fffdfc; /* warm off-white base */
+}
+
+.owner-bio-card {
+  // 2. Define a tight, centered component size (e.g., 80% width, 500px height)
+  width: 80%;
+  max-width: 1000px;
+  height: 500px; /* Fixed height for the horizontal split */
+  margin: 0; /* Remove auto margins */
+  padding: 0; /* Remove internal padding from the card */
+
+  // Modern, clean container styling
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* More prominent shadow */
+  overflow: hidden; /* Ensures image corners are rounded with the card */
+
+  // 3. New Two-Column Flex Layout
+  display: flex; /* Makes the card's children lay out horizontally */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- Left Column: Image (50% Width) --- */
+.profile-image-section {
+  flex: 0 0 50%; /* Image takes exactly 50% width and doesn't grow/shrink */
+  overflow: hidden; /* Hide anything outside the container */
+}
+
+.profile-image {
+  // Fill the container completely
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image fills the space without distortion */
+  border-radius: 0; /* No longer circular, fill the rectangle */
+  border: none;
+  filter: grayscale(10%); /* Optional: subtle professional effect */
+}
+
+
+/* --- Right Column: Content (50% Width) --- */
+.content-section {
+  flex: 0 0 50%; /* Content takes exactly 50% width */
+  padding: 40px; /* Tight padding inside the content half */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically within the column */
+}
+
+.owner-name {
+  font-size: 2.2em;
+  color: #1a2a47;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.owner-title {
+  font-size: 1.2em;
+  color: #BA7F6E; /* Primary color for title */
+  margin: 0 0 20px 0;
+  font-weight: 500;
+}
+
+.bio-content p {
+  line-height: 1.7;
+  color: #4a4a4a;
+  text-align: left; /* Aligned left for better readability in this format */
+  margin-bottom: 25px;
+}
+
+.contact-links {
+    margin-top: 15px;
+    display: flex;
+    gap: 20px;
+}
+
+.contact-icon {
+    font-size: 1.4em;
+    color: #4a4a4a;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: #007bff;
+    }
+}
+
+/* --- Responsive Breakpoint (e.g., screens smaller than 768px) --- */
+@media (max-width: 768px) {
+  .owner-bio-card {
+    flex-direction: column; 
+    max-width: 400px;
+    height: auto; /* ➡️ CRITICAL FIX: Allow height to expand vertically ⬅️ */
+  }
+
+  /* Image Section: Now takes full width and a controlled height */
+  .profile-image-section {
+    /* ➡️ CRITICAL FIX: Make the image section take 100% width and set the height ⬅️ */
+    flex: 0 0 auto; /* Remove the 50% constraint */
+    width: 100%;
+    height: 300px; /* Set a specific height for the image on mobile */
+  }
+
+  /* Content Section: Now takes full width */
+  .content-section {
+    /* ➡️ CRITICAL FIX: Make the content section take 100% width ⬅️ */
+    flex: 0 0 auto; /* Remove the 50% constraint */
+    padding: 30px 25px;
+    text-align: center;
+  }
+  
+  /* Reset alignment for better mobile reading experience */
+  .bio-content p {
+    text-align: center; /* Override desktop alignment */
+  }
+  
+  .contact-links {
+    justify-content: center;
+  }
+}

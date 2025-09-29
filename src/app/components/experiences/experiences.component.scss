@@ -1,7 +1,22 @@
 .exp {
   padding: clamp(48px, 2vw, 80px) 0;
   position: relative;
-  background: var(--sg-rose);
+  background: radial-gradient(
+    circle at top left,
+    rgba(226, 114, 91, 0.35) 0%,
+    rgba(226, 114, 91, 0.25) 20%,
+    rgba(226, 114, 91, 0.1) 50%,
+    transparent 90%
+  ),
+  radial-gradient(
+    circle at bottom right,
+    rgba(226, 114, 91, 0.35) 0%,
+    rgba(226, 114, 91, 0.25) 25%,
+    rgba(226, 114, 91, 0.1) 55%,
+    transparent 90%
+  );
+  background-color: #fffdfc; /* warm off-white base */
+  z-index: 1;
 }
 
 .exp__head {
@@ -25,12 +40,12 @@
 }
 
 .exp__title {
-  color: white;
+    color: #333;
 }
 
 .exp__sub {
   margin-top: 6px;
-  color: white;
+  color: #333;
   font-size: 1rem;
 }
 
@@ -67,6 +82,7 @@
   // aspect-ratio: 16/10;
   overflow: hidden;
   margin: 0;
+  height: 500px;
 
   img {
     width: 100%;
@@ -104,3 +120,8 @@
   opacity: 0.85;
 }
 
+@media (max-width: 600px) {
+  .exp__grid{
+    padding: 0;
+  }
+}
