@@ -38,7 +38,7 @@ export interface Option {
 export interface EventPlan {
   vendorId: string;
   vendorName?: string;
-  activityId: string;
+  activities: { id: string; title?: string }[];
   activityTitle?: string;
   attendees: number;
   eventType: 'Birthday' | 'Bachelorette' | 'Other' | string;

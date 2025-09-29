@@ -46,14 +46,15 @@
       </div>
     </div>
 
+
     <!-- Step: activity -->
     <div *ngIf="steps()[step()].key === 'activity'" class="panel">
       <h2>Select an activity</h2>
       <div class="cards">
         <button class="card"
                 *ngFor="let a of allActivities()"
-                [class.is-active]="activityId() === a.id"
-                (click)="activityId.set(a.id)">
+                [class.is-active]="selActivities().has(a.id)"
+                (click)="toggle(selActivities, a.id)">
           <img *ngIf="a.image" [src]="a.image" alt="" />
           <div class="card__body">
             <h3>{{ a.title }}</h3>
@@ -67,14 +68,15 @@
       </div>
     </div>
 
+
     <!-- Step: food -->
     <div *ngIf="steps()[step()].key === 'food'" class="panel">
       <h2>What’s on the menu?</h2>
       <div class="options">
-        <label *ngFor="let opt of currentVendor()?.foodOptions">
+        <label *ngFor="let opt of allFoodOptions()">
           <input type="checkbox"
-                 [checked]="selFood().has(opt.id)"
-                 (change)="toggle(selFood, opt.id)" />
+                [checked]="selFood().has(opt.id)"
+                (change)="toggle(selFood, opt.id)" />
           <span>{{ opt.label }}</span>
         </label>
       </div>
@@ -84,7 +86,7 @@
     <div *ngIf="steps()[step()].key === 'dessert'" class="panel">
       <h2>Dessert?</h2>
       <div class="options">
-        <label *ngFor="let opt of currentVendor()?.dessertOptions">
+        <label *ngFor="let opt of allDessertOptions()">
           <input type="checkbox"
                  [checked]="selDessert().has(opt.id)"
                  (change)="toggle(selDessert, opt.id)" />
@@ -97,7 +99,7 @@
     <div *ngIf="steps()[step()].key === 'favors'" class="panel">
       <h2>Favors</h2>
       <div class="options">
-        <label *ngFor="let opt of currentVendor()?.favorOptions">
+        <label *ngFor="let opt of allFavorOptions()">
           <input type="checkbox"
                  [checked]="selFavors().has(opt.id)"
                  (change)="toggle(selFavors, opt.id)" />
@@ -106,35 +108,67 @@
       </div>
     </div>
 
-    <!-- Step: vendors -->
+   <!-- Step: vendors -->
     <div *ngIf="steps()[step()].key === 'vendors'" class="panel">
       <h2>Vendors Matching Your Event</h2>
-      <p>Select one or more vendors to compare pricing.</p>
-      <div class="cards">
-        <button class="card"
-                *ngFor="let v of matchedVendors()"
-                [class.is-active]="selectedVendorIds().has(v.id)"
-                (click)="toggleVendor(v.id)">
-          <img *ngIf="v.banner" [src]="v.banner" alt="" />
-          <div class="card__body">
-            <h3>{{ v.name }}</h3>
-            <p class="muted">{{ v.blurb }}</p>
-            <p class="price">Base: ${{ v.defaultPricePerHead }} / person</p>
-          </div>
-        </button>
+
+      <p *ngIf="matchedVendors().length === 0" class="muted">
+        No vendors fully matched your selections.
+      </p>
+
+      <p *ngIf="matchedVendors().length > 0">
+        Select one or more vendors to compare pricing.
+      </p>
+
+      <!-- Matched vendors first -->
+      <div class="cards" *ngIf="matchedVendors().length > 0">
+        <ng-container *ngFor="let v of matchedVendors()">
+          <button class="card"
+                  [class.is-active]="selectedVendorIds().has(v.id)"
+                  (click)="toggleVendor(v.id)">
+            <img *ngIf="v.banner" [src]="v.banner" alt="" />
+            <div class="card__body">
+              <h3>{{ v.name }}</h3>
+              <p class="muted">{{ v.blurb }}</p>
+              <p class="price">Base: ${{ v.defaultPricePerHead }} / person</p>
+            </div>
+          </button>
+        </ng-container>
       </div>
+
+      <!-- Fallback vendors -->
+      <ng-container *ngIf="fallbackVendors().length > 0">
+        <h2>Other Vendor Options</h2>
+        <div class="cards">
+          <ng-container *ngFor="let v of fallbackVendors()">
+            <button class="card"
+                    [class.is-active]="selectedVendorIds().has(v.id)"
+                    (click)="toggleVendor(v.id)">
+              <img *ngIf="v.banner" [src]="v.banner" alt="" />
+              <div class="card__body">
+                <h3>{{ v.name }}</h3>
+                <p class="muted">{{ v.blurb }}</p>
+                <p class="price">Base: ${{ v.defaultPricePerHead }} / person</p>
+              </div>
+            </button>
+          </ng-container>
+        </div>
+      </ng-container>
+
     </div>
+
 
     <!-- Step: review -->
     <div *ngIf="steps()[step()].key === 'review'" class="panel panel--review">
       <h2>Review & Deposit</h2>
       <ul class="lines">
-        <ng-container *ngFor="let v of matchedVendors()">
-          <li *ngFor="let li of getVendorLineItems(v.name)">
-            <span>{{ v.name }} — {{ li.label }}</span>
-            <strong>${{ li.amount | number:'1.0-2' }}</strong>
-          </li>
-        </ng-container>
+     <ng-container *ngFor="let v of selectedVendors()">
+        <li *ngFor="let li of getLineItemsForVendor(v.id)">
+          <span>{{ v.name }} — {{ li.label }}</span>
+          <strong>${{ li.amount | number:'1.0-2' }}</strong>
+        </li>
+      </ng-container>
+
         <li class="total">
           <span>Subtotal</span>
           <strong>${{ subtotal() | number:'1.0-2' }}</strong>
