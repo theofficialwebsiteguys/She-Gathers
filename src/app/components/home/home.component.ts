@@ -12,13 +12,10 @@ import { AboutComponent } from '../about/about.component';
 @Component({
   selector: 'app-home',
   imports: [
-    NavigationComponent,
     HeroComponent,
     PillarsComponent,
     ExperiencesComponent,
     SpaceComponent,
-    HowComponent,
-    FooterComponent,
     BannerComponent,
     AboutComponent
   ],

@@ -6,7 +6,7 @@ import { EventWizardComponent } from '../event-wizard/event-wizard.component';
 
 @Component({
   selector: 'app-event-plan',
-  imports: [HeroComponent, HowComponent, ExperiencesComponent, EventWizardComponent],
+  imports: [HeroComponent, HowComponent, EventWizardComponent],
   templateUrl: './event-plan.component.html',
   styleUrl: './event-plan.component.scss'
 })

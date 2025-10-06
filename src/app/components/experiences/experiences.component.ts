@@ -23,8 +23,26 @@ export interface ExperienceCard {
 })
 export class ExperiencesComponent {
   experiences = [
-    { title: 'Noir Candles', desc: 'Learn how to craft your own custom soy candles from start to finish.', imageUrl: 'assets/gallery/58.jpg' },
-    { title: 'Cup of Communitea', desc: 'Step into the delicious  world of tea with a guided, one-hour tasting experience hosted by Cup of Communitea.', imageUrl: 'assets/gallery/4.jpg' },
+    { 
+      title: 'Noir Candles', 
+      desc: 'Learn how to craft your own custom soy candles from start to finish.', 
+      imageUrl: 'assets/vendors/noir-candles.jpg' 
+    },
+    { 
+      title: 'Cup of Communitea', 
+      desc: 'Step into the delicious world of tea with a guided, one-hour tasting experience hosted by Cup of Communitea.', 
+      imageUrl: 'assets/vendors/communitea.jpg' 
+    },
+    { 
+      title: 'Emotional Support Peens – Handmade Event Favors', 
+      desc: 'Looking for an unforgettable party favor or conversation starter?', 
+      imageUrl: 'assets/vendors/emotional-support-peens.jpg' 
+    },
+    { 
+      title: 'Green Room Linens Workshops', 
+      desc: 'Lean into a zero waste lifestyle by creating new items from reclaimed and repurposed linens! ', 
+      imageUrl: 'assets/vendors/green-room-linens.jpg' 
+    },
   ];
 
 }
