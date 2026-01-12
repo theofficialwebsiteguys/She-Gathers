@@ -1,194 +1,328 @@
 <section class="wizard-section">
   <div class="wizard-bg"></div>
-  <div class="wizard">
 
+  <div class="wizard">
     <!-- Progress -->
     <div class="wizard__progress">
-      <span>Step {{ step() + 1 }} of {{ steps().length }}</span>
-      <div class="bar"><i [style.width.%]="(step() / (steps().length - 1)) * 100"></i></div>
+    <div class="progress-top">
+      <span class="muted">
+        Step {{ step() + 1 }} of {{ steps.length }}
+      </span>
+      <span class="muted step-label">
+        {{ steps[step()].label }}
+      </span>
     </div>
 
-    <!-- Step: intro -->
-    <div *ngIf="steps()[step()].key === 'intro'" class="panel panel--intro">
-      <img src="assets/gallery/53.jpg" alt="Celebrate with She Gathers" class="intro-banner"/>
-      <div class="intro-content">
-        <h2>Plan Your Perfect Gathering</h2>
-        <p class="muted">
-          From birthdays to bachelorettes, team nights to tea socials —
-          we’ll guide you step-by-step to create the celebration that fits you best.
-        </p>
-        <button class="btn btn-primary" (click)="next()">Start Planning</button>
-      </div>
+    <div class="bar">
+      <i
+        [style.width.%]="(step() / (steps.length - 1)) * 100"
+      ></i>
     </div>
-
-    <!-- Step: guests -->
-    <div *ngIf="steps()[step()].key === 'guests'" class="panel">
-      <h2>How many guests?</h2>
-      <input type="number"
-             [min]="currentVendor()?.minGuests || 1"
-             [max]="currentVendor()?.maxGuests || null"
-             [ngModel]="attendees()"
-             (ngModelChange)="attendees.set($event)" />
-      <p class="hint" *ngIf="currentVendor()?.minGuests">
-        Min {{ currentVendor()?.minGuests }}
-      </p>
-    </div>
-
-    <!-- Step: type -->
-    <div *ngIf="steps()[step()].key === 'type'" class="panel">
-      <h2>What type of event?</h2>
-      <div class="chips">
-        <button *ngFor="let type of allEventTypes()"
-                [class.is-active]="eventType() === type"
-                (click)="eventType.set(type)">
-          {{ type }}
-        </button>
-      </div>
-    </div>
+  </div>
 
 
-    <!-- Step: activity -->
-    <div *ngIf="steps()[step()].key === 'activity'" class="panel">
-      <h2>Select an activity</h2>
-      <div class="cards">
-        <button class="card"
-                *ngFor="let a of allActivities()"
-                [class.is-active]="selActivities().has(a.id)"
-                (click)="toggle(selActivities, a.id)">
-          <img *ngIf="a.image" [src]="a.image" alt="" />
-          <div class="card__body">
-            <h3>{{ a.title }}</h3>
-            <p class="muted" *ngIf="a.durationMinutes">{{ a.durationMinutes }} min</p>
+    <div class="wizard__layout">
+      <!-- MAIN -->
+      <div class="wizard__main">
+
+        <!-- INTRO -->
+        <div *ngIf="activeStepKey() === 'intro'" class="panel panel--intro">
+          <img src="assets/gallery/53.jpg" alt="Celebrate with She Gathers" class="intro-banner" />
+          <div class="intro-content">
+            <h2>Plan Your Perfect Gathering</h2>
+            <p class="muted">
+              From birthdays to bachelorettes, team nights to tea socials —
+              we’ll guide you step-by-step and show you vendors that fit.
+            </p>
+            <button class="btn btn-primary" (click)="next()">Start Planning</button>
           </div>
-        </button>
-      </div>
-    </div>
+        </div>
 
+        <!-- GUESTS -->
+        <div *ngIf="activeStepKey() === 'guests'" class="panel">
+          <h2>How many people are you planning for?</h2>
 
-    <!-- Step: food -->
-    <div *ngIf="steps()[step()].key === 'food'" class="panel">
-      <h2>What’s on the menu?</h2>
-      <div class="options">
-        <label *ngFor="let opt of allFoodOptions()">
-          <input type="checkbox"
-                [checked]="selFood().has(opt.id)"
-                (change)="toggle(selFood, opt.id)" />
-          <span>{{ opt.label }}</span>
-        </label>
-      </div>
-    </div>
+          <div class="field-row">
+            <input
+              type="number"
+              min="1"
+              [ngModel]="attendees()"
+              (ngModelChange)="attendees.set($event)"
+              placeholder="e.g. 12"
+            />
+          </div>
 
-    <!-- Step: dessert -->
-    <div *ngIf="steps()[step()].key === 'dessert'" class="panel">
-      <h2>Dessert?</h2>
-      <div class="options">
-        <label *ngFor="let opt of allDessertOptions()">
-          <input type="checkbox"
-                 [checked]="selDessert().has(opt.id)"
-                 (change)="toggle(selDessert, opt.id)" />
-          <span>{{ opt.label }}</span>
-        </label>
-      </div>
-    </div>
+          <p class="hint">We’ll filter vendors based on your group size.</p>
+        </div>
 
-    <!-- Step: favors -->
-    <div *ngIf="steps()[step()].key === 'favors'" class="panel">
-      <h2>Favors</h2>
-      <div class="options">
-        <label *ngFor="let opt of allFavorOptions()">
-          <input type="checkbox"
-                 [checked]="selFavors().has(opt.id)"
-                 (change)="toggle(selFavors, opt.id)" />
-          <span>{{ opt.label }}</span>
-        </label>
-      </div>
-    </div>
+        <!-- TYPE -->
+        <div *ngIf="activeStepKey() === 'type'" class="panel">
+          <h2>What type of event is this?</h2>
+          <p class="muted">Pick the closest match — you can change it later.</p>
 
-   <!-- Step: vendors -->
-    <div *ngIf="steps()[step()].key === 'vendors'" class="panel">
-      <h2>Vendors Matching Your Event</h2>
+          <div class="chips">
+            <button
+              *ngFor="let type of allEventTypes()"
+              [class.is-active]="eventType() === type"
+              (click)="eventType.set(type)">
+              {{ type }}
+            </button>
+          </div>
+        </div>
 
-      <p *ngIf="matchedVendors().length === 0" class="muted">
-        No vendors fully matched your selections.
-      </p>
+        <!-- ACTIVITY -->
+        <div *ngIf="activeStepKey() === 'activity'" class="panel">
+          <h2>What experience do you want?</h2>
+          <p class="muted">Choose one or more. We’ll recommend vendors that can host it.</p>
 
-      <p *ngIf="matchedVendors().length > 0">
-        Select one or more vendors to compare pricing.
-      </p>
-
-      <!-- Matched vendors first -->
-      <div class="cards" *ngIf="matchedVendors().length > 0">
-        <ng-container *ngFor="let v of matchedVendors()">
-          <button class="card"
-                  [class.is-active]="selectedVendorIds().has(v.id)"
-                  (click)="toggleVendor(v.id)">
-            <img *ngIf="v.banner" [src]="v.banner" alt="" />
-            <div class="card__body">
-              <h3>{{ v.name }}</h3>
-              <p class="muted">{{ v.blurb }}</p>
-              <p class="price">Base: ${{ v.defaultPricePerHead }} / person</p>
-            </div>
-          </button>
-        </ng-container>
-      </div>
-
-      <!-- Fallback vendors -->
-      <ng-container *ngIf="fallbackVendors().length > 0">
-        <h2>Other Vendor Options</h2>
-        <div class="cards">
-          <ng-container *ngFor="let v of fallbackVendors()">
-            <button class="card"
-                    [class.is-active]="selectedVendorIds().has(v.id)"
-                    (click)="toggleVendor(v.id)">
-              <img *ngIf="v.banner" [src]="v.banner" alt="" />
+          <div class="cards">
+            <button
+              class="card"
+              *ngFor="let a of allActivities()"
+              [class.is-active]="selActivities().has(a.id)"
+              (click)="toggle(selActivities, a.id)">
+              <img *ngIf="a.image" [src]="a.image" alt="" />
               <div class="card__body">
-                <h3>{{ v.name }}</h3>
-                <p class="muted">{{ v.blurb }}</p>
-                <p class="price">Base: ${{ v.defaultPricePerHead }} / person</p>
+                <h3>{{ a.title }}</h3>
+                <p class="muted" *ngIf="a.durationMinutes">{{ a.durationMinutes }} min</p>
               </div>
             </button>
+          </div>
+        </div>
+
+        <!-- FOOD -->
+        <div *ngIf="activeStepKey() === 'food'" class="panel">
+          <div class="panel-head">
+            <h2>Add food</h2>
+            <span class="pill">Optional</span>
+          </div>
+          <p class="muted">You can skip this — options vary by vendor.</p>
+
+          <div class="options">
+            <label *ngFor="let opt of allFoodOptions()">
+              <input
+                type="checkbox"
+                [checked]="selFood().has(opt.id)"
+                (change)="toggle(selFood, opt.id)"
+              />
+              <span>{{ opt.label }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- DESSERT -->
+        <div *ngIf="activeStepKey() === 'dessert'" class="panel">
+          <div class="panel-head">
+            <h2>Dessert</h2>
+            <span class="pill">Optional</span>
+          </div>
+          <p class="muted">Totally optional — choose what you want.</p>
+
+          <div class="options">
+            <label *ngFor="let opt of allDessertOptions()">
+              <input
+                type="checkbox"
+                [checked]="selDessert().has(opt.id)"
+                (change)="toggle(selDessert, opt.id)"
+              />
+              <span>{{ opt.label }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- FAVORS -->
+        <div *ngIf="activeStepKey() === 'favors'" class="panel">
+          <div class="panel-head">
+            <h2>Favors</h2>
+            <span class="pill">Optional</span>
+          </div>
+          <p class="muted">Optional add-ons — can be great for bachelorettes.</p>
+
+          <div class="options">
+            <label *ngFor="let opt of allFavorOptions()">
+              <input
+                type="checkbox"
+                [checked]="selFavors().has(opt.id)"
+                (change)="toggle(selFavors, opt.id)"
+              />
+              <span>{{ opt.label }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- VENDORS -->
+        <div *ngIf="activeStepKey() === 'vendors'" class="panel">
+          <h2>Pick vendors to compare</h2>
+          <p class="muted">Select one or more — your pricing updates automatically.</p>
+
+          <ng-container *ngIf="matchedVendors().length > 0; else showAllVendors">
+            <h3 class="section-title">Recommended Vendors</h3>
+            <div class="cards">
+              <button
+                class="card"
+                *ngFor="let v of matchedVendors()"
+                [class.is-active]="selectedVendorIds().has(v.id)"
+                (click)="toggleVendor(v.id)">
+                <img *ngIf="v.banner" [src]="v.banner" alt="" />
+                <div class="card__body">
+                  <h3>{{ v.name }}</h3>
+                  <p class="muted">{{ v.blurb }}</p>
+                  <p class="price" *ngIf="v.defaultPricePerHead != null">
+                    Base: ${{ v.defaultPricePerHead }} / person
+                  </p>
+                </div>
+              </button>
+            </div>
+          </ng-container>
+
+          <ng-template #showAllVendors>
+            <h3 class="section-title">Available Vendors</h3>
+            <div class="cards">
+              <button
+                class="card"
+                *ngFor="let v of vendors()"
+                [class.is-active]="selectedVendorIds().has(v.id)"
+                (click)="toggleVendor(v.id)">
+                <img *ngIf="v.banner" [src]="v.banner" alt="" />
+                <div class="card__body">
+                  <h3>{{ v.name }}</h3>
+                  <p class="muted">{{ v.blurb }}</p>
+                </div>
+              </button>
+            </div>
+          </ng-template>
+
+
+          <ng-container *ngIf="matchedVendors().length === 0">
+            <p class="muted">
+              No vendors matched every selection — try adjusting your activity or event type.
+            </p>
+          </ng-container>
+
+          <ng-container *ngIf="fallbackVendors().length > 0">
+            <h3 class="section-title">More Options</h3>
+            <div class="cards">
+              <button
+                class="card"
+                *ngFor="let v of fallbackVendors()"
+                [class.is-active]="selectedVendorIds().has(v.id)"
+                (click)="toggleVendor(v.id)">
+                <img *ngIf="v.banner" [src]="v.banner" alt="" />
+                <div class="card__body">
+                  <h3>{{ v.name }}</h3>
+                  <p class="muted">{{ v.blurb }}</p>
+                  <p class="price" *ngIf="v.defaultPricePerHead != null">
+                    Base: ${{ v.defaultPricePerHead }} / person
+                  </p>
+                </div>
+              </button>
+            </div>
           </ng-container>
         </div>
-      </ng-container>
 
-    </div>
+        <!-- REVIEW -->
+        <div *ngIf="activeStepKey() === 'review'" class="panel panel--review">
+          <h2>Confirm & Reserve</h2>
+          <p class="muted">Review your selections and submit your deposit to lock it in.</p>
 
+          <div class="review-block" *ngFor="let v of selectedVendors()">
+            <div class="review-vendor">
+              <h3>{{ v.name }}</h3>
+              <p class="muted" *ngIf="v.blurb">{{ v.blurb }}</p>
+            </div>
 
-    <!-- Step: review -->
-    <div *ngIf="steps()[step()].key === 'review'" class="panel panel--review">
-      <h2>Review & Deposit</h2>
-      <ul class="lines">
-     <ng-container *ngFor="let v of selectedVendors()">
-        <li *ngFor="let li of getLineItemsForVendor(v.id)">
-          <span>{{ v.name }} — {{ li.label }}</span>
-          <strong>${{ li.amount | number:'1.0-2' }}</strong>
-        </li>
-      </ng-container>
+            <ul class="lines">
+              <li *ngFor="let li of getLineItemsForVendor(v.id)">
+                <span>{{ li.label }}</span>
+                <strong>${{ li.amount | number:'1.0-2' }}</strong>
+              </li>
+            </ul>
+          </div>
 
-        <li class="total">
-          <span>Subtotal</span>
-          <strong>${{ subtotal() | number:'1.0-2' }}</strong>
-        </li>
-        <li>
-          <span>Deposit ({{ (depositPercent()*100) | number:'1.0-0' }}%)</span>
-          <strong>${{ depositAmount() | number:'1.0-2' }}</strong>
-        </li>
-      </ul>
+          <ul class="lines lines--totals">
+            <li class="total">
+              <span>Subtotal</span>
+              <strong>${{ subtotal() | number:'1.0-2' }}</strong>
+            </li>
+            <li>
+              <span>Deposit ({{ (depositPercent() * 100) | number:'1.0-0' }}%)</span>
+              <strong>${{ depositAmount() | number:'1.0-2' }}</strong>
+            </li>
+          </ul>
 
-      <div class="actions">
-        <button class="btn btn-ghost" (click)="back()">Back</button>
-        <button class="btn btn-primary" (click)="submit()">Submit & Pay Deposit</button>
+          <div class="actions">
+            <button class="btn btn-ghost" (click)="back()">Back</button>
+            <button class="btn btn-primary" (click)="submit()">Submit & Pay Deposit</button>
+          </div>
+        </div>
+
+        <!-- NAV -->
+        <div class="wizard__nav" *ngIf="activeStepKey() !== 'intro' && activeStepKey() !== 'review'">
+          <button class="btn btn-ghost" (click)="back()" [disabled]="step() === 0">Back</button>
+
+          <div class="nav-right">
+            <!-- Optional steps can be skipped -->
+            <button
+              class="btn btn-ghost"
+              *ngIf="activeStepKey() === 'food' || activeStepKey() === 'dessert' || activeStepKey() === 'favors'"
+              (click)="next()">
+              Skip
+            </button>
+
+            <button class="btn btn-primary" (click)="next()" [disabled]="!canGoNext()">
+              Next
+            </button>
+          </div>
+        </div>
+
       </div>
-    </div>
 
-    <!-- Nav -->
-    <ng-container *ngIf="steps() as s">
-      <div class="wizard__nav"
-           *ngIf="s[step()].key !== 'review' && s[step()].key !== 'intro'">
-        <button class="btn btn-ghost" (click)="back()" [disabled]="step() === 0">Back</button>
-        <button class="btn btn-primary" (click)="next()" [disabled]="step() >= s.length-1">Next</button>
-      </div>
-    </ng-container>
+      <!-- ✅ SUMMARY (FIXED) -->
+      <aside class="wizard__summary">
+        <div class="summary-card">
+          <h3>Your Event</h3>
+
+          <div class="summary-row">
+            <span class="muted">Guests</span>
+            <strong>{{ attendees() || 0 }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span class="muted">Type</span>
+            <strong>{{ eventType() }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span class="muted">Experiences</span>
+            <strong>{{ selActivities().size }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span class="muted">Add-ons</span>
+            <strong>
+              {{ selFood().size + selDessert().size + selFavors().size }}
+            </strong>
+          </div>
+
+          <div class="summary-row">
+            <span class="muted">Vendors</span>
+            <strong>{{ selectedVendorIds().size }}</strong>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-row">
+            <span class="muted">Subtotal</span>
+            <strong>${{ subtotal() | number:'1.0-2' }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span class="muted">Deposit</span>
+            <strong>${{ depositAmount() | number:'1.0-2' }}</strong>
+          </div>
+        </div>
+      </aside>
+    </div>
 
   </div>
 </section>

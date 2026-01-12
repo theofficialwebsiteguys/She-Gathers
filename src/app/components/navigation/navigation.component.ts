@@ -11,8 +11,24 @@ import { filter } from 'rxjs';
 })
 export class NavigationComponent {
   isMobileMenuOpen = false;
+  scrolled = false;
 
-  toggleMenu() {
-    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  @HostListener('window:scroll')
+  onScroll() {
+    this.scrolled = window.scrollY > 8;
+  }
+
+  openMenu() {
+    this.isMobileMenuOpen = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeMenu() {
+    this.isMobileMenuOpen = false;
+    document.body.style.overflow = '';
+  }
+
+  ngOnDestroy(): void {
+    document.body.style.overflow = '';
   }
 }

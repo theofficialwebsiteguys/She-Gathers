@@ -39,14 +39,7 @@
     </div>
 
     <div #mapWrapper class="map-container">
-      <google-map
-        [center]="{ lat: latitude, lng: longitude }"
-        [zoom]="zoom"
-        height="300px"
-        width="100%"
-      >
-        <map-marker [position]="{ lat: latitude, lng: longitude }" title="ABC Group ATL"></map-marker>
-      </google-map>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3619.512269807052!2d-78.8779145!3d43.022939799999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d36f007a8367b3%3A0xc38e6366a8e02f21!2sShe%20Gathers!5e1!3m2!1sen!2sus!4v1764521889747!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
 </div>

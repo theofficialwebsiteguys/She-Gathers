@@ -9,7 +9,7 @@
     </div>
 
     <ul class="exp__grid" role="list">
-      <li class="exp-card" *ngFor="let exp of experiences">
+      <li class="exp-card" *ngFor="let exp of experiences()">
         <figure class="exp-card__media">
           <img [src]="exp.imageUrl" [alt]="exp.title" loading="lazy" decoding="async" />
           <figcaption class="exp-card__overlay">

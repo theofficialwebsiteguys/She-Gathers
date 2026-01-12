@@ -1,36 +1,46 @@
-    <section class="hero" [class.hero--sub]="variant === 'sub'">
-      <!-- Image Carousel Block -->
-      <div class="hero__media">
-        <!-- Iterate over all images. The 'active' class controls visibility and transition. -->
-        @for (url of imageUrls; track $index) {
-          <img [src]="url" 
-               alt="Hero background image {{ $index + 1 }}"
-               [class.active]="$index === currentImageIndex()" />
-        }
-        
-        <!-- Scrim and Grain are absolutely positioned overlays -->
-        <div class="hero__grain" aria-hidden="true"></div>
-        <div class="hero__scrim" aria-hidden="true"></div>
-        <div class="hero__fade-out" aria-hidden="true" *ngIf="showFade"></div>
+<section class="sg-hero" [class.sg-hero--sub]="variant === 'sub'">
+  <div class="sg-hero__media">
+    @for (url of imageUrls; track $index) {
+      <img
+        [src]="url"
+        [class.active]="$index === currentImageIndex()"
+        alt="Hero background image {{ $index + 1 }}"
+        decoding="async"
+        loading="eager"
+      />
+    }
+
+    <div class="sg-hero__veil" aria-hidden="true"></div>
+    <div class="sg-hero__glow" aria-hidden="true"></div>
+    <div class="sg-hero__grain" aria-hidden="true"></div>
+    <!-- <div class="sg-hero__fade" aria-hidden="true" *ngIf="showFade"></div> -->
+  </div>
+
+  <div class="sg-hero__content">
+    <div class="sg-hero__stack">
+      <div class="sg-hero__badge" *ngIf="showBadge && variant === 'main'">
+        women-led • community-made
       </div>
 
-      <!-- Content Overlay -->
-      <div class="container hero__content">
-        <div class="hero__badge" *ngIf="showBadge && variant === 'main'">
-          women-led • community-made
-        </div>
+      <h1 class="sg-hero__title">{{ title }}</h1>
 
-        <h1>{{ title }}</h1>
-        <p class="hero__sub">{{ subtitle }}</p>
+      <div class="sg-hero__divider"></div>
 
-        <div class="hero__actions" *ngIf="primaryCta || (secondaryCta && variant == 'main')">
-          <a *ngIf="primaryCta" class="btn btn-primary" [routerLink]="primaryCta.link">
-            {{ primaryCta.label }}
-          </a>
-          <a *ngIf="secondaryCta" class="btn btn-ghost" [routerLink]="secondaryCta.link">
-            {{ secondaryCta.label }}
-          </a>
-        </div>
+      <p class="sg-hero__sub">{{ subtitle }}</p>
+
+      <div class="sg-hero__actions" *ngIf="primaryCta || (secondaryCta && variant === 'main')">
+        <a *ngIf="primaryCta" class="sg-btn sg-btn--solid " [routerLink]="primaryCta.link">
+          {{ primaryCta.label }}
+        </a>
+
+        <a *ngIf="secondaryCta" class="sg-btn sg-btn--ghost" [routerLink]="secondaryCta.link">
+          {{ secondaryCta.label }}
+        </a>
       </div>
 
-    </section>
+      <div class="sg-hero__micro" *ngIf="variant === 'main'">
+        A space for women-owned businesses to be discovered, supported, and celebrated.
+      </div>
+    </div>
+  </div>
+</section>

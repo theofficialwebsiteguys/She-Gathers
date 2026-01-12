@@ -1,55 +1,81 @@
-<div class="top-info-bar">
-  <div class="info-right">
-    <p>Celebrating women, fostering connections</p>
-  </div>
+<!-- Top whisper bar -->
+<div class="sg-topbar" role="note">
+  <p>Celebrating women, fostering connections</p>
 </div>
 
-<div class="top-header">
-  <!-- Logo -->
-  <div class="logo-area">
-    <a routerLink="/">
-      <img src="assets/logo.png" alt="She Gathers Logo" class="logo" />
+<header class="sg-header" [class.sg-header--scrolled]="scrolled">
+  <div class="sg-header__inner">
+    <!-- Logo -->
+    <a class="sg-brand" routerLink="/" aria-label="She Gathers Home">
+      <img src="assets/logo.png" alt="She Gathers Logo" class="sg-brand__logo" />
     </a>
+
+    <!-- Desktop nav -->
+    <nav class="sg-nav" aria-label="Primary">
+      <a routerLink="/plan" routerLinkActive="active">Plan an Event</a>
+      <a routerLink="/experiences" routerLinkActive="active">Experiences</a>
+      <a routerLink="/about" routerLinkActive="active">About</a>
+    </nav>
+
+    <!-- Desktop CTA -->
+    <div class="sg-cta hide-on-mobile">
+      <a routerLink="/plan" class="sg-btn sg-btn--outline">Start Planning</a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button
+      class="sg-burger"
+      type="button"
+      (click)="openMenu()"
+      aria-label="Open menu"
+      [attr.aria-expanded]="isMobileMenuOpen"
+      aria-controls="sg-mobile-menu"
+    >
+      <span></span><span></span><span></span>
+    </button>
   </div>
 
-  <!-- Hamburger (mobile) -->
-  <div class="hamburger" (click)="toggleMenu()">
-    <span></span><span></span><span></span>
+  <!-- Soft gradient hairline (replaces the hard accent bar) -->
+  <div class="sg-hairline" aria-hidden="true"></div>
+</header>
+
+<!-- Mobile overlay -->
+<div
+  class="sg-overlay"
+  [class.open]="isMobileMenuOpen"
+  (click)="closeMenu()"
+  aria-hidden="true"
+></div>
+
+<!-- Mobile drawer -->
+<aside
+  id="sg-mobile-menu"
+  class="sg-drawer"
+  [class.open]="isMobileMenuOpen"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Mobile menu"
+>
+  <div class="sg-drawer__top">
+    <a routerLink="/" (click)="closeMenu()" class="sg-drawer__brand" aria-label="Home">
+      <img src="assets/logo.png" alt="She Gathers Logo" />
+    </a>
+
+    <button class="sg-drawer__close" type="button" (click)="closeMenu()" aria-label="Close menu">
+      ×
+    </button>
   </div>
 
-  <!-- Desktop Nav -->
-  <nav class="main-nav">
-    <ul>
-      <li><a routerLink="/plan">Plan an Event</a></li>
-      <li><a routerLink="/experiences">Experiences</a></li>
-      <li><a routerLink="/about">About</a></li>
-    </ul>
+  <nav class="sg-drawer__nav" aria-label="Mobile primary">
+    <a routerLink="/plan" (click)="closeMenu()">Plan an Event</a>
+    <a routerLink="/experiences" (click)="closeMenu()">Experiences</a>
+    <a routerLink="/about" (click)="closeMenu()">About</a>
   </nav>
 
-  <!-- CTA -->
-  <div class="nav__cta hide-on-mobile">
-    <a routerLink="/plan" class="btn btn-primary">Start Planning</a>
+  <div class="sg-drawer__cta">
+    <a routerLink="/plan" (click)="closeMenu()" class="sg-btn sg-btn--outline">Start Planning</a>
+    <p class="sg-drawer__hint">Join the circle — plan something beautiful.</p>
   </div>
-</div>
 
-<!-- Mobile Menu -->
-<div class="mobile-menu" [class.open]="isMobileMenuOpen">
-  <button class="close-btn" (click)="toggleMenu()">×</button>
-  <ul>
-    <li><a routerLink="/plan">Plan an Event</a></li>
-    <li><a routerLink="/experiences">Experiences</a></li>
-    <li><a routerLink="/about">About</a></li>
-  </ul>
-  <div class="mobile-footer">
-    <a routerLink="/">
-      <img src="assets/logo.png" alt="She Gathers Logo" class="mobile-logo" />
-    </a>
-    <div class="social-icons">
-      <i class="fab fa-facebook-f"></i>
-      <i class="fab fa-instagram"></i>
-      <i class="fab fa-linkedin"></i>
-    </div>
-  </div>
-</div>
 
-<div class="nav-accent-bar"></div>
+</aside>

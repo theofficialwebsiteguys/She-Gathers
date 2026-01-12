@@ -1,174 +1,291 @@
-    // @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-    
-    :host {
-      display: block;
-      font-family: 'Inter', sans-serif;
-    }
+:host {
+  display: block;
+  --sg-rose: var(--sg-rose, #BA7F6E);
+  --sg-terracotta: var(--sg-terracotta, #E2725B);
+  --sg-cream: rgba(255, 253, 249, 1);
+}
 
-    .hero {
-      position: relative;
-      isolation: isolate;
-      overflow: hidden; /* Ensure curve doesn't bleed */
-    }
+.sg-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
 
-    .hero--sub {
-      min-height: 40vh; /* shorter height for sub-hero */
-    }
+.sg-hero--sub .sg-hero__media {
+  height: 40vh;
+  min-height: 340px;
+  
+}
 
-    .hero__media {
-      position: relative;
-      height: clamp(520px, 58vw, 760px);
-      overflow: hidden;
-    }
+.sg-hero__media {
+  position: relative;
+  height: clamp(540px, 58vw, 80vh);
+  overflow: hidden;
+}
 
-    .hero--sub .hero__media {
-      height: 40vh;
-    }
+/* Carousel images */
+.sg-hero__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--hero-focal-x, 50%) var(--hero-focal-y, 35%);
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 1s ease-in-out, transform 1.2s ease-in-out;
+  filter: brightness(0.92) contrast(1.05) saturate(0.95);
 
-    /* --- CAROUSEL STYLING --- */
-    .hero__media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      
-      /* Position all images to stack on top of each other */
-      position: absolute; 
-      top: 0;
-      left: 0;
+}
 
-      /* Image focusing (still top-aligned by default) */
-      object-position: var(--hero-focal-x, 50%) var(--hero-focal-y, 0%);
-      
-      /* Initial state and transition for smooth cross-fade */
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
+.sg-hero__media img.active {
+  opacity: 1;
+  transform: scale(1.0);
+  z-index: 1;
+}
 
-    /* Only the active image is visible */
-    .hero__media img.active {
-      opacity: 1; 
-      z-index: 1; /* Ensure active image is on top */
-    }
-    /* --- END CAROUSEL STYLING --- */
+.sg-hero__content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
 
-    /* Dark scrim that boosts legibility across all photos */
-    .hero__scrim {
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.35) 100%),
-        radial-gradient(120% 100% at 70% 10%, transparent 0 60%, rgba(0,0,0,.30) 85%);
-      pointer-events: none;
-      z-index: 2; /* Overlay on images */
-    }
+  background:
+    linear-gradient(
+      to right,
+      rgba(0,0,0,0.35) 0%,
+      rgba(0,0,0,0.28) 35%,
+      rgba(0,0,0,0.12) 65%,
+      transparent 100%
+    );
 
-    /* Keep the subtle grain on top of the image but under the text */
-    .hero__grain { 
-      position:absolute; 
-      inset:0; 
-      mix-blend-mode: multiply; 
-      opacity: .6;
-      z-index: 3; /* Overlay on images and scrim */
-    }
+  pointer-events: none;
+}
 
-    /* Make the secondary button visible on dark imagery */
-    .hero .btn-primary, .hero .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      text-decoration: none;
-    }
 
-    .hero .btn-primary {
-      background-color: #BA7F6E; /* Tailwind orange-600 mock */
-      color: #fff;
-    }
-    .hero .btn-primary:hover {
-      background-color: #a87263; /* Tailwind orange-700 mock */
-    }
-    
-    .hero .btn-ghost {
-      color: #fff;
-      border: 1px solid rgba(255,255,255,.55);
-      background: rgba(255,255,255,.10);
-      backdrop-filter: blur(2px);
-      transition: background 0.2s ease;
-    }
-    .hero .btn-ghost:hover { 
-      background: rgba(255,255,255,.18); 
-    }
+/* Soft veil (less harsh than pure dark scrim) */
+.sg-hero__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    /* Content-focused vertical gradient */
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,0.55) 0%,
+      rgba(0,0,0,0.45) 35%,
+      rgba(0,0,0,0.30) 65%,
+      rgba(0,0,0,0.18) 100%
+    ),
 
-    .hero__content {
-      position: absolute;
-      inset: 0;
-      
-      /* Uses Grid to center content vertically */
-      display: grid; 
-      align-content: center; 
-      
-      gap: 16px;
-      color: white;
-      z-index: 4; /* On top of all overlays */
-      
-      /* Responsive Padding/Container Mockup */
-      padding: 2rem;
-      max-width: 1440px;
-      margin: 0 auto;
-    }
-    .hero__badge {
-      align-self: start;
-      justify-self: start;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-      backdrop-filter: blur(8px);
-      padding: 0.4rem 0.8rem;
-      border-radius: 999px;
-      letter-spacing: 0.6px;
-      font-size: 0.82rem;
-      text-transform: uppercase;
-    }
-    .hero h1 {
-      max-width: 16ch;
-      font-size: clamp(2.4rem, 5vw, 4.2rem);
-      line-height: 1.08;
-      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
-      margin: 0;
-    }
-    .hero__sub {
-      max-width: 52ch;
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      opacity: 0.95;
-    }
-    .hero__actions {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
+    /* Warm vignette for edges */
+    radial-gradient(
+      120% 90% at 50% 20%,
+      rgba(186,127,110,0.25) 0%,
+      transparent 65%
+    ),
 
-    .hero__curve {
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      width: 100%;
-      height: 120px;
-      z-index: 5; /* Ensure curve is above main content */
-    }
+    /* Edge darkening to frame text */
+    radial-gradient(
+      130% 100% at 50% 0%,
+      rgba(0,0,0,0.35) 0%,
+      transparent 70%
+    );
+}
 
-    .hero__fade-out {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        /* Adjust height as needed, 100px is a good starting point for a soft fade */
-        height: 100px; 
-        
-        /* The z-index must be above the scrim and grain */
-        z-index: 4; 
-        
-        /* Linear gradient from transparent at the top to white (#ffffff) at the bottom. */
-        /* This white color should match the underlying base color of the next component. */
-        background: linear-gradient(to top, #f2ccc4, transparent);
-    }
+
+/* Gentle glow for “sweet” vibe */
+.sg-hero__glow {
+  position: absolute;
+  inset: -40px;
+  z-index: 3;
+  background:
+    radial-gradient(520px 360px at 20% 30%, rgba(255,255,255,0.22) 0%, transparent 60%),
+    radial-gradient(620px 420px at 70% 35%, rgba(186,127,110,0.16) 0%, transparent 62%);
+  pointer-events: none;
+  filter: blur(2px);
+}
+
+/* Grain (keep subtle) */
+.sg-hero__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
+}
+
+/* Fade into next section */
+.sg-hero__fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 120px;
+  z-index: 6;
+  background: linear-gradient(to top, var(--sg-cream), transparent);
+}
+
+/* Content */
+.sg-hero__content {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  display: grid;
+  align-content: center;
+  padding: clamp(1.25rem, 4vw, 3rem);
+}
+
+.sg-hero__stack {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 14px;
+
+  /* Entrance animation */
+  & > * {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: sgFadeUp 0.85s ease forwards;
+  }
+  & > *:nth-child(1) { animation-delay: 0.05s; }
+  & > *:nth-child(2) { animation-delay: 0.14s; }
+  & > *:nth-child(3) { animation-delay: 0.22s; }
+  & > *:nth-child(4) { animation-delay: 0.30s; }
+  & > *:nth-child(5) { animation-delay: 0.38s; }
+  & > *:nth-child(6) { animation-delay: 0.46s; }
+}
+
+@keyframes sgFadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sg-hero__badge {
+  justify-self: start;
+  width: fit-content;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+  color: rgba(255,255,255,0.95);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.sg-hero__title {
+  color: #fff;
+  margin: 0;
+  max-width: 18ch;
+  font-size: clamp(2.45rem, 5.2vw, 4.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  font-weight: 750;
+
+  /* Stronger depth */
+  text-shadow:
+    0 2px 10px rgba(0,0,0,0.45),
+    0 10px 30px rgba(0,0,0,0.45);
+}
+
+
+.sg-hero__divider {
+  width: 54px;
+  height: 2px;
+  border-radius: 4px;
+  background: linear-gradient(to right, rgba(255,255,255,0.65), rgba(255,255,255,0.15));
+}
+
+.sg-hero__sub {
+  margin: 0;
+  max-width: 56ch;
+  color: rgba(255,255,255,0.96);
+  font-size: clamp(1.05rem, 2.0vw, 1.3rem);
+  line-height: 1.6;
+
+  /* Gentle separation */
+  text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+}
+
+
+/* Buttons (reuse style from header but tuned for hero) */
+.sg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 0.8rem 1.35rem;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  letter-spacing: 0.2px;
+}
+
+.sg-btn--solid {
+  position: relative;
+  isolation: isolate;
+
+  /* HARD base layer */
+  background-color: rgba(186, 127, 110, 0.95);
+  color: #fff;
+  border: none;
+
+  /* Depth */
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.45);
+
+  font-weight: 800;
+}
+
+
+.sg-btn--solid:hover {
+  transform: translateY(-2px);
+  // box-shadow:
+  //   0 20px 48px rgba(0, 0, 0, 0.55),
+  //   0 2px 0 rgba(255,255,255,0.35) inset;
+}
+
+
+.sg-btn--ghost {
+  position: relative;
+  isolation: isolate;
+
+  background-color: #1c1c1c96; /* solid dark base */
+  color: #fff;
+
+  border: 1.5px solid rgba(255,255,255,0.55);
+  box-shadow:
+    0 10px 28px rgba(0,0,0,0.45);
+
+  font-weight: 700;
+}
+
+.sg-btn--ghost:hover {
+  background: rgba(0,0,0,0.5);
+  transform: translateY(-1px);
+}
+
+
+.sg-hero__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.sg-hero__micro {
+  margin-top: 0.35rem;
+  max-width: 65ch;
+  color: rgba(255,255,255,0.78);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+/* Mobile tweaks */
+@media (max-width: 768px) {
+  .sg-hero__title { max-width: 22ch; }
+  .sg-hero__media { height: clamp(520px, 92vh, 720px); }
+}
