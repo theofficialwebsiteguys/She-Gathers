@@ -1,20 +1,33 @@
-<div class="owner-bio-card" *ngIf="ownerData">
+<div class="owner-bio-wrapper" *ngIf="ownerData">
 
-  <div class="profile-image-section">
-    <img [src]="ownerData.imageUrl" [alt]="ownerData.name + ' profile picture'" class="profile-image">
-  </div>
+  <div class="owner-bio-card">
 
-  <div class="content-section">
-    
-    <div class="info-text">
-      <h2 class="owner-name">{{ ownerData.name }}</h2>
-      <p class="owner-title">{{ ownerData.title }}</p>
+    <!-- IMAGE -->
+    <div class="image-column">
+      <img
+        [src]="ownerData.imageUrl"
+        [alt]="ownerData.name"
+        class="owner-image"
+      />
     </div>
 
-    <div class="bio-content">
-      <p>{{ ownerData.bio }}</p>
+    <!-- CONTENT -->
+    <div class="content-column">
+
+      <header class="header">
+        <h2 class="name">{{ ownerData.name }}</h2>
+        <span class="title">{{ ownerData.title }}</span>
+        <div class="divider"></div>
+      </header>
+
+      <section class="bio">
+        <p *ngFor="let paragraph of bioParagraphs">
+          {{ paragraph }}
+        </p>
+      </section>
+
     </div>
-    
 
   </div>
+
 </div>

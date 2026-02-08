@@ -1,0 +1,87 @@
+:host {
+  display: block;
+  padding: 80px 20px;
+  background-color: #fffdfc;
+}
+
+/* Section header */
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+
+  h2 {
+    font-size: 2.2rem;
+    color: #1a2a47;
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: #6b6b6b;
+    font-size: 1rem;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+}
+
+/* Grid */
+.publications-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Card */
+.publication-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 30px 26px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* Source */
+.source {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #BA7F6E;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Title */
+.title {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: #1a2a47;
+  margin-bottom: 20px;
+}
+
+/* CTA */
+.read-more {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #1a2a47;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .publications-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .publication-card {
+    text-align: center;
+  }
+}

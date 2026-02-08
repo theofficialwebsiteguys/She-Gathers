@@ -29,6 +29,7 @@ export interface Activity {
   image?: string;
   durationMinutes?: number;
   pricePerHead?: Money;
+  priceFlat?: number;
 }
 
 export interface Option {

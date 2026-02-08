@@ -41,18 +41,21 @@
         <!-- GUESTS -->
         <div *ngIf="activeStepKey() === 'guests'" class="panel">
           <h2>How many people are you planning for?</h2>
-
+          <p class="hint">We’ll filter vendors based on your group size.</p>
           <div class="field-row">
             <input
               type="number"
-              min="1"
+              min="10"
               [ngModel]="attendees()"
               (ngModelChange)="attendees.set($event)"
               placeholder="e.g. 12"
             />
+            
           </div>
-
-          <p class="hint">We’ll filter vendors based on your group size.</p>
+          <p class="hint" *ngIf="attendees() > 0 && attendees() < 10">
+            Minimum of 10 guests required for events.
+          </p>
+        
         </div>
 
         <!-- TYPE -->
@@ -73,22 +76,40 @@
         <!-- ACTIVITY -->
         <div *ngIf="activeStepKey() === 'activity'" class="panel">
           <h2>What experience do you want?</h2>
-          <p class="muted">Choose one or more. We’ll recommend vendors that can host it.</p>
+          <p class="muted">
+            Choose an experience — some vendors offer multiple options.
+          </p>
 
           <div class="cards">
             <button
               class="card"
-              *ngFor="let a of allActivities()"
-              [class.is-active]="selActivities().has(a.id)"
-              (click)="toggle(selActivities, a.id)">
-              <img *ngIf="a.image" [src]="a.image" alt="" />
+              *ngFor="let group of groupedExperiences()"
+              (click)="openExperience(group)"
+            >
+              <img
+                *ngIf="group.vendor.banner"
+                [src]="group.vendor.banner"
+                alt=""
+              />
+
               <div class="card__body">
-                <h3>{{ a.title }}</h3>
-                <p class="muted" *ngIf="a.durationMinutes">{{ a.durationMinutes }} min</p>
+                <h3>{{ group.vendor.name }}</h3>
+                <p class="muted">
+                  {{ group.vendor.blurb }}
+                </p>
+
+                <p class="price" *ngIf="group.activities.length > 1">
+                  {{ group.activities.length }} experience options
+                </p>
+
+                <p class="price" *ngIf="group.activities.length === 1">
+                  {{ group.activities[0].title }}
+                </p>
               </div>
             </button>
           </div>
         </div>
+
 
         <!-- FOOD -->
         <div *ngIf="activeStepKey() === 'food'" class="panel">
@@ -326,3 +347,37 @@
 
   </div>
 </section>
+
+<div
+  class="modal-backdrop"
+  *ngIf="activeExperienceGroup()"
+  (click)="closeExperience()"
+></div>
+
+<div class="modal" *ngIf="activeExperienceGroup()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <h3>{{ activeExperienceGroup()?.vendor?.name }}</h3>
+    <p class="muted">Choose one or more experiences</p>
+
+    <div class="options">
+      <label
+        *ngFor="let a of activeExperienceGroup()?.activities"
+      >
+        <input
+          type="checkbox"
+          [checked]="selActivities().has(a.id)"
+          (change)="toggle(selActivities, a.id)"
+        />
+        <span>
+          {{ a.title }} — {{ a.durationMinutes }} min
+        </span>
+      </label>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" (click)="closeExperience()">
+        Done
+      </button>
+    </div>
+  </div>
+</div>

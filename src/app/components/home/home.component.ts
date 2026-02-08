@@ -56,9 +56,7 @@ export class HomeComponent {
   ];
 
   spaceImgs = [
-    'assets/gallery/2.jpg',
-    'assets/gallery/10.jpg',
-    'assets/gallery/14.jpg',
+    'assets/gallery/64.jpg',
     'assets/gallery/26.jpg',
     'assets/gallery/27.jpg',
     'assets/gallery/31.jpg',
@@ -74,7 +72,6 @@ export class HomeComponent {
     'assets/gallery/56.jpg',
     'assets/gallery/62.jpg',
     'assets/gallery/63.jpg',
-    'assets/gallery/64.jpg',
   ];
 
   brandLogos = [

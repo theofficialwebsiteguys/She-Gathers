@@ -9,9 +9,9 @@ export class VendorService {
       name: 'Noir Candles',
       logo: 'assets/vendors/noir-candles.jpg',
       banner: 'assets/vendors/noir-candles.jpg',
-      blurb: `Join us for a fun and creative candle making workshop...`,
+      blurb: `Join us for a fun and creative candle making workshop where you'll learn how to craft your own custom soy candles from start to finish.`,
       defaultPricePerHead: 35,
-      minGuests: 2,
+      minGuests: 10,
       maxGuests: 100,
       supportedEventTypes: ['Birthday', 'Bachelorette', 'Team Night', 'Other'],
       activities: [
@@ -39,9 +39,9 @@ export class VendorService {
       id: 'cup-of-communittea',
       name: 'Cup of Communitea',
       banner: 'assets/gallery/65.jpg',
-      blurb: `Step into the delicious world of tea...`,
+      blurb: `Step into the delicious world of tea with a guided, one-hour tasting experience hosted by Cup of Communitea.`,
       defaultPricePerHead: 30,
-      minGuests: 2,
+      minGuests: 10,
       maxGuests: 100,
       supportedEventTypes: ['Tea Social', 'Birthday', 'Other'],
       activities: [
@@ -67,9 +67,9 @@ export class VendorService {
       id: 'emotional-support-peens',
       name: 'Emotional Support Peens',
       banner: 'assets/vendors/emotional-support-peens.jpg',
-      blurb: `Looking for an unforgettable party favor...`,
+      blurb: `Looking for an unforgettable party favor or conversation starter? Add a dose of humor and handcrafted charm with Emotional Support Peens from This Darn Yarn.`,
       defaultPricePerHead: 20,
-      minGuests: 2,
+      minGuests: 10,
       maxGuests: 20,
       supportedEventTypes: ['Tea Social', 'Birthday', 'Bachelorette', 'Other'],
       activities: [
@@ -84,9 +84,9 @@ export class VendorService {
       id: 'green-room-linens',
       name: 'Green Room Linens',
       banner: 'assets/vendors/green-room-linens.jpg',
-      blurb: `Lean into a zero waste lifestyle...`,
+      blurb: `Lean into a zero waste lifestyle by creating new items from reclaimed and repurposed linens! `,
       defaultPricePerHead: 25,
-      minGuests: 4,
+      minGuests: 10,
       maxGuests: 100,
       supportedEventTypes: ['Tea Social', 'Birthday', 'Bachelorette', 'Other'],
       activities: [
@@ -102,9 +102,9 @@ export class VendorService {
       id: 'sourdough-by-amanda',
       name: 'Sourdough by Amanda',
       banner: 'assets/vendors/sourdough.jpeg',
-      blurb: `Sourdough by Amanda is an all-sourdough bakery...`,
+      blurb: `Sourdough by Amanda is an all sourdough bakery based out of Grans Island, NY. We bring gut healthy delicious treats right to you with the freshest ingredients and seasonal flavors`,
       defaultPricePerHead: 4,
-      minGuests: 6,
+      minGuests: 10,
       maxGuests: 100,
       supportedEventTypes: ['Tea Social', 'Birthday', 'Brunch', 'Other'],
       activities: [
@@ -122,33 +122,12 @@ export class VendorService {
     },
 
     {
-      id: 'kaliope-at-home-catering',
-      name: "Kaliope's At Home Catering",
-      banner: 'assets/vendors/kaliopes.jpg',
-      blurb: `At Kaliope's At Home Catering...`,
-      defaultPricePerHead: 14,
-      minGuests: 6,
-      maxGuests: 100,
-      supportedEventTypes: ['Birthday', 'Bachelorette', 'Brunch', 'Team Night', 'Other'],
-      activities: [
-        { id: 'charcuterie-cups', vendorId: 'kaliope-at-home-catering', title: 'Create Your Own Charcuterie Cups', image: 'assets/vendors/kaliopes.jpg', durationMinutes: 60, pricePerHead: 14 },
-        { id: 'chicken-souvlaki-bar', vendorId: 'kaliope-at-home-catering', title: 'Chicken Souvlaki Bar', image: 'assets/vendors/kaliopes.jpg', durationMinutes: 90, pricePerHead: 16 },
-        { id: 'gyro-bar', vendorId: 'kaliope-at-home-catering', title: 'Build Your Own Gyro Bar', image: 'assets/vendors/kaliopes.jpg', durationMinutes: 90, pricePerHead: 14 }
-      ],
-      foodOptions: [
-        { id: 'add-side', label: 'Add a Side', pricingType: 'perHead', price: 3 }
-      ],
-      dessertOptions: [],
-      favorOptions: []
-    },
-
-    {
       id: 'clean-bee-organics',
       name: 'The Clean Bee Organics',
       banner: 'assets/vendors/essential-oil.jpg',
-      blurb: `Learn the basics of essential oils...`,
+      blurb: `Essential oils interact with your body and mind in different ways and can offer many therapeutic benefits- improve mood, support sleep, reduce stress and tension, promote clarity and aid in healing.`,
       defaultPricePerHead: 30,
-      minGuests: 6,
+      minGuests: 10,
       maxGuests: 30,
       supportedEventTypes: ['Wellness', 'Birthday', 'Bachelorette', 'Other'],
       activities: [
@@ -159,7 +138,135 @@ export class VendorService {
       favorOptions: [
         { id: 'extra-roller', label: 'Additional Custom Roller', pricingType: 'flat', price: 15 }
       ]
+    },
+
+    {
+      id: 'quokka-sweets',
+      name: 'Quokka Sweets',
+      banner: 'assets/store2.jpeg',
+      blurb: `Quokka Sweets specializes in seasonal, from-scratch ice cream and handcrafted mini desserts made with high-quality ingredients. From bold seasonal flavors to elegant event offerings, every bite is designed to delight.`,
+      defaultPricePerHead: 12,
+      minGuests: 10,
+      maxGuests: 150,
+      supportedEventTypes: ['Birthday', 'Private Party', 'Corporate', 'Other'],
+      activities: [
+        {
+          id: 'ice-cream-sundae-bar',
+          vendorId: 'quokka-sweets',
+          title: 'Ice Cream Social Sundae Bar',
+          image: 'assets/vendors/quokka-sweets.jpg',
+          durationMinutes: 60,
+          pricePerHead: 12
+        }
+      ],
+      foodOptions: [],
+      dessertOptions: [
+        {
+          id: 'mini-dessert-spread',
+          label: 'Mini Dessert Spread',
+          pricingType: 'flat',
+          price: 250
+        }
+      ],
+      favorOptions: []
+    },
+
+    {
+      id: 'read-it-and-eat',
+      name: 'Read It & Eat Bookshop',
+      banner: 'assets/store2.jpeg',
+      blurb: `Read It & Eat Bookshop offers curated private events centered around books, food, and meaningful conversation. From book club collaborations to hands-on cooking classes, each experience is thoughtfully designed to bring people together.`,
+      defaultPricePerHead: 45,
+      minGuests: 10,
+      maxGuests: 40,
+      supportedEventTypes: ['Book Club', 'Cooking Class', 'Private Dinner', 'Other'],
+      activities: [
+        {
+          id: 'book-club-collaboration',
+          vendorId: 'read-it-and-eat',
+          title: 'Private Book Club & Cookbook Collaboration',
+          image: 'assets/vendors/read-it-and-eat.jpg',
+          durationMinutes: 90,
+          pricePerHead: 45
+        },
+        {
+          id: 'private-cooking-class',
+          vendorId: 'read-it-and-eat',
+          title: 'Private Cooking Class or Supper Club',
+          image: 'assets/vendors/read-it-and-eat.jpg',
+          durationMinutes: 120,
+          pricePerHead: 65
+        }
+      ],
+      foodOptions: [],
+      dessertOptions: [],
+      favorOptions: []
+    },
+
+    {
+      id: 'cookie-events',
+      name: 'Cookie Events',
+      banner: 'assets/store2.jpeg',
+      blurb: `Cookie Events offers elevated cookie decorating experiences for kids, teens, and adults—ranging from playful cookie parties to refined hands-on decorating classes and custom edible displays.`,
+      defaultPricePerHead: 60,
+      minGuests: 10,
+      maxGuests: 50,
+      supportedEventTypes: ['Birthday', 'Kids Party', 'Workshop', 'Other'],
+      activities: [
+        {
+          id: 'cookie-party-kids',
+          vendorId: 'cookie-events',
+          title: 'Cookie Decorating Party (Ages 4+)',
+          image: 'assets/vendors/store2.jpeg',
+          durationMinutes: 60,
+          pricePerHead: 15
+        },
+        {
+          id: 'cookie-decorating-class',
+          vendorId: 'cookie-events',
+          title: 'Cookie Decorating Class (Ages 12+)',
+          image: 'assets/vendors/store2.jpeg',
+          durationMinutes: 90,
+          pricePerHead: 60
+        },
+        {
+          id: 'custom-cookies',
+          vendorId: 'cookie-events',
+          title: 'Custom Sugar Cookies (per dozen)',
+          image: 'assets/vendors/store2.jpeg',
+          durationMinutes: 0,
+          priceFlat: 60
+        },
+        {
+          id: 'flour-bar-rental',
+          vendorId: 'cookie-events',
+          title: 'Flour Bar Rental',
+          image: 'assets/vendors/store2.jpeg',
+          durationMinutes: 60,
+          priceFlat: 350
+        }
+      ],
+      foodOptions: [],
+      dessertOptions: [
+        {
+          id: '',
+          label: '',
+          pricingType: 'flat',
+          price: 60
+        }
+      ],
+      favorOptions: [
+        {
+          id: '',
+          label: '',
+          pricingType: 'flat',
+          price: 350
+        }
+      ]
     }
+
+
+
   ]);
   
   readonly vendors = this._vendors.asReadonly();

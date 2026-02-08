@@ -15,6 +15,11 @@ type StepKey =
   | 'vendors'
   | 'review';
 
+type ExperienceGroup = {
+  vendor: Vendor;
+  activities: Activity[];
+};
+
 @Component({
   selector: 'app-event-wizard',
   standalone: true,
@@ -45,7 +50,7 @@ export class EventWizardComponent {
   );
 
   /* ---------------- USER INPUT ---------------- */
-  attendees = signal(0);
+  attendees = signal(10);
   eventType = signal('');
 
   selActivities = signal<Set<string>>(new Set());
@@ -138,16 +143,22 @@ export class EventWizardComponent {
         .filter(Boolean) as Activity[];
 
       if (acts.length) {
-        const per = acts.reduce(
-          (s, a) => s + (a.pricePerHead ?? v.defaultPricePerHead ?? 0),
-          0
-        );
+        let total = 0;
+
+        for (const a of acts) {
+          if (a.pricePerHead != null) {
+            total += n * a.pricePerHead;
+          } else if (a.priceFlat != null) {
+            total += a.priceFlat;
+          }
+        }
 
         items.push({
           vendorId: v.id,
           label: acts.map(a => a.title).join(' + '),
-          amount: n * per
+          amount: total
         });
+
       }
 
       addOptions(items, n, v, this.selFood(), v.foodOptions, 'Food');
@@ -169,12 +180,43 @@ export class EventWizardComponent {
   /* ---------------- NAV ---------------- */
   canGoNext = computed(() => {
     switch (this.activeStepKey()) {
-      case 'guests': return this.attendees() > 0;
+      case 'guests': return this.attendees() >= 10;
       case 'activity': return this.selActivities().size > 0;
       case 'vendors': return this.selectedVendorIds().size > 0;
       default: return true;
     }
   });
+
+  groupedExperiences = computed<ExperienceGroup[]>(() => {
+    const map = new Map<string, ExperienceGroup>();
+
+    for (const v of this.vendors()) {
+      if (!v.activities?.length) continue;
+
+      map.set(v.id, {
+        vendor: v,
+        activities: v.activities
+      });
+    }
+
+    return [...map.values()];
+  });
+
+  activeExperienceGroup = signal<ExperienceGroup | null>(null);
+
+  openExperience(group: ExperienceGroup) {
+    if (group.activities.length === 1) {
+      this.toggle(this.selActivities, group.activities[0].id);
+      return;
+    }
+
+    this.activeExperienceGroup.set(group);
+  }
+
+  closeExperience() {
+    this.activeExperienceGroup.set(null);
+  }
+
 
   next() {
     this.step.set(Math.min(this.step() + 1, this.steps.length - 1));

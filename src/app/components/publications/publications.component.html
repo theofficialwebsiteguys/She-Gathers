@@ -1,0 +1,25 @@
+<section class="publications-section">
+
+  <header class="section-header">
+    <h2>Publications</h2>
+    <p>She Gathers has been featured in the following publications.</p>
+  </header>
+
+  <div class="publications-grid">
+
+    <article
+      class="publication-card"
+      *ngFor="let pub of publications"
+      (click)="openPublication(pub.url)"
+      tabindex="0"
+      role="link"
+      aria-label="Open publication"
+    >
+      <span class="source">{{ pub.source }}</span>
+      <h3 class="title">{{ pub.title }}</h3>
+      <span class="read-more">Read Article →</span>
+    </article>
+
+  </div>
+
+</section>

@@ -228,7 +228,7 @@ select {
     display: block;
   }
 
-  .card__body { padding: 12px; }
+  .card__body { padding: 12px; min-height: 100%; }
 
   &:hover {
     transform: translateY(-3px);
@@ -359,3 +359,29 @@ select {
     }
   }
 }
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 50;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 51;
+}
+
+.modal-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  max-width: 420px;
+  width: calc(95% - 40px);
+  display: grid;
+  gap: 14px;
+}
+
