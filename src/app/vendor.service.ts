@@ -67,18 +67,32 @@ export class VendorService {
       id: 'emotional-support-peens',
       name: 'Emotional Support Peens',
       banner: 'assets/vendors/emotional-support-peens.jpg',
-      blurb: `Looking for an unforgettable party favor or conversation starter? Add a dose of humor and handcrafted charm with Emotional Support Peens from This Darn Yarn.`,
-      defaultPricePerHead: 20,
-      minGuests: 10,
+      blurb: `Looking for an unforgettable party favor...`,
+
+      defaultPricePerHead: 0,
+      minGuests: 1,
       maxGuests: 20,
-      supportedEventTypes: ['Tea Social', 'Birthday', 'Bachelorette', 'Other'],
-      activities: [
-        { id: 'peen-crochet', vendorId: 'emotional-support-peens', title: 'Emotional Support Peens', image: 'assets/vendors/emotional-support-peens.jpg', durationMinutes: 60, pricePerHead: 20 }
-      ],
+      supportedEventTypes: ['Birthday','Bachelorette','Other'],
+
+      activities: [],
+
       foodOptions: [],
       dessertOptions: [],
-      favorOptions: []
+
+      favorOptions: [
+        {
+          id: 'peens',
+          label: 'Emotional Support Peen',
+          pricingType: 'perItem',
+          price: 20,
+          allowQuantity: true,
+          maxQuantity: 20,
+          allowNotes: true,
+          noteLabel: 'Preferred Color(s)'
+        }
+      ]
     },
+
 
     {
       id: 'green-room-linens',
@@ -139,42 +153,10 @@ export class VendorService {
         { id: 'extra-roller', label: 'Additional Custom Roller', pricingType: 'flat', price: 15 }
       ]
     },
-
-    {
-      id: 'quokka-sweets',
-      name: 'Quokka Sweets',
-      banner: 'assets/store2.jpeg',
-      blurb: `Quokka Sweets specializes in seasonal, from-scratch ice cream and handcrafted mini desserts made with high-quality ingredients. From bold seasonal flavors to elegant event offerings, every bite is designed to delight.`,
-      defaultPricePerHead: 12,
-      minGuests: 10,
-      maxGuests: 150,
-      supportedEventTypes: ['Birthday', 'Private Party', 'Corporate', 'Other'],
-      activities: [
-        {
-          id: 'ice-cream-sundae-bar',
-          vendorId: 'quokka-sweets',
-          title: 'Ice Cream Social Sundae Bar',
-          image: 'assets/vendors/quokka-sweets.jpg',
-          durationMinutes: 60,
-          pricePerHead: 12
-        }
-      ],
-      foodOptions: [],
-      dessertOptions: [
-        {
-          id: 'mini-dessert-spread',
-          label: 'Mini Dessert Spread',
-          pricingType: 'flat',
-          price: 250
-        }
-      ],
-      favorOptions: []
-    },
-
     {
       id: 'read-it-and-eat',
       name: 'Read It & Eat Bookshop',
-      banner: 'assets/store2.jpeg',
+      banner: 'assets/vendors/read-it-and-eat.jpg',
       blurb: `Read It & Eat Bookshop offers curated private events centered around books, food, and meaningful conversation. From book club collaborations to hands-on cooking classes, each experience is thoughtfully designed to bring people together.`,
       defaultPricePerHead: 45,
       minGuests: 10,
@@ -205,8 +187,8 @@ export class VendorService {
 
     {
       id: 'cookie-events',
-      name: 'Cookie Events',
-      banner: 'assets/store2.jpeg',
+      name: 'Tierney Town Treats',
+      banner: 'assets/vendors/tierney.jpg',
       blurb: `Cookie Events offers elevated cookie decorating experiences for kids, teens, and adults—ranging from playful cookie parties to refined hands-on decorating classes and custom edible displays.`,
       defaultPricePerHead: 60,
       minGuests: 10,

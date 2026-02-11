@@ -1,11 +1,11 @@
 :host {
-  display: block;
+  // display: block;
 
   /* Uses your vibe: warm base + rose/terracotta.
      Keep your existing CSS vars if you already have them. */
   --sg-cream: rgba(255, 253, 249, 1);
   --sg-cream-90: rgba(255, 253, 249, 0.90);
-  --sg-cream-75: rgba(255, 253, 249, 0.75);
+  --sg-cream-75: rgba(255, 253, 249, 0.90);
 
   --sg-rose: var(--sg-rose, #BA7F6E);
   --sg-terracotta: var(--sg-terracotta, #E2725B);
@@ -14,9 +14,16 @@
   --sg-ink-soft: rgba(43, 43, 43, 0.75);
 }
 
+.sg-sticky-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+}
+
+
 /* Top whisper bar */
 .sg-topbar {
-  position: sticky;
+  position: relative;
   top: 0;
   z-index: 1100;
   padding: 0.35rem 1.25rem;
@@ -39,8 +46,7 @@
 
 /* Header shell */
 .sg-header {
-  position: sticky;
-  top: 33px; /* topbar height-ish */
+  position: relative;
   z-index: 1050;
 
   background: var(--sg-cream-75);

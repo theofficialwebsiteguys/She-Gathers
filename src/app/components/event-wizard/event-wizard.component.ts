@@ -96,6 +96,10 @@ export class EventWizardComponent {
   matchedVendors = signal<Vendor[]>([]);
   fallbackVendors = signal<Vendor[]>([]);
   selectedVendors = signal<Vendor[]>([]);
+  optionQuantities = signal<Record<string, number>>({});
+  selectedVariants = signal<Record<string, string>>({});
+  optionNotes = signal<Record<string, string>>({});
+
 
   constructorEffect = effect(() => {
     const vendors = this.vendors();
@@ -161,13 +165,29 @@ export class EventWizardComponent {
 
       }
 
-      addOptions(items, n, v, this.selFood(), v.foodOptions, 'Food');
+      addOptions(
+        items,
+        n,
+        v,
+        this.selFood(),
+        v.foodOptions,
+        'Food',
+        this.optionQuantities(),
+        this.selectedVariants()
+      );
       addOptions(items, n, v, this.selDessert(), v.dessertOptions, 'Dessert');
       addOptions(items, n, v, this.selFavors(), v.favorOptions, 'Favors');
     }
 
     return items;
   });
+
+  isGroupSelected(group: ExperienceGroup): boolean {
+    return group.activities.some(a =>
+      this.selActivities().has(a.id)
+    );
+  }
+
 
   subtotal = computed(() =>
     this.lineItems().reduce((s, i) => s + i.amount, 0)
@@ -266,6 +286,25 @@ export class EventWizardComponent {
       total: this.subtotal()
     };
   }
+
+  setQuantity(optionId: string, value: number) {
+    const copy = { ...this.optionQuantities() };
+    copy[optionId] = Number(value);
+    this.optionQuantities.set(copy);
+  }
+
+  selectVariant(optionId: string, variantId: string) {
+    const copy = { ...this.selectedVariants() };
+    copy[optionId] = variantId;
+    this.selectedVariants.set(copy);
+  }
+
+  setNote(optionId: string, value: string) {
+    const copy = { ...this.optionNotes() };
+    copy[optionId] = value;
+    this.optionNotes.set(copy);
+  }
+
 }
 
 /* ---------------- HELPERS ---------------- */
@@ -281,15 +320,43 @@ function addOptions(
   v: Vendor,
   selected: Set<string>,
   pool?: Option[],
-  prefix?: string
+  prefix?: string,
+  quantities?: Record<string, number>,
+  selectedVariants?: Record<string, string>
 ) {
   (pool ?? []).forEach(opt => {
     if (!selected.has(opt.id)) return;
-    const price = opt.price ?? 0;
+
+    let amount = 0;
+
+    // Variant-based pricing
+    if (opt.variants?.length) {
+      const chosenVariantId = selectedVariants?.[opt.id];
+      const variant = opt.variants.find(v => v.id === chosenVariantId);
+      if (variant) amount = variant.price;
+    }
+
+    // Per head
+    else if (opt.pricingType === 'perHead') {
+      amount = n * (opt.price ?? 0);
+    }
+
+    // Per item (quantity based)
+    else if (opt.pricingType === 'perItem') {
+      const qty = quantities?.[opt.id] ?? 1;
+      amount = qty * (opt.price ?? 0);
+    }
+
+    // Flat
+    else {
+      amount = opt.price ?? 0;
+    }
+
     items.push({
       vendorId: v.id,
       label: `${prefix}: ${opt.label}`,
-      amount: opt.pricingType === 'perHead' ? n * price : price
+      amount
     });
   });
+  
 }

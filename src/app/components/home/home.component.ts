@@ -59,7 +59,6 @@ export class HomeComponent {
     'assets/gallery/64.jpg',
     'assets/gallery/26.jpg',
     'assets/gallery/27.jpg',
-    'assets/gallery/31.jpg',
     'assets/gallery/34.jpg',
     'assets/gallery/37.jpg',
     'assets/gallery/39.jpg',

@@ -84,6 +84,7 @@
             <button
               class="card"
               *ngFor="let group of groupedExperiences()"
+                [class.is-active]="isGroupSelected(group)"
               (click)="openExperience(group)"
             >
               <img
@@ -117,18 +118,69 @@
             <h2>Add food</h2>
             <span class="pill">Optional</span>
           </div>
-          <p class="muted">You can skip this — options vary by vendor.</p>
+          <p class="muted">No outside food or drink allowed — options vary by vendor.</p>
 
           <div class="options">
-            <label *ngFor="let opt of allFoodOptions()">
-              <input
-                type="checkbox"
-                [checked]="selFood().has(opt.id)"
-                (change)="toggle(selFood, opt.id)"
-              />
-              <span>{{ opt.label }}</span>
-            </label>
+            <div class="option-card" *ngFor="let opt of allFoodOptions()">
+
+              <!-- Checkbox -->
+              <label class="option-header">
+                <input
+                  type="checkbox"
+                  [checked]="selFood().has(opt.id)"
+                  (change)="toggle(selFood, opt.id)"
+                />
+                <span>{{ opt.label }}</span>
+              </label>
+
+              <!-- EXPANDED AREA -->
+              <div class="option-expanded" *ngIf="selFood().has(opt.id)">
+
+                <!-- VARIANTS -->
+                <div *ngIf="opt.variants?.length">
+                  <p class="muted small">Choose Size</p>
+
+                  <label *ngFor="let v of opt.variants">
+                    <input
+                      type="radio"
+                      [name]="opt.id"
+                      [checked]="selectedVariants()[opt.id] === v.id"
+                      (change)="selectVariant(opt.id, v.id)"
+                    />
+                    {{ v.label }} — ${{ v.price }}
+                  </label>
+                </div>
+
+                <!-- QUANTITY -->
+                <div *ngIf="opt.allowQuantity">
+                  <p class="muted small">Quantity</p>
+                  <input
+                    type="number"
+                    min="1"
+                    [max]="opt.maxQuantity || 999"
+                    [value]="optionQuantities()[opt.id] || 1"
+                    (input)="setQuantity(opt.id, $any($event.target).value)"
+                  />
+                  <p class="muted small" *ngIf="opt.maxQuantity">
+                    Max {{ opt.maxQuantity }}
+                  </p>
+                </div>
+
+                <!-- NOTES -->
+                <div *ngIf="opt.allowNotes">
+                  <p class="muted small">{{ opt.noteLabel }}</p>
+                  <textarea
+                    rows="2"
+                    [value]="optionNotes()[opt.id] || ''"
+                    (input)="setNote(opt.id, $any($event.target).value)"
+                  ></textarea>
+                </div>
+
+              </div>
+
+            </div>
           </div>
+
         </div>
 
         <!-- DESSERT -->

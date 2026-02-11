@@ -35,9 +35,26 @@ export interface Activity {
 export interface Option {
   id: string;
   label: string;
-  pricingType: 'perHead' | 'flat' | 'free';
-  price?: Money;
+
+  pricingType: 'flat' | 'perHead' | 'perItem';
+
+  price?: number;
+
+  variants?: {
+    id: string;
+    label: string;
+    price: number;
+  }[];
+
+  maxQuantity?: number;
+
+  allowQuantity?: boolean;
+
+  allowNotes?: boolean;
+
+  noteLabel?: string;
 }
+
 
 /** Line items can optionally include vendor info (useful for grouping) */
 export interface LineItem {
