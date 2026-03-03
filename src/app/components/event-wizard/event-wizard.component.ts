@@ -3,6 +3,9 @@ import { Component, Input, signal, computed, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { VendorService } from '../../vendor.service';
 import { Vendor, Activity, Option, EventPlan } from '../../models';
+import { PaymentService } from '../../services/payment.service';
+
+declare const Square: any;
 
 type StepKey =
   | 'intro'
@@ -29,6 +32,9 @@ type ExperienceGroup = {
 })
 export class EventWizardComponent {
   @Input() settings = {};
+  @Input() squareAppId = '';
+  @Input() squareLocationId = '';
+  @Input() backendUrl = 'http://localhost:3000/api';
 
   /* ---------------- UI ---------------- */
   step = signal(0);
@@ -62,10 +68,22 @@ export class EventWizardComponent {
 
   depositPercent = signal(0.5);
 
-  constructor(private catalog: VendorService) {}
+  /* ---------------- PAYMENT ---------------- */
+  reviewView    = signal<'summary' | 'checkout'>('summary');
+  paymentStatus = signal<'idle' | 'processing' | 'success' | 'error'>('idle');
+  paymentError  = signal('');
+  private squareCard: any = null;
+  private cardInitialized = false;
+
+  constructor(private catalog: VendorService, private paymentService: PaymentService) {}
 
   /* ---------------- BASE DATA ---------------- */
   vendors = computed(() => this.catalog.vendors());
+
+  /** Vendors that can be booked as an experience (have activities, not internal). */
+  experienceVendors = computed(() =>
+    this.vendors().filter(v => !v.isInternal && v.activities.length > 0)
+  );
 
   /* ---------------- COLLECTIONS ---------------- */
   allEventTypes = computed(() => {
@@ -111,6 +129,9 @@ export class EventWizardComponent {
     const fallback: Vendor[] = [];
 
     for (const v of vendors) {
+      if (v.isInternal) continue;       // catering / internal — never in vendor step
+      if (!v.activities.length) continue; // favor/product-only vendors — not bookable experiences
+
       let ok = true;
 
       if (v.minGuests && n < v.minGuests) ok = false;
@@ -134,6 +155,17 @@ export class EventWizardComponent {
     this.selectedVendors.set(
       vendors.filter(v => this.selectedVendorIds().has(v.id))
     );
+  });
+
+  reviewEffect = effect(() => {
+    if (this.activeStepKey() !== 'review' && this.cardInitialized) {
+      this.squareCard?.destroy?.();
+      this.squareCard = null;
+      this.cardInitialized = false;
+      this.reviewView.set('summary');
+      this.paymentStatus.set('idle');
+      this.paymentError.set('');
+    }
   });
 
   /* ---------------- PRICING ---------------- */
@@ -177,6 +209,22 @@ export class EventWizardComponent {
       );
       addOptions(items, n, v, this.selDessert(), v.dessertOptions, 'Dessert');
       addOptions(items, n, v, this.selFavors(), v.favorOptions, 'Favors');
+    }
+
+    // She Gathers catering food is always priced when selected —
+    // it is not tied to any specific vendor being chosen.
+    const sgCatering = this.vendors().find(v => v.id === 'sg-catering');
+    if (sgCatering) {
+      addOptions(
+        items,
+        n,
+        sgCatering,
+        this.selFood(),
+        sgCatering.foodOptions,
+        'Food',
+        this.optionQuantities(),
+        this.selectedVariants()
+      );
     }
 
     return items;
@@ -260,6 +308,59 @@ export class EventWizardComponent {
 
   getLineItemsForVendor(id: string) {
     return this.lineItems().filter(li => li.vendorId === id);
+  }
+
+  proceedToPayment() {
+    this.reviewView.set('checkout');
+    setTimeout(() => this.initSquareCard(), 0);
+  }
+
+  async initSquareCard(): Promise<void> {
+    try {
+      const payments = await Square.payments(this.squareAppId, this.squareLocationId);
+      const card = await payments.card();
+      await card.attach('#card-container');
+      this.squareCard = card;
+      this.cardInitialized = true;
+    } catch (err) {
+      console.error('Square card init failed:', err);
+      this.paymentError.set('Payment form could not be loaded. Please refresh and try again.');
+      this.paymentStatus.set('error');
+    }
+  }
+
+  async submitPayment(): Promise<void> {
+    if (!this.squareCard || this.paymentStatus() === 'processing') return;
+
+    this.paymentStatus.set('processing');
+    this.paymentError.set('');
+
+    try {
+      const result = await this.squareCard.tokenize();
+
+      if (result.status !== 'OK') {
+        const msg = result.errors?.map((e: any) => e.message).join(', ') || 'Card verification failed.';
+        this.paymentError.set(msg);
+        this.paymentStatus.set('error');
+        return;
+      }
+
+      const amountCents = Math.round(this.depositAmount() * 100);
+      this.paymentService.checkout(this.backendUrl, {
+        sourceId: result.token,
+        amountMoney: { amount: amountCents, currency: 'USD' },
+        eventPlan: this.buildPlan()
+      }).subscribe({
+        next: () => this.paymentStatus.set('success'),
+        error: (err) => {
+          this.paymentError.set(err.error?.message || 'Payment could not be processed. Please try again.');
+          this.paymentStatus.set('error');
+        }
+      });
+    } catch (err: any) {
+      this.paymentError.set(err?.message || 'An unexpected error occurred.');
+      this.paymentStatus.set('error');
+    }
   }
 
   submit() {

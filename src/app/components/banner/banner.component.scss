@@ -1,54 +1,90 @@
 .banner {
   position: relative;
-  width: auto;
-  min-height: 280px;
+  min-height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-size: cover;
   background-position: center;
-  padding: 40px 20px;
+  padding: 80px 24px;
   text-align: center;
   color: #fff;
   overflow: hidden;
+  isolation: isolate;
 }
 
+/* Darkening veil */
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55); /* dark overlay */
   z-index: 1;
+  background: linear-gradient(
+    160deg,
+    rgba(20,12,8,0.38) 0%,
+    rgba(20,12,8,0.60) 100%
+  );
+}
+
+/* Film grain — matches the hero treatment */
+.banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
 }
 
 .content {
   position: relative;
-  z-index: 2;
-  max-width: 900px;
+  z-index: 3;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 }
 
 .title {
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
-  font-weight: 800;
-  margin-bottom: 16px;
-  text-transform: uppercase;
+  font-family: "Playfair Display", ui-serif, Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: -0.015em;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.28);
 }
 
 .subtitle {
-  font-size: clamp(1rem, 1.3vw, 1.1rem);
-  margin-bottom: 20px;
-  line-height: 1.6;
-  color: #f1f1f1;
+  margin: 0;
+  font-size: clamp(0.95rem, 1.4vw, 1.08rem);
+  line-height: 1.68;
+  color: rgba(255,255,255,0.84);
+  max-width: 50ch;
 }
 
 .cta {
-  display: inline-block;
-  padding: 12px 24px;
-  font-weight: 600;
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.78rem 1.7rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  border-radius: 999px;
   text-decoration: none;
-  transition: background 0.3s;
+  background: var(--sg-terracotta);
+  border: none;
+  color: #fff;
+  box-shadow: 0 6px 22px rgba(186,127,110,0.45);
+  transition: background 0.22s ease, transform 0.2s ease, box-shadow 0.22s ease;
+  letter-spacing: 0.15px;
+  margin-top: 4px;
 
   &:hover {
-    background: #ffffff;
+    background: var(--sg-terracotta-600);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(186,127,110,0.52);
   }
 }

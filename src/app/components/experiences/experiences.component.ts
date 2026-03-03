@@ -21,12 +21,14 @@ export class ExperiencesComponent {
 
   /** Derived experiences (single source of truth) */
   experiences = computed(() =>
-    this.vendorService.vendors().map(vendor => ({
-      vendorId: vendor.id,
-      title: vendor.name,
-      desc: vendor.blurb,
-      imageUrl: vendor.banner || vendor.logo
-    }))
+    this.vendorService.vendors()
+      .filter(vendor => !vendor.isInternal)
+      .map(vendor => ({
+        vendorId: vendor.id,
+        title: vendor.name,
+        desc: vendor.blurb,
+        imageUrl: vendor.banner || vendor.logo
+      }))
   );
 
 }

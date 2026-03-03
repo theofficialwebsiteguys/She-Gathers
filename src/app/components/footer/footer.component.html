@@ -1,19 +1,48 @@
-<footer class="ft" aria-labelledby="footer-title">
-    <div class="container ft__grid">
-        <div>
-            <a routerLink="/" class="logo" aria-label="She Gathers home">
-                <img src="assets/logo_with_text.png" alt="" class="nav__mark" />
-            </a>
-        </div>
-        <nav class="ft__col" aria-label="Footer">
-            <a routerLink="/plan">Plan An Event</a>
-            <a routerLink="/experiences">Experiences</a>
-            <a routerLink="/about">About</a>
-        </nav>
-        <div class="ft__col">
-            <a href="https://www.instagram.com/shopshegathers/?hl=en" target="_blank" rel="noopener">Instagram</a>
-            <a href="mailto:shegathersinnt@gmail.com">shegathersinnt&#64;gmail.com</a>
-            <span class="muted">© {{year}} She Gathers</span>
-        </div>
+<footer class="ft">
+
+  <!-- Top terracotta accent -->
+  <div class="ft__accent" aria-hidden="true"></div>
+
+  <!-- Main grid -->
+  <div class="container ft__body">
+
+    <!-- Brand column -->
+    <div class="ft__brand">
+      <a routerLink="/" aria-label="She Gathers home">
+        <img src="assets/logo_with_text.png" alt="She Gathers" class="ft__logo" />
+      </a>
+      <p class="ft__tagline">
+        A warm collective of women-led vendors — crafting unforgettable gatherings, one occasion at a time.
+      </p>
     </div>
+
+    <!-- Explore column -->
+    <div class="ft__col">
+      <h4 class="ft__col-head">Explore</h4>
+      <nav aria-label="Footer navigation">
+        <a routerLink="/plan">Plan an Event</a>
+        <a routerLink="/experiences">Experiences</a>
+        <a routerLink="/about">About</a>
+      </nav>
+    </div>
+
+    <!-- Connect column -->
+    <div class="ft__col">
+      <h4 class="ft__col-head">Connect</h4>
+      <a href="https://www.instagram.com/shopshegathers/?hl=en" target="_blank" rel="noopener noreferrer">
+        Instagram
+      </a>
+      <a href="mailto:shegathersinnt@gmail.com">shegathersinnt&#64;gmail.com</a>
+    </div>
+
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="ft__bottom">
+    <div class="container ft__bottom-inner">
+      <span>© {{ year }} She Gathers. All rights reserved.</span>
+      <span class="ft__bottom-badge">Women&#8209;led &bull; Community&#8209;made</span>
+    </div>
+  </div>
+
 </footer>

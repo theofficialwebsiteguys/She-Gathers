@@ -1,46 +1,106 @@
-<section class="sg-hero" [class.sg-hero--sub]="variant === 'sub'">
-  <div class="sg-hero__media">
-    @for (url of imageUrls; track $index) {
-      <img
-        [src]="url"
-        [class.active]="$index === currentImageIndex()"
-        alt="Hero background image {{ $index + 1 }}"
-        decoding="async"
-        loading="eager"
-      />
-    }
+<section class="sg-hero" [class.sg-hero--sub]="variant === 'sub'" [class.sg-hero--main]="variant === 'main'">
 
-    <div class="sg-hero__veil" aria-hidden="true"></div>
-    <div class="sg-hero__glow" aria-hidden="true"></div>
-    <div class="sg-hero__grain" aria-hidden="true"></div>
-    <!-- <div class="sg-hero__fade" aria-hidden="true" *ngIf="showFade"></div> -->
-  </div>
+  <!-- ═══════════════ MAIN VARIANT — editorial split ═══════════════ -->
+  @if (variant === 'main') {
+    <div class="sg-hero__split">
 
-  <div class="sg-hero__content">
-    <div class="sg-hero__stack">
-      <div class="sg-hero__badge" *ngIf="showBadge && variant === 'main'">
-        women-led • community-made
+      <!-- Left: warm content panel -->
+      <div class="sg-hero__left">
+        <div class="sg-hero__inner">
+
+          @if (showBadge) {
+            <span class="sg-hero__badge">women&#8209;led &bull; community&#8209;made</span>
+          }
+
+          <h1 class="sg-hero__title">{{ title }}</h1>
+
+          <div class="sg-hero__rule"></div>
+
+          <p class="sg-hero__tagline">{{ subtitle }}</p>
+
+          @if (primaryCta || secondaryCta) {
+            <div class="sg-hero__actions">
+              @if (primaryCta) {
+                <a class="sg-btn sg-btn--filled" [routerLink]="primaryCta.link">{{ primaryCta.label }}</a>
+              }
+              @if (secondaryCta) {
+                <a class="sg-btn sg-btn--outline" [routerLink]="secondaryCta.link">{{ secondaryCta.label }}</a>
+              }
+            </div>
+          }
+
+          <div class="sg-hero__stats">
+            <div class="sg-hero__stat">
+              <strong>50+</strong>
+              <span>Curated vendors</span>
+            </div>
+            <div class="sg-hero__stat-rule" aria-hidden="true"></div>
+            <div class="sg-hero__stat">
+              <strong>100%</strong>
+              <span>Women&#8209;owned</span>
+            </div>
+            <div class="sg-hero__stat-rule" aria-hidden="true"></div>
+            <div class="sg-hero__stat">
+              <strong>Any</strong>
+              <span>Occasion</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="sg-hero__scroll-cue" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+          <span>Scroll</span>
+        </div>
       </div>
 
-      <h1 class="sg-hero__title">{{ title }}</h1>
-
-      <div class="sg-hero__divider"></div>
-
-      <p class="sg-hero__sub">{{ subtitle }}</p>
-
-      <div class="sg-hero__actions" *ngIf="primaryCta || (secondaryCta && variant === 'main')">
-        <a *ngIf="primaryCta" class="sg-btn sg-btn--solid " [routerLink]="primaryCta.link">
-          {{ primaryCta.label }}
-        </a>
-
-        <a *ngIf="secondaryCta" class="sg-btn sg-btn--ghost" [routerLink]="secondaryCta.link">
-          {{ secondaryCta.label }}
-        </a>
+      <!-- Right: photo carousel -->
+      <div class="sg-hero__right">
+        @for (url of imageUrls; track $index) {
+          <img
+            [src]="url"
+            [class.active]="$index === currentImageIndex()"
+            alt=""
+            decoding="async"
+            loading="eager"
+          />
+        }
+        <div class="sg-hero__veil" aria-hidden="true"></div>
+        <div class="sg-hero__grain" aria-hidden="true"></div>
+        @if (imageUrls.length > 1) {
+          <div class="sg-hero__dots" aria-hidden="true">
+            @for (url of imageUrls; track $index) {
+              <span [class.active]="$index === currentImageIndex()"></span>
+            }
+          </div>
+        }
       </div>
 
-      <div class="sg-hero__micro" *ngIf="variant === 'main'">
-        A space for women-owned businesses to be discovered, supported, and celebrated.
+    </div>
+  }
+
+  <!-- ═══════════════ SUB VARIANT — page header banner ═══════════════ -->
+  @if (variant === 'sub') {
+    <div class="sg-hero__sub-wrap">
+      <div class="sg-hero__media">
+        @for (url of imageUrls; track $index) {
+          <img
+            [src]="url"
+            [class.active]="$index === currentImageIndex()"
+            alt=""
+            decoding="async"
+            loading="eager"
+          />
+        }
+      </div>
+      <div class="sg-hero__veil" aria-hidden="true"></div>
+      <div class="sg-hero__grain" aria-hidden="true"></div>
+      <div class="sg-hero__sub-content">
+        <h1>{{ title }}</h1>
       </div>
     </div>
-  </div>
+  }
+
 </section>

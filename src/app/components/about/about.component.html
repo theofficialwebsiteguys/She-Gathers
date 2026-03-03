@@ -1,8 +1,13 @@
-<div class="owner-bio-wrapper" *ngIf="ownerData">
+<section class="about-section" *ngIf="ownerData">
+
+  <div class="about-header">
+    <span class="about-eyebrow">Meet the Founder</span>
+    <h2 class="about-section-title">The Heart Behind She Gathers</h2>
+    <div class="about-rule" aria-hidden="true"></div>
+  </div>
 
   <div class="owner-bio-card">
 
-    <!-- IMAGE -->
     <div class="image-column">
       <img
         [src]="ownerData.imageUrl"
@@ -11,23 +16,20 @@
       />
     </div>
 
-    <!-- CONTENT -->
     <div class="content-column">
 
-      <header class="header">
-        <h2 class="name">{{ ownerData.name }}</h2>
+      <header class="bio-header">
+        <h3 class="name">{{ ownerData.name }}</h3>
         <span class="title">{{ ownerData.title }}</span>
         <div class="divider"></div>
       </header>
 
       <section class="bio">
-        <p *ngFor="let paragraph of bioParagraphs">
-          {{ paragraph }}
-        </p>
+        <p *ngFor="let paragraph of bioParagraphs">{{ paragraph }}</p>
       </section>
 
     </div>
 
   </div>
 
-</div>
+</section>

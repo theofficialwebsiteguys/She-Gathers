@@ -118,27 +118,38 @@
             <h2>Add food</h2>
             <span class="pill">Optional</span>
           </div>
-          <p class="muted">No outside food or drink allowed — options vary by vendor.</p>
+          <p class="muted">Choose from She Gathers catering — no outside food or drink allowed.</p>
 
           <div class="options">
             <div class="option-card" *ngFor="let opt of allFoodOptions()">
 
-              <!-- Checkbox -->
+              <!-- Checkbox + price badge -->
               <label class="option-header">
                 <input
                   type="checkbox"
                   [checked]="selFood().has(opt.id)"
                   (change)="toggle(selFood, opt.id)"
                 />
-                <span>{{ opt.label }}</span>
+                <span class="option-label-group">
+                  <span>{{ opt.label }}</span>
+                  <span class="option-price">
+                    <ng-container *ngIf="opt.pricingType === 'perHead'">${{ opt.price }}/person</ng-container>
+                    <ng-container *ngIf="opt.pricingType === 'perItem'">${{ opt.price }}/pack</ng-container>
+                    <ng-container *ngIf="opt.pricingType === 'flat' && !opt.variants?.length">${{ opt.price }}</ng-container>
+                    <ng-container *ngIf="opt.pricingType === 'flat' && opt.variants?.length">from ${{ opt.price }}</ng-container>
+                  </span>
+                </span>
               </label>
+
+              <!-- Description -->
+              <p class="option-desc muted" *ngIf="opt.description">{{ opt.description }}</p>
 
               <!-- EXPANDED AREA -->
               <div class="option-expanded" *ngIf="selFood().has(opt.id)">
 
                 <!-- VARIANTS -->
                 <div *ngIf="opt.variants?.length">
-                  <p class="muted small">Choose Size</p>
+                  <p class="muted small">Choose style</p>
 
                   <label *ngFor="let v of opt.variants">
                     <input
@@ -253,13 +264,16 @@
             <div class="cards">
               <button
                 class="card"
-                *ngFor="let v of vendors()"
+                *ngFor="let v of experienceVendors()"
                 [class.is-active]="selectedVendorIds().has(v.id)"
                 (click)="toggleVendor(v.id)">
                 <img *ngIf="v.banner" [src]="v.banner" alt="" />
                 <div class="card__body">
                   <h3>{{ v.name }}</h3>
                   <p class="muted">{{ v.blurb }}</p>
+                  <p class="price" *ngIf="v.defaultPricePerHead != null">
+                    Base: ${{ v.defaultPricePerHead }} / person
+                  </p>
                 </div>
               </button>
             </div>
@@ -293,10 +307,10 @@
           </ng-container>
         </div>
 
-        <!-- REVIEW -->
-        <div *ngIf="activeStepKey() === 'review'" class="panel panel--review">
+        <!-- REVIEW: Order Summary -->
+        <div *ngIf="activeStepKey() === 'review' && reviewView() === 'summary'" class="panel panel--review">
           <h2>Confirm & Reserve</h2>
-          <p class="muted">Review your selections and submit your deposit to lock it in.</p>
+          <p class="muted">Review your selections below, then proceed to pay your deposit.</p>
 
           <div class="review-block" *ngFor="let v of selectedVendors()">
             <div class="review-vendor">
@@ -312,6 +326,19 @@
             </ul>
           </div>
 
+          <!-- She Gathers catering items (not tied to any one vendor) -->
+          <div class="review-block" *ngIf="getLineItemsForVendor('sg-catering').length > 0">
+            <div class="review-vendor">
+              <h3>She Gathers Catering</h3>
+            </div>
+            <ul class="lines">
+              <li *ngFor="let li of getLineItemsForVendor('sg-catering')">
+                <span>{{ li.label }}</span>
+                <strong>${{ li.amount | number:'1.0-2' }}</strong>
+              </li>
+            </ul>
+          </div>
+
           <ul class="lines lines--totals">
             <li class="total">
               <span>Subtotal</span>
@@ -319,13 +346,48 @@
             </li>
             <li>
               <span>Deposit ({{ (depositPercent() * 100) | number:'1.0-0' }}%)</span>
-              <strong>${{ depositAmount() | number:'1.0-2' }}</strong>
+              <strong>{{ depositAmount() | number:'1.0-2' | currency}}</strong>
             </li>
           </ul>
 
           <div class="actions">
             <button class="btn btn-ghost" (click)="back()">Back</button>
-            <button class="btn btn-primary" (click)="submit()">Submit & Pay Deposit</button>
+            <button class="btn btn-primary" (click)="proceedToPayment()">
+              Continue to Payment
+            </button>
+          </div>
+        </div>
+
+        <!-- REVIEW: Payment -->
+        <div *ngIf="activeStepKey() === 'review' && reviewView() === 'checkout'" class="panel panel--review">
+          <h2>Secure Payment</h2>
+          <p class="muted">
+            Your deposit of <strong>{{ depositAmount() | number:'1.0-2' | currency}}</strong>
+            will be charged today to hold your reservation.
+          </p>
+
+          <!-- Payment form -->
+          <div *ngIf="paymentStatus() !== 'success'">
+            <div id="card-container" class="sq-card-wrapper"></div>
+
+            <div class="payment-error-msg" *ngIf="paymentStatus() === 'error'">
+              {{ paymentError() }}
+            </div>
+
+            <div class="actions">
+              <button class="btn btn-ghost" (click)="reviewView.set('summary')" [disabled]="paymentStatus() === 'processing'">Back</button>
+              <button class="btn btn-primary" (click)="submitPayment()" [disabled]="paymentStatus() === 'processing'">
+                <ng-container *ngIf="paymentStatus() !== 'processing'">Pay Deposit — {{ depositAmount() | number:'1.0-2' | currency}}</ng-container>
+                <ng-container *ngIf="paymentStatus() === 'processing'">Processing&#8230;</ng-container>
+              </button>
+            </div>
+          </div>
+
+          <!-- Success state -->
+          <div class="payment-success" *ngIf="paymentStatus() === 'success'">
+            <div class="success-icon">&#10003;</div>
+            <h3>Deposit Received!</h3>
+            <p class="muted">We'll be in touch shortly to confirm your event details.</p>
           </div>
         </div>
 
@@ -386,12 +448,12 @@
 
           <div class="summary-row">
             <span class="muted">Subtotal</span>
-            <strong>${{ subtotal() | number:'1.0-2' }}</strong>
+            <strong>{{ subtotal() | number:'1.0-2' | currency}}</strong>
           </div>
 
           <div class="summary-row">
             <span class="muted">Deposit</span>
-            <strong>${{ depositAmount() | number:'1.0-2' }}</strong>
+            <strong>{{ depositAmount() | number:'1.0-2' | currency}}</strong>
           </div>
         </div>
       </aside>

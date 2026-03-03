@@ -1,8 +1,11 @@
 <section class="space-showcase container" aria-labelledby="space-title">
+
   <header class="space-head">
     <div>
-      <h2 id="space-title" class="space-title">The Space</h2>
-      <p class="space-tagline">Take a look inside our cozy, creative venues</p>
+      <span class="space-eyebrow">The Studio</span>
+      <h2 id="space-title" class="space-title">Our Space</h2>
+      <div class="space-rule" aria-hidden="true"></div>
+      <p class="space-tagline">Take a look inside our cozy, creative venue</p>
     </div>
     <button class="space-toggle" type="button" (click)="toggleGrid()">
       {{ asGrid ? 'Show carousel' : 'Show grid' }}
@@ -20,22 +23,33 @@
     <article class="card" role="listitem" *ngFor="let s of items; let i = index" (click)="openModal(s)">
       <div class="media">
         <img [src]="s.imageUrl" [alt]="s.alt || ('Photo ' + (i+1))" loading="lazy" decoding="async" />
-        </div>
+      </div>
     </article>
   </div>
 
-
   <div class="nav-buttons" *ngIf="!asGrid">
-    <button class="nav prev" type="button" aria-label="Previous" (click)="scroll(-1)">‹</button>
-    <button class="nav next" type="button" aria-label="Next" (click)="scroll(1)">›</button>
+    <button class="nav prev" type="button" aria-label="Previous" (click)="scroll(-1)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <button class="nav next" type="button" aria-label="Next" (click)="scroll(1)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 6 15 12 9 18"/>
+      </svg>
+    </button>
   </div>
+
 </section>
 
 <div class="lightbox" [class.is-open]="isModalOpen" *ngIf="isModalOpen" (click)="closeModal()">
-    <div class="lightbox-content" (click)="$event.stopPropagation()">
-        <button class="lightbox-close" aria-label="Close image viewer" (click)="closeModal()">
-            &times;
-        </button>
-        <img [src]="selectedImage!.imageUrl" [alt]="selectedImage!.alt" class="lightbox-image" />
-    </div>
+  <div class="lightbox-content" (click)="$event.stopPropagation()">
+    <button class="lightbox-close" aria-label="Close image viewer" (click)="closeModal()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <line x1="1" y1="1" x2="13" y2="13"/>
+        <line x1="13" y1="1" x2="1" y2="13"/>
+      </svg>
+    </button>
+    <img [src]="selectedImage!.imageUrl" [alt]="selectedImage!.alt" class="lightbox-image" />
+  </div>
 </div>

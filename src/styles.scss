@@ -1,88 +1,160 @@
 :root {
-  /* Brand core (from logo) */
-  --sg-ink: #3D5358;          /* deep spruce-teal (primary text, headings) */
-  --sg-terracotta: #BA7F6E;   /* warm clay accent (primary brand/CTA) */
-  --sg-sage: #738285;         /* cool sage-grey (secondary UI, subtitles) */
+  /* Brand core */
+  --sg-ink: #3D5358;
+  --sg-terracotta: #BA7F6E;
+  --sg-sage: #738285;
 
   /* Neutrals / surfaces */
-  --sg-sand: #F6F1EC;         /* linen surface (cards/sections) */
-  --sg-bone: #FFFCF7;         /* page background */
-  --sg-rose: #D9B8AF;         /* soft clay tint (chips/badges/hover fills) */
+  --sg-sand: #F6F1EC;
+  --sg-bone: #FFFCF7;
+  --sg-rose: #D9B8AF;
 
-  /* Extras (handy for states/borders) */
+  /* Opacity variants */
   --sg-ink-70: rgba(61, 83, 88, 0.70);
   --sg-ink-40: rgba(61, 83, 88, 0.40);
   --sg-border: rgba(61, 83, 88, 0.12);
-  --sg-terracotta-600: #A96F63; /* hover on brand buttons */
-  --sg-terracotta-100: #F1E2DD; /* subtle backgrounds */
+  --sg-terracotta-600: #A96F63;
+  --sg-terracotta-100: #F1E2DD;
 
+  /* Layout */
   --sg-max: 1200px;
   --sg-radius: 18px;
-  --sg-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+  --sg-radius-sm: 10px;
+  --sg-shadow: 0 4px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  --sg-shadow-md: 0 8px 28px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  --sg-shadow-lg: 0 16px 48px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.06);
 }
 
-html,
-body {
+html, body {
   background: var(--sg-bone);
   color: var(--sg-ink);
   margin: 0;
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Editorial vibe */
-h1,
-h2,
-h3 {
+/* Editorial typography */
+h1, h2, h3 {
   font-family: "Playfair Display", ui-serif, Georgia, serif;
-  letter-spacing: 0.2px;
-}
-body {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
-    "Helvetica Neue", Arial;
+  letter-spacing: 0.15px;
+  line-height: 1.22;
 }
 
-.container {
-  max-width: var(--sg-max);   // let it shrink below max
-  width: 100%;                // respect viewport
-  margin-inline: auto;
-  padding-inline: 20px;
-  box-sizing: border-box;     // ensures padding stays inside width
+body {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-size: 1rem;
+  line-height: 1.65;
 }
+
+p { margin: 0 0 0.75em; }
+p:last-child { margin-bottom: 0; }
+
+/* Container */
+.container {
+  max-width: var(--sg-max);
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 24px;
+  box-sizing: border-box;
+}
+
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   border-radius: 999px;
-  padding: 0.8rem 1.2rem;
+  padding: 0.75rem 1.35rem;
+  font-size: 0.95rem;
   font-weight: 600;
+  letter-spacing: 0.15px;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: 0.25s ease;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+  text-decoration: none;
 }
-.btn-primary { background: var(--sg-terracotta); color: #fff; text-decoration: none; }
-.btn-primary:hover { background: var(--sg-terracotta-600); }
-.btn-ghost { border-color: var(--sg-border); }
-.btn-ghost:hover { background: var(--sg-terracotta-100); }
 
+.btn-primary {
+  background: var(--sg-terracotta);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(186,127,110,0.30);
+}
+.btn-primary:hover {
+  background: var(--sg-terracotta-600);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(186,127,110,0.38);
+}
+
+.btn-ghost {
+  border-color: var(--sg-border);
+  background: transparent;
+  color: var(--sg-ink);
+}
+.btn-ghost:hover {
+  background: var(--sg-terracotta-100);
+  border-color: rgba(186,127,110,0.25);
+}
+
+/* Global text utilities */
+.muted {
+  color: var(--sg-ink-70);
+  font-size: 0.95rem;
+}
+.small { font-size: 0.85rem; }
+.hint {
+  font-size: 0.88rem;
+  color: var(--sg-ink-70);
+  margin-top: 6px;
+}
+
+/* Eyebrow label utility */
+.eyebrow {
+  display: inline-block;
+  background: var(--sg-terracotta);
+  color: #fff;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Pill / badge */
+.pill {
+  display: inline-block;
+  background: var(--sg-terracotta-100);
+  color: var(--sg-terracotta-600);
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+/* Nav burger spans */
 .nav__burger span { background: var(--sg-ink); }
 
-/* Utility */
-.hide-on-mobile {
-  display: none;
-}
+/* Responsive utility */
+.hide-on-mobile { display: none; }
 @media (min-width: 900px) {
-  .hide-on-mobile {
-    display: unset;
-  }
+  .hide-on-mobile { display: unset; }
 }
-
 
 /* ----- Section bands ----- */
-.band { position: relative; padding: 64px 0; isolation: isolate; }
+.band {
+  position: relative;
+  padding: 72px 0;
+  isolation: isolate;
+}
 
 /* paper grain overlay */
 .band::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
   background-image: url('data:image/svg+xml;utf8,\
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">\
 <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="1.15" numOctaves="2"/></filter>\
@@ -104,22 +176,20 @@ body {
     var(--sg-bone);
 }
 
-/* soft sage haze (nice behind testimonials) */
+/* soft sage haze */
 .band--sagemist {
   background:
     linear-gradient(180deg, rgba(115,130,133,.08), rgba(115,130,133,.03)),
     var(--sg-bone);
 }
 
-/* edge-highlighted “card canvas” for dense content */
-.band--plain {
-  background: var(--sg-bone);
-}
+/* plain bone canvas */
+.band--plain { background: var(--sg-bone); }
 
-/* optional photo stripe band (subtle parallax feel) */
+/* photo stripe band */
 .band--photo {
   background-image: url('/assets/textures/linen.jpg');
-  background-size: cover; background-position: center;
-  /* tint so text stays readable */
+  background-size: cover;
+  background-position: center;
   box-shadow: inset 0 0 0 100vmax rgba(0,0,0,.04);
 }

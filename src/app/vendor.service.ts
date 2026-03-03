@@ -24,9 +24,7 @@ export class VendorService {
           pricePerHead: 35
         }
       ],
-      foodOptions: [
-        { id: 'charcuterie', label: 'Charcuterie Board', pricingType: 'flat', price: 120 }
-      ],
+      foodOptions: [],
       dessertOptions: [
         { id: 'cupcakes', label: 'Cupcakes', pricingType: 'perHead', price: 5 }
       ],
@@ -52,9 +50,7 @@ export class VendorService {
         { id: 'tea-purpose', vendorId: 'cup-of-communittea', title: 'Tea with a Purpose – Functional Teas', image: 'assets/gallery/65.jpg', durationMinutes: 60, pricePerHead: 30 },
         { id: 'tea-custom', vendorId: 'cup-of-communittea', title: 'Custom Theme – Your Choice', image: 'assets/gallery/65.jpg', durationMinutes: 60, pricePerHead: 30 }
       ],
-      foodOptions: [
-        { id: 'tea-snacks', label: 'Tea Snacks', pricingType: 'perHead', price: 12 }
-      ],
+      foodOptions: [],
       dessertOptions: [
         { id: 'cookies', label: 'Custom Cookies', pricingType: 'flat', price: 60 }
       ],
@@ -229,28 +225,127 @@ export class VendorService {
         }
       ],
       foodOptions: [],
-      dessertOptions: [
+      dessertOptions: [],
+      favorOptions: []
+    },
+
+
+
+    // ─── She Gathers Catering ───────────────────────────────────────────────
+    // Internal vendor: food options are always available regardless of which
+    // experience vendor is selected. Not shown in the vendor-selection step.
+    {
+      id: 'sg-catering',
+      name: 'She Gathers Catering',
+      isInternal: true,
+      activities: [],
+      foodOptions: [
+        // ── Charcuterie Trays ──────────────────────────────────────────────
         {
-          id: '',
-          label: '',
+          id: 'charcuterie-large',
+          label: 'Large Charcuterie Tray',
+          description: 'Traditional tray with assorted meats, cheeses, fruit & veggies — or sweet & salty with fruit and assorted sweets.',
           pricingType: 'flat',
-          price: 60
-        }
-      ],
-      favorOptions: [
+          price: 75,
+          variants: [
+            { id: 'traditional', label: 'Traditional (meats, cheeses, fruit, veggies)', price: 75 },
+            { id: 'sweet-salty',  label: 'Sweet & Salty (fruit, assorted sweets)',       price: 75 }
+          ]
+        },
         {
-          id: '',
-          label: '',
+          id: 'charcuterie-small',
+          label: 'Small Charcuterie Tray',
+          description: 'Traditional tray with assorted meats, cheeses, fruit & veggies — or sweet & salty with fruit and assorted sweets.',
           pricingType: 'flat',
-          price: 350
+          price: 50,
+          variants: [
+            { id: 'traditional', label: 'Traditional (meats, cheeses, fruit, veggies)', price: 50 },
+            { id: 'sweet-salty',  label: 'Sweet & Salty (fruit, assorted sweets)',       price: 50 }
+          ]
+        },
+        // ── Individual Trays ───────────────────────────────────────────────
+        {
+          id: 'fruit-tray',
+          label: 'Fruit Tray',
+          description: '4 lbs fresh fruit assortment with dip and accompaniment.',
+          pricingType: 'flat',
+          price: 75
+        },
+        {
+          id: 'veggie-tray',
+          label: 'Veggie Tray',
+          description: '4 lbs fresh vegetable assortment with dips and accompaniment.',
+          pricingType: 'flat',
+          price: 75
+        },
+        // ── Beverages ──────────────────────────────────────────────────────
+        {
+          id: 'cold-pressed-juice',
+          label: 'Organic Cold Pressed Juice',
+          description: '16 oz bottle per person.',
+          pricingType: 'perHead',
+          price: 10
+        },
+        {
+          id: 'smoothie-bar',
+          label: 'Smoothie Bar',
+          description: 'One smoothie per person — barista included.',
+          pricingType: 'perHead',
+          price: 14
+        },
+        // ── Salads ─────────────────────────────────────────────────────────
+        {
+          id: 'salad-mediterranean',
+          label: 'Mediterranean Salad',
+          description: 'Mixed greens, Kalamata olives, feta, tomato, cucumber, Greek dressing.',
+          pricingType: 'perHead',
+          price: 18
+        },
+        {
+          id: 'salad-aura',
+          label: 'Aura Salad',
+          description: 'Mixed greens, pom seeds, carrot, bell pepper, cucumber, blueberry, grape, lemon dressing.',
+          pricingType: 'perHead',
+          price: 18
+        },
+        {
+          id: 'salad-strawberry-sunshine',
+          label: 'Strawberry Sunshine Salad',
+          description: 'Romaine, strawberry, goat cheese, pecans, balsamic dressing.',
+          pricingType: 'perHead',
+          price: 18
+        },
+        {
+          id: 'salad-chicken-addon',
+          label: 'Add Chicken to Salad',
+          description: 'Grilled chicken added to any salad. Select alongside your salad choice.',
+          pricingType: 'perHead',
+          price: 2
+        },
+        // ── Protein Bites ──────────────────────────────────────────────────
+        {
+          id: 'protein-bites-pb',
+          label: 'Protein Bites – Peanut Butter',
+          description: 'Pack of 3 bites.',
+          pricingType: 'perItem',
+          price: 5,
+          allowQuantity: true,
+          maxQuantity: 20
+        },
+        {
+          id: 'protein-bites-choc',
+          label: 'Protein Bites – Chocolate',
+          description: 'Pack of 3 bites.',
+          pricingType: 'perItem',
+          price: 5,
+          allowQuantity: true,
+          maxQuantity: 20
         }
       ]
     }
 
-
-
   ]);
-  
+
   readonly vendors = this._vendors.asReadonly();
 
   getVendorById(id: string) {

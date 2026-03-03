@@ -15,6 +15,9 @@ export interface Vendor {
 
   supportedEventTypes?: string[];
 
+  /** Internal vendors (e.g. sg-catering) are excluded from vendor-selection UI */
+  isInternal?: boolean;
+
   activities: Activity[];
 
   foodOptions?: Option[];
@@ -35,6 +38,9 @@ export interface Activity {
 export interface Option {
   id: string;
   label: string;
+
+  /** Short description shown beneath the label (ingredients, serving info, etc.) */
+  description?: string;
 
   pricingType: 'flat' | 'perHead' | 'perItem';
 

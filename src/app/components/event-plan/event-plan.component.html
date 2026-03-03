@@ -9,13 +9,20 @@
 <app-how></app-how>
 
 
-<app-event-wizard
+<!-- <app-event-wizard
   id="wizard"
   [settings]="{
     allowedVendorIds: ['sg-paint'],
     preselectVendorId: 'sg-paint',
     depositPercent: 0.2
   }">
+</app-event-wizard> -->
+<app-event-wizard
+  id="wizard"
+  [squareAppId]="squareAppId"
+  [squareLocationId]="squareLocationId"
+  [backendUrl]="backendUrl"
+  [settings]="{ depositPercent: 0.5 }">
 </app-event-wizard>
 
 <!-- <app-experiences></app-experiences> -->
