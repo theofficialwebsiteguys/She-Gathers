@@ -79,6 +79,7 @@ export class VendorService {
         {
           id: 'peens',
           label: 'Emotional Support Peen',
+          description: `Colors are based on current yarn availability. Available colors may include pink, brown, cream, and tan. Please note your preferred color(s) below, and This Darn Yarn will do her best to accommodate — however, color fulfillment is not guaranteed and will depend on what is available at the time of your order.`,
           pricingType: 'perItem',
           price: 20,
           allowQuantity: true,
@@ -316,11 +317,28 @@ export class VendorService {
           price: 18
         },
         {
-          id: 'salad-chicken-addon',
-          label: 'Add Chicken to Salad',
-          description: 'Grilled chicken added to any salad. Select alongside your salad choice.',
+          id: 'salad-chicken-mediterranean',
+          label: 'Add Chicken — Mediterranean',
+          description: '+$2/person grilled chicken on your Mediterranean Salad.',
           pricingType: 'perHead',
-          price: 2
+          price: 2,
+          parentOptionIds: ['salad-mediterranean']
+        },
+        {
+          id: 'salad-chicken-aura',
+          label: 'Add Chicken — Aura',
+          description: '+$2/person grilled chicken on your Aura Salad.',
+          pricingType: 'perHead',
+          price: 2,
+          parentOptionIds: ['salad-aura']
+        },
+        {
+          id: 'salad-chicken-sunshine',
+          label: 'Add Chicken — Strawberry Sunshine',
+          description: '+$2/person grilled chicken on your Strawberry Sunshine Salad.',
+          pricingType: 'perHead',
+          price: 2,
+          parentOptionIds: ['salad-strawberry-sunshine']
         },
         // ── Protein Bites ──────────────────────────────────────────────────
         {

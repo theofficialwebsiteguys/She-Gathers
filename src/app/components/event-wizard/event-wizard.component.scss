@@ -1,11 +1,11 @@
 /* ─── Wizard outer shell ───────────────────────────────────────────────── */
 .wizard-section {
   position: relative;
-  min-height: 70vh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 60px 20px 80px;
+  padding: 32px 16px 48px;
   overflow: hidden;
 
   .wizard-bg {
@@ -92,7 +92,6 @@
   @media (max-width: 900px) {
     position: relative;
     top: auto;
-    order: -1;
   }
 }
 
@@ -179,6 +178,7 @@
 
 input[type="number"],
 input[type="text"],
+input[type="email"],
 textarea,
 select {
   width: min(380px, 100%);
@@ -291,7 +291,8 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
   display: grid;
   gap: 8px;
 
-  label {
+  /* Simple labels (dessert step) */
+  > label {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -307,6 +308,51 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
 
     input[type="checkbox"],
     input[type="radio"] {
+      accent-color: var(--sg-terracotta);
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+/* ─── Structured option card (food / favors steps) ─────────────────────── */
+.option-card {
+  border: 1px solid var(--sg-border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  transition: border-color 0.18s, box-shadow 0.18s;
+
+  &:has(input[type="checkbox"]:checked) {
+    border-color: var(--sg-terracotta);
+    box-shadow: 0 0 0 2px rgba(186,127,110,0.13);
+  }
+
+  /* Child options (e.g. Add Chicken) are indented to signal hierarchy */
+  &.option-card--child {
+    margin-left: 20px;
+    border-style: dashed;
+    background: var(--sg-sand);
+  }
+
+  label.option-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.7rem 0.9rem;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background 0.18s;
+    border: none;
+    border-radius: 0;
+    font-size: 0.95rem;
+    color: var(--sg-ink);
+
+    &:hover { background: var(--sg-sand); }
+
+    input[type="checkbox"] {
       accent-color: var(--sg-terracotta);
       width: 17px;
       height: 17px;
@@ -339,13 +385,32 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
 }
 
 .option-expanded {
-  padding: 12px 12px 4px;
+  padding: 12px 12px 10px;
   border-top: 1px solid var(--sg-border);
   display: grid;
-  gap: 12px;
+  gap: 10px;
   background: var(--sg-sand);
-  border-radius: 0 0 8px 8px;
-  margin: 0 -1px -1px;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--sg-ink);
+    cursor: pointer;
+    padding: 0.4rem 0.5rem;
+    border-radius: 8px;
+    transition: background 0.15s;
+
+    &:hover { background: rgba(186,127,110,0.08); }
+
+    input[type="radio"] {
+      accent-color: var(--sg-terracotta);
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+  }
 
   input[type="number"] {
     width: min(140px, 100%);
@@ -405,6 +470,34 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--sg-ink);
+}
+
+/* ─── Contact fields on payment step ───────────────────────────────────── */
+.review-contact {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.contact-field {
+  display: grid;
+  gap: 5px;
+
+  label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--sg-ink);
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+.required {
+  color: var(--sg-terracotta);
+  font-weight: 700;
 }
 
 /* ─── Nav / actions ────────────────────────────────────────────────────── */

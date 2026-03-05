@@ -36,6 +36,7 @@ export interface Activity {
 }
 
 export interface Option {
+[x: string]: any;
   id: string;
   label: string;
 
@@ -51,6 +52,9 @@ export interface Option {
     label: string;
     price: number;
   }[];
+
+  /** If set, this option only appears when at least one of the listed parent option IDs is selected */
+  parentOptionIds?: string[];
 
   maxQuantity?: number;
 
@@ -71,6 +75,9 @@ export interface LineItem {
 }
 
 export interface EventPlan {
+  customerName?: string;
+  customerEmail?: string;
+
   vendorIds: string[];              // ✅ multi-vendor compare
   vendorNames?: string[];
 

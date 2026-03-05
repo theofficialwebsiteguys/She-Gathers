@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
   square: {
-    appId: 'sq0idp-5jyGmfe8h9jTnBJj8JrIKw',
-    locationId: 'LZW61P7N8AXYT',
+    appId: 'sandbox-sq0idb-FlkyGdTXTZq1qL5_3GbJOw',
+    locationId: 'L6YF0HE481RC3',
   },
-  backendUrl: 'https://your-api.com/api'
+  backendUrl: 'https://she-gathers-server-b060b14f2fdc.herokuapp.com/api'
 };

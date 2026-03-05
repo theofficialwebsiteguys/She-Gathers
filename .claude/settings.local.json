@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const { SquareClient, SquareEnvironment } = require\\(''square''\\); const c = new SquareClient\\({ token: ''test'', environment: SquareEnvironment.Sandbox }\\); const proto = Object.getOwnPropertyNames\\(Object.getPrototypeOf\\(c\\)\\); console.log\\(JSON.stringify\\(proto\\)\\)\")",
+      "Bash(node -e \"const { SquareClient, SquareEnvironment } = require\\(''square''\\); const c = new SquareClient\\({ token: ''test'', environment: SquareEnvironment.Sandbox }\\); const p = c.payments; console.log\\(Object.getOwnPropertyNames\\(Object.getPrototypeOf\\(p\\)\\)\\)\")",
+      "Bash(node -e \":*)",
+      "Bash(npm install nodemailer)"
+    ]
+  }
+}

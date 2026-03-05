@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, signal, computed, effect } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, SimpleChanges, signal, computed, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { VendorService } from '../../vendor.service';
-import { Vendor, Activity, Option, EventPlan } from '../../models';
+import { Vendor, Activity, Option, EventPlan, EventWizardSettings } from '../../models';
 import { PaymentService } from '../../services/payment.service';
 
 declare const Square: any;
@@ -30,8 +30,8 @@ type ExperienceGroup = {
   templateUrl: './event-wizard.component.html',
   styleUrl: './event-wizard.component.scss'
 })
-export class EventWizardComponent {
-  @Input() settings = {};
+export class EventWizardComponent implements OnChanges {
+  @Input() settings: EventWizardSettings = {};
   @Input() squareAppId = '';
   @Input() squareLocationId = '';
   @Input() backendUrl = 'http://localhost:3000/api';
@@ -58,6 +58,8 @@ export class EventWizardComponent {
   /* ---------------- USER INPUT ---------------- */
   attendees = signal(10);
   eventType = signal('');
+  customerName = signal('');
+  customerEmail = signal('');
 
   selActivities = signal<Set<string>>(new Set());
   selFood = signal<Set<string>>(new Set());
@@ -72,10 +74,20 @@ export class EventWizardComponent {
   reviewView    = signal<'summary' | 'checkout'>('summary');
   paymentStatus = signal<'idle' | 'processing' | 'success' | 'error'>('idle');
   paymentError  = signal('');
+  contactError  = signal('');
   private squareCard: any = null;
   private cardInitialized = false;
 
-  constructor(private catalog: VendorService, private paymentService: PaymentService) {}
+  constructor(private catalog: VendorService, private paymentService: PaymentService, private el: ElementRef<HTMLElement>) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['settings']) {
+      const s = changes['settings'].currentValue as EventWizardSettings;
+      if (s?.depositPercent != null) {
+        this.depositPercent.set(s.depositPercent);
+      }
+    }
+  }
 
   /* ---------------- BASE DATA ---------------- */
   vendors = computed(() => this.catalog.vendors());
@@ -83,6 +95,11 @@ export class EventWizardComponent {
   /** Vendors that can be booked as an experience (have activities, not internal). */
   experienceVendors = computed(() =>
     this.vendors().filter(v => !v.isInternal && v.activities.length > 0)
+  );
+
+  /** Product-only vendors (no activities, not internal) — favor/dessert/food only. */
+  productOnlyVendors = computed(() =>
+    this.vendors().filter(v => !v.isInternal && v.activities.length === 0)
   );
 
   /* ---------------- COLLECTIONS ---------------- */
@@ -98,9 +115,28 @@ export class EventWizardComponent {
     this.vendors().flatMap(v => v.activities)
   );
 
-  allFoodOptions = computed<Option[]>(() =>
-    uniqueById(this.vendors().flatMap(v => v.foodOptions ?? []))
-  );
+  allFoodOptions = computed<Option[]>(() => {
+    const sgCatering = this.vendors().find(v => v.id === 'sg-catering');
+    return sgCatering?.foodOptions ?? [];
+  });
+
+  /** Food options ordered so each child option immediately follows its parent (only when parent is selected) */
+  visibleFoodOptions = computed<Option[]>(() => {
+    const food = this.selFood();
+    const all = this.allFoodOptions();
+    const result: Option[] = [];
+
+    for (const opt of all) {
+      if (opt.parentOptionIds?.length) continue; // children are inserted after their parent below
+      result.push(opt);
+      if (food.has(opt.id)) {
+        const children = all.filter(o => o.parentOptionIds?.includes(opt.id));
+        result.push(...children);
+      }
+    }
+
+    return result;
+  });
 
   allDessertOptions = computed<Option[]>(() =>
     uniqueById(this.vendors().flatMap(v => v.dessertOptions ?? []))
@@ -142,7 +178,9 @@ export class EventWizardComponent {
         if (!hasAct) ok = false;
       }
 
-      if (type && v.supportedEventTypes?.length) {
+      // Only filter by event type when no activities are selected.
+      // If the user already picked activities from this vendor, don't exclude it.
+      if (!acts.size && type && v.supportedEventTypes?.length) {
         if (!v.supportedEventTypes.includes(type)) ok = false;
       }
 
@@ -165,6 +203,7 @@ export class EventWizardComponent {
       this.reviewView.set('summary');
       this.paymentStatus.set('idle');
       this.paymentError.set('');
+      this.contactError.set('');
     }
   });
 
@@ -197,34 +236,25 @@ export class EventWizardComponent {
 
       }
 
-      addOptions(
-        items,
-        n,
-        v,
-        this.selFood(),
-        v.foodOptions,
-        'Food',
-        this.optionQuantities(),
-        this.selectedVariants()
-      );
-      addOptions(items, n, v, this.selDessert(), v.dessertOptions, 'Dessert');
-      addOptions(items, n, v, this.selFavors(), v.favorOptions, 'Favors');
+      addOptions(items, n, v, this.selFood(), v.foodOptions, this.optionQuantities(), this.selectedVariants());
+      addOptions(items, n, v, this.selDessert(), v.dessertOptions);
+      addOptions(items, n, v, this.selFavors(), v.favorOptions);
     }
 
     // She Gathers catering food is always priced when selected —
     // it is not tied to any specific vendor being chosen.
     const sgCatering = this.vendors().find(v => v.id === 'sg-catering');
     if (sgCatering) {
-      addOptions(
-        items,
-        n,
-        sgCatering,
-        this.selFood(),
-        sgCatering.foodOptions,
-        'Food',
-        this.optionQuantities(),
-        this.selectedVariants()
-      );
+      addOptions(items, n, sgCatering, this.selFood(), sgCatering.foodOptions, this.optionQuantities(), this.selectedVariants());
+    }
+
+    // Product-only vendors (no activities, not internal) are never in the vendor
+    // selection step but their options can still be chosen — always price them.
+    for (const v of this.vendors()) {
+      if (v.isInternal || v.activities.length > 0) continue;
+      addOptions(items, n, v, this.selFood(), v.foodOptions, this.optionQuantities(), this.selectedVariants());
+      addOptions(items, n, v, this.selDessert(), v.dessertOptions);
+      addOptions(items, n, v, this.selFavors(), v.favorOptions, this.optionQuantities(), this.selectedVariants());
     }
 
     return items;
@@ -288,10 +318,16 @@ export class EventWizardComponent {
 
   next() {
     this.step.set(Math.min(this.step() + 1, this.steps.length - 1));
+    this.scrollToTop();
   }
 
   back() {
     this.step.set(Math.max(this.step() - 1, 0));
+    this.scrollToTop();
+  }
+
+  private scrollToTop() {
+    this.el.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   toggle(setSig: typeof this.selFood, id: string) {
@@ -332,6 +368,18 @@ export class EventWizardComponent {
   async submitPayment(): Promise<void> {
     if (!this.squareCard || this.paymentStatus() === 'processing') return;
 
+    const name = this.customerName().trim();
+    const email = this.customerEmail().trim();
+    if (!name || !email) {
+      this.contactError.set('Please enter your name and email address to continue.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.contactError.set('Please enter a valid email address.');
+      return;
+    }
+    this.contactError.set('');
+
     this.paymentStatus.set('processing');
     this.paymentError.set('');
 
@@ -369,6 +417,8 @@ export class EventWizardComponent {
 
   buildPlan(): EventPlan {
     return {
+      customerName: this.customerName(),
+      customerEmail: this.customerEmail(),
       vendorIds: [...this.selectedVendorIds()],
       vendorNames: this.selectedVendors().map(v => v.name),
       activities: [...this.selActivities()].map(id => ({ id })),
@@ -421,7 +471,6 @@ function addOptions(
   v: Vendor,
   selected: Set<string>,
   pool?: Option[],
-  prefix?: string,
   quantities?: Record<string, number>,
   selectedVariants?: Record<string, string>
 ) {
@@ -430,11 +479,12 @@ function addOptions(
 
     let amount = 0;
 
-    // Variant-based pricing
+    // Variant-based pricing — skip if no variant chosen yet
     if (opt.variants?.length) {
       const chosenVariantId = selectedVariants?.[opt.id];
-      const variant = opt.variants.find(v => v.id === chosenVariantId);
-      if (variant) amount = variant.price;
+      const variant = opt.variants.find(vr => vr.id === chosenVariantId);
+      if (!variant) return;
+      amount = variant.price;
     }
 
     // Per head
@@ -455,9 +505,8 @@ function addOptions(
 
     items.push({
       vendorId: v.id,
-      label: `${prefix}: ${opt.label}`,
+      label: opt.label,
       amount
     });
   });
-  
 }

@@ -120,8 +120,12 @@
           </div>
           <p class="muted">Choose from She Gathers catering — no outside food or drink allowed.</p>
 
-          <div class="options">
-            <div class="option-card" *ngFor="let opt of allFoodOptions()">
+          <div class="options" *ngIf="visibleFoodOptions().length">
+            <div
+              class="option-card"
+              [class.option-card--child]="opt.parentOptionIds?.length"
+              *ngFor="let opt of visibleFoodOptions()"
+            >
 
               <!-- Checkbox + price badge -->
               <label class="option-header">
@@ -144,8 +148,8 @@
               <!-- Description -->
               <p class="option-desc muted" *ngIf="opt.description">{{ opt.description }}</p>
 
-              <!-- EXPANDED AREA -->
-              <div class="option-expanded" *ngIf="selFood().has(opt.id)">
+              <!-- EXPANDED AREA — only show when there is something to configure -->
+              <div class="option-expanded" *ngIf="selFood().has(opt.id) && (opt.variants?.length || opt.allowQuantity || opt.allowNotes)">
 
                 <!-- VARIANTS -->
                 <div *ngIf="opt.variants?.length">
@@ -192,6 +196,8 @@
             </div>
           </div>
 
+          <p class="muted" *ngIf="!visibleFoodOptions().length">No food options available.</p>
+
         </div>
 
         <!-- DESSERT -->
@@ -223,14 +229,50 @@
           <p class="muted">Optional add-ons — can be great for bachelorettes.</p>
 
           <div class="options">
-            <label *ngFor="let opt of allFavorOptions()">
-              <input
-                type="checkbox"
-                [checked]="selFavors().has(opt.id)"
-                (change)="toggle(selFavors, opt.id)"
-              />
-              <span>{{ opt.label }}</span>
-            </label>
+            <div class="option-card" *ngFor="let opt of allFavorOptions()">
+
+              <label class="option-header">
+                <input
+                  type="checkbox"
+                  [checked]="selFavors().has(opt.id)"
+                  (change)="toggle(selFavors, opt.id)"
+                />
+                <span class="option-label-group">
+                  <span>{{ opt.label }}</span>
+                  <span class="option-price">
+                    <ng-container *ngIf="opt.pricingType === 'perHead'">${{ opt.price }}/person</ng-container>
+                    <ng-container *ngIf="opt.pricingType === 'perItem'">${{ opt.price }}/each</ng-container>
+                    <ng-container *ngIf="opt.pricingType === 'flat'">${{ opt.price }}</ng-container>
+                  </span>
+                </span>
+              </label>
+
+              <p class="option-desc muted" *ngIf="opt.description">{{ opt.description }}</p>
+
+              <div class="option-expanded" *ngIf="selFavors().has(opt.id) && (opt.allowQuantity || opt.allowNotes)">
+
+                <div *ngIf="opt.allowQuantity">
+                  <p class="muted small">Quantity <ng-container *ngIf="opt.maxQuantity">(max {{ opt.maxQuantity }})</ng-container></p>
+                  <input
+                    type="number"
+                    min="1"
+                    [max]="opt.maxQuantity || 999"
+                    [value]="optionQuantities()[opt.id] || 1"
+                    (input)="setQuantity(opt.id, $any($event.target).value)"
+                  />
+                </div>
+
+                <div *ngIf="opt.allowNotes">
+                  <p class="muted small">{{ opt.noteLabel }}</p>
+                  <textarea
+                    rows="2"
+                    [value]="optionNotes()[opt.id] || ''"
+                    (input)="setNote(opt.id, $any($event.target).value)"
+                  ></textarea>
+                </div>
+
+              </div>
+            </div>
           </div>
         </div>
 
@@ -321,7 +363,24 @@
             <ul class="lines">
               <li *ngFor="let li of getLineItemsForVendor(v.id)">
                 <span>{{ li.label }}</span>
-                <strong>${{ li.amount | number:'1.0-2' }}</strong>
+                <strong>{{ li.amount | currency:'USD':'symbol':'1.2-2' }}</strong>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Product-only vendors (e.g. favors with no activity/vendor selection) -->
+          <div
+            class="review-block"
+            *ngFor="let v of productOnlyVendors()"
+            [style.display]="getLineItemsForVendor(v.id).length ? '' : 'none'"
+          >
+            <div class="review-vendor">
+              <h3>{{ v.name }}</h3>
+            </div>
+            <ul class="lines">
+              <li *ngFor="let li of getLineItemsForVendor(v.id)">
+                <span>{{ li.label }}</span>
+                <strong>{{ li.amount | currency:'USD':'symbol':'1.2-2' }}</strong>
               </li>
             </ul>
           </div>
@@ -334,19 +393,19 @@
             <ul class="lines">
               <li *ngFor="let li of getLineItemsForVendor('sg-catering')">
                 <span>{{ li.label }}</span>
-                <strong>${{ li.amount | number:'1.0-2' }}</strong>
+                <strong>{{ li.amount | currency:'USD':'symbol':'1.2-2' }}</strong>
               </li>
             </ul>
           </div>
 
           <ul class="lines lines--totals">
             <li class="total">
-              <span>Subtotal</span>
-              <strong>${{ subtotal() | number:'1.0-2' }}</strong>
+              <span>Event Total</span>
+              <strong>{{ subtotal() | currency:'USD':'symbol':'1.2-2' }}</strong>
             </li>
             <li>
-              <span>Deposit ({{ (depositPercent() * 100) | number:'1.0-0' }}%)</span>
-              <strong>{{ depositAmount() | number:'1.0-2' | currency}}</strong>
+              <span>Deposit Due Today ({{ (depositPercent() * 100) | number:'1.0-0' }}%)</span>
+              <strong>{{ depositAmount() | currency:'USD':'symbol':'1.2-2' }}</strong>
             </li>
           </ul>
 
@@ -362,12 +421,43 @@
         <div *ngIf="activeStepKey() === 'review' && reviewView() === 'checkout'" class="panel panel--review">
           <h2>Secure Payment</h2>
           <p class="muted">
-            Your deposit of <strong>{{ depositAmount() | number:'1.0-2' | currency}}</strong>
+            Your deposit of <strong>{{ depositAmount() | currency:'USD':'symbol':'1.2-2' }}</strong>
             will be charged today to hold your reservation.
           </p>
 
           <!-- Payment form -->
           <div *ngIf="paymentStatus() !== 'success'">
+
+            <!-- Contact info -->
+            <div class="review-contact">
+              <div class="contact-field">
+                <label for="customer-name">Your Name <span class="required">*</span></label>
+                <input
+                  id="customer-name"
+                  type="text"
+                  placeholder="Full name"
+                  [ngModel]="customerName()"
+                  (ngModelChange)="customerName.set($event)"
+                  [disabled]="paymentStatus() === 'processing'"
+                />
+              </div>
+              <div class="contact-field">
+                <label for="customer-email">Email Address <span class="required">*</span></label>
+                <input
+                  id="customer-email"
+                  type="email"
+                  placeholder="you@example.com"
+                  [ngModel]="customerEmail()"
+                  (ngModelChange)="customerEmail.set($event)"
+                  [disabled]="paymentStatus() === 'processing'"
+                />
+              </div>
+            </div>
+
+            <div class="payment-error-msg" *ngIf="contactError()">
+              {{ contactError() }}
+            </div>
+
             <div id="card-container" class="sq-card-wrapper"></div>
 
             <div class="payment-error-msg" *ngIf="paymentStatus() === 'error'">
@@ -377,7 +467,7 @@
             <div class="actions">
               <button class="btn btn-ghost" (click)="reviewView.set('summary')" [disabled]="paymentStatus() === 'processing'">Back</button>
               <button class="btn btn-primary" (click)="submitPayment()" [disabled]="paymentStatus() === 'processing'">
-                <ng-container *ngIf="paymentStatus() !== 'processing'">Pay Deposit — {{ depositAmount() | number:'1.0-2' | currency}}</ng-container>
+                <ng-container *ngIf="paymentStatus() !== 'processing'">Pay Deposit — {{ depositAmount() | currency:'USD':'symbol':'1.2-2' }}</ng-container>
                 <ng-container *ngIf="paymentStatus() === 'processing'">Processing&#8230;</ng-container>
               </button>
             </div>
@@ -447,13 +537,13 @@
           <div class="summary-divider"></div>
 
           <div class="summary-row">
-            <span class="muted">Subtotal</span>
-            <strong>{{ subtotal() | number:'1.0-2' | currency}}</strong>
+            <span class="muted">Total</span>
+            <strong>{{ subtotal() | currency:'USD':'symbol':'1.2-2' }}</strong>
           </div>
 
           <div class="summary-row">
-            <span class="muted">Deposit</span>
-            <strong>{{ depositAmount() | number:'1.0-2' | currency}}</strong>
+            <span class="muted">Deposit ({{ (depositPercent() * 100) | number:'1.0-0' }}%)</span>
+            <strong>{{ depositAmount() | currency:'USD':'symbol':'1.2-2' }}</strong>
           </div>
         </div>
       </aside>
