@@ -25,11 +25,9 @@ export class VendorService {
         }
       ],
       foodOptions: [],
-      dessertOptions: [
-        { id: 'cupcakes', label: 'Cupcakes', pricingType: 'perHead', price: 5 }
-      ],
+      dessertOptions: [],
       favorOptions: [
-        { id: 'mini-candle', label: 'Mini Candle Favors', pricingType: 'perHead', price: 8 }
+        { id: 'mini-candle', label: 'Mini Candle Favors', pricingType: 'perHead', price: 8, vendorCredit: 'Noir Candles' }
       ]
     },
 
@@ -51,11 +49,9 @@ export class VendorService {
         { id: 'tea-custom', vendorId: 'cup-of-communittea', title: 'Custom Theme – Your Choice', image: 'assets/gallery/65.jpg', durationMinutes: 60, pricePerHead: 30 }
       ],
       foodOptions: [],
-      dessertOptions: [
-        { id: 'cookies', label: 'Custom Cookies', pricingType: 'flat', price: 60 }
-      ],
+      dessertOptions: [],
       favorOptions: [
-        { id: 'tea-sampler', label: 'Tea Sampler Bag', pricingType: 'perHead', price: 6 }
+        { id: 'tea-sampler', label: 'Tea Sampler Bag', pricingType: 'perHead', price: 6, vendorCredit: 'Cup of Communitea' }
       ]
     },
 
@@ -79,6 +75,7 @@ export class VendorService {
         {
           id: 'peens',
           label: 'Emotional Support Peen',
+          vendorCredit: 'Emotional Support Peens',
           description: `Colors are based on current yarn availability. Available colors may include pink, brown, cream, and tan. Please note your preferred color(s) below, and This Darn Yarn will do her best to accommodate — however, color fulfillment is not guaranteed and will depend on what is available at the time of your order.`,
           pricingType: 'perItem',
           price: 20,
@@ -147,7 +144,7 @@ export class VendorService {
       foodOptions: [],
       dessertOptions: [],
       favorOptions: [
-        { id: 'extra-roller', label: 'Additional Custom Roller', pricingType: 'flat', price: 15 }
+        { id: 'extra-roller', label: 'Additional Custom Roller', pricingType: 'flat', price: 15, vendorCredit: 'The Clean Bee Organics' }
       ]
     },
     {
@@ -232,12 +229,24 @@ export class VendorService {
 
 
 
-    // ─── She Gathers Catering ───────────────────────────────────────────────
+    // ─── Tierney Town Treats ────────────────────────────────────────────────
+    // Product-only vendor: desserts available for any event, not an experience.
+    {
+      id: 'tierney-town-treats',
+      name: 'Tierney Town Treats',
+      activities: [],
+      dessertOptions: [
+        { id: 'cupcakes', label: 'Cupcakes', pricingType: 'perHead', price: 5, vendorCredit: 'Tierney Town Treats' },
+        { id: 'cookies', label: 'Custom Cookies', pricingType: 'flat', price: 60, vendorCredit: 'Tierney Town Treats' }
+      ]
+    },
+
+    // ─── Aura Juicery Catering ──────────────────────────────────────────────
     // Internal vendor: food options are always available regardless of which
     // experience vendor is selected. Not shown in the vendor-selection step.
     {
       id: 'sg-catering',
-      name: 'She Gathers Catering',
+      name: 'Aura Juicery',
       isInternal: true,
       activities: [],
       foodOptions: [
@@ -246,6 +255,7 @@ export class VendorService {
           id: 'charcuterie-large',
           label: 'Large Charcuterie Tray',
           description: 'Traditional tray with assorted meats, cheeses, fruit & veggies — or sweet & salty with fruit and assorted sweets.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'flat',
           price: 75,
           variants: [
@@ -257,6 +267,7 @@ export class VendorService {
           id: 'charcuterie-small',
           label: 'Small Charcuterie Tray',
           description: 'Traditional tray with assorted meats, cheeses, fruit & veggies — or sweet & salty with fruit and assorted sweets.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'flat',
           price: 50,
           variants: [
@@ -269,6 +280,7 @@ export class VendorService {
           id: 'fruit-tray',
           label: 'Fruit Tray',
           description: '4 lbs fresh fruit assortment with dip and accompaniment.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'flat',
           price: 75
         },
@@ -276,6 +288,7 @@ export class VendorService {
           id: 'veggie-tray',
           label: 'Veggie Tray',
           description: '4 lbs fresh vegetable assortment with dips and accompaniment.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'flat',
           price: 75
         },
@@ -284,6 +297,7 @@ export class VendorService {
           id: 'cold-pressed-juice',
           label: 'Organic Cold Pressed Juice',
           description: '16 oz bottle per person.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'perHead',
           price: 10
         },
@@ -291,6 +305,7 @@ export class VendorService {
           id: 'smoothie-bar',
           label: 'Smoothie Bar',
           description: 'One smoothie per person — barista included.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'perHead',
           price: 14
         },
@@ -299,6 +314,7 @@ export class VendorService {
           id: 'salad-mediterranean',
           label: 'Mediterranean Salad',
           description: 'Mixed greens, Kalamata olives, feta, tomato, cucumber, Greek dressing.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'perHead',
           price: 18
         },
@@ -306,6 +322,7 @@ export class VendorService {
           id: 'salad-aura',
           label: 'Aura Salad',
           description: 'Mixed greens, pom seeds, carrot, bell pepper, cucumber, blueberry, grape, lemon dressing.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'perHead',
           price: 18
         },
@@ -313,6 +330,7 @@ export class VendorService {
           id: 'salad-strawberry-sunshine',
           label: 'Strawberry Sunshine Salad',
           description: 'Romaine, strawberry, goat cheese, pecans, balsamic dressing.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'perHead',
           price: 18
         },
@@ -320,6 +338,7 @@ export class VendorService {
           id: 'salad-chicken-mediterranean',
           label: 'Add Chicken — Mediterranean',
           description: '+$2/person grilled chicken on your Mediterranean Salad.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'perHead',
           price: 2,
           parentOptionIds: ['salad-mediterranean']
@@ -328,6 +347,7 @@ export class VendorService {
           id: 'salad-chicken-aura',
           label: 'Add Chicken — Aura',
           description: '+$2/person grilled chicken on your Aura Salad.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'perHead',
           price: 2,
           parentOptionIds: ['salad-aura']
@@ -336,6 +356,7 @@ export class VendorService {
           id: 'salad-chicken-sunshine',
           label: 'Add Chicken — Strawberry Sunshine',
           description: '+$2/person grilled chicken on your Strawberry Sunshine Salad.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'perHead',
           price: 2,
           parentOptionIds: ['salad-strawberry-sunshine']
@@ -345,6 +366,7 @@ export class VendorService {
           id: 'protein-bites-pb',
           label: 'Protein Bites – Peanut Butter',
           description: 'Pack of 3 bites.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'perItem',
           price: 5,
           allowQuantity: true,
@@ -354,6 +376,7 @@ export class VendorService {
           id: 'protein-bites-choc',
           label: 'Protein Bites – Chocolate',
           description: 'Pack of 3 bites.',
+          vendorCredit: 'Aura Juicery',
           pricingType: 'perItem',
           price: 5,
           allowQuantity: true,

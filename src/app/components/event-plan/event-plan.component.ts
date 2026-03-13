@@ -12,7 +12,5 @@ import { environment } from '../../../environments/environment';
   styleUrl: './event-plan.component.scss'
 })
 export class EventPlanComponent {
-  squareAppId      = environment.square.appId;
-  squareLocationId = environment.square.locationId;
-  backendUrl       = environment.backendUrl;
+  backendUrl = environment.backendUrl;
 }

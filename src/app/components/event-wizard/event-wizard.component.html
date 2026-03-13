@@ -81,10 +81,12 @@
           </p>
 
           <div class="cards">
+           
+
             <button
               class="card"
               *ngFor="let group of groupedExperiences()"
-                [class.is-active]="isGroupSelected(group)"
+              [class.is-active]="isGroupSelected(group)"
               (click)="openExperience(group)"
             >
               <img
@@ -99,16 +101,32 @@
                   {{ group.vendor.blurb }}
                 </p>
 
-                <p class="price" *ngIf="group.activities.length > 1">
-                  {{ group.activities.length }} experience options
+                <p class="price" *ngIf="group.activities.length === 1 && group.activities[0].pricePerHead != null">
+                  ${{ group.activities[0].pricePerHead }}/person
                 </p>
-
-                <p class="price" *ngIf="group.activities.length === 1">
-                  {{ group.activities[0].title }}
+                <p class="price" *ngIf="group.activities.length === 1 && group.activities[0].priceFlat != null && group.activities[0].pricePerHead == null">
+                  ${{ group.activities[0].priceFlat }} flat
+                </p>
+                <p class="price" *ngIf="group.activities.length > 1 && group.vendor.defaultPricePerHead != null">
+                  From ${{ group.vendor.defaultPricePerHead }}/person · {{ group.activities.length }} options
                 </p>
               </div>
             </button>
           </div>
+
+           <!-- No-experience option -->
+            <button
+              class="card card--no-experience"
+              [class.is-active]="noExperience()"
+              (click)="selectNoExperience()"
+            >
+              <div class="card__body">
+                <h3>Just a Gathering</h3>
+                <p class="muted">
+                  No hosted activity — enjoy catering, favors, and good company on your own terms.
+                </p>
+              </div>
+            </button>
         </div>
 
 
@@ -147,6 +165,7 @@
 
               <!-- Description -->
               <p class="option-desc muted" *ngIf="opt.description">{{ opt.description }}</p>
+              <p class="option-credit" *ngIf="opt.vendorCredit">By {{ opt.vendorCredit }}</p>
 
               <!-- EXPANDED AREA — only show when there is something to configure -->
               <div class="option-expanded" *ngIf="selFood().has(opt.id) && (opt.variants?.length || opt.allowQuantity || opt.allowNotes)">
@@ -209,14 +228,23 @@
           <p class="muted">Totally optional — choose what you want.</p>
 
           <div class="options">
-            <label *ngFor="let opt of allDessertOptions()">
-              <input
-                type="checkbox"
-                [checked]="selDessert().has(opt.id)"
-                (change)="toggle(selDessert, opt.id)"
-              />
-              <span>{{ opt.label }}</span>
-            </label>
+            <div class="option-card" *ngFor="let opt of allDessertOptions()">
+              <label class="option-header">
+                <input
+                  type="checkbox"
+                  [checked]="selDessert().has(opt.id)"
+                  (change)="toggle(selDessert, opt.id)"
+                />
+                <span class="option-label-group">
+                  <span>{{ opt.label }}</span>
+                  <span class="option-price">
+                    <ng-container *ngIf="opt.pricingType === 'perHead'">${{ opt.price }}/person</ng-container>
+                    <ng-container *ngIf="opt.pricingType === 'flat'">${{ opt.price }}</ng-container>
+                  </span>
+                </span>
+              </label>
+              <p class="option-credit" *ngIf="opt.vendorCredit">By {{ opt.vendorCredit }}</p>
+            </div>
           </div>
         </div>
 
@@ -248,6 +276,7 @@
               </label>
 
               <p class="option-desc muted" *ngIf="opt.description">{{ opt.description }}</p>
+              <p class="option-credit" *ngIf="opt.vendorCredit">By {{ opt.vendorCredit }}</p>
 
               <div class="option-expanded" *ngIf="selFavors().has(opt.id) && (opt.allowQuantity || opt.allowNotes)">
 
@@ -276,122 +305,19 @@
           </div>
         </div>
 
-        <!-- VENDORS -->
-        <div *ngIf="activeStepKey() === 'vendors'" class="panel">
-          <h2>Pick vendors to compare</h2>
-          <p class="muted">Select one or more — your pricing updates automatically.</p>
-
-          <ng-container *ngIf="matchedVendors().length > 0; else showAllVendors">
-            <h3 class="section-title">Recommended Vendors</h3>
-            <div class="cards">
-              <button
-                class="card"
-                *ngFor="let v of matchedVendors()"
-                [class.is-active]="selectedVendorIds().has(v.id)"
-                (click)="toggleVendor(v.id)">
-                <img *ngIf="v.banner" [src]="v.banner" alt="" />
-                <div class="card__body">
-                  <h3>{{ v.name }}</h3>
-                  <p class="muted">{{ v.blurb }}</p>
-                  <p class="price" *ngIf="v.defaultPricePerHead != null">
-                    Base: ${{ v.defaultPricePerHead }} / person
-                  </p>
-                </div>
-              </button>
-            </div>
-          </ng-container>
-
-          <ng-template #showAllVendors>
-            <h3 class="section-title">Available Vendors</h3>
-            <div class="cards">
-              <button
-                class="card"
-                *ngFor="let v of experienceVendors()"
-                [class.is-active]="selectedVendorIds().has(v.id)"
-                (click)="toggleVendor(v.id)">
-                <img *ngIf="v.banner" [src]="v.banner" alt="" />
-                <div class="card__body">
-                  <h3>{{ v.name }}</h3>
-                  <p class="muted">{{ v.blurb }}</p>
-                  <p class="price" *ngIf="v.defaultPricePerHead != null">
-                    Base: ${{ v.defaultPricePerHead }} / person
-                  </p>
-                </div>
-              </button>
-            </div>
-          </ng-template>
-
-
-          <ng-container *ngIf="matchedVendors().length === 0">
-            <p class="muted">
-              No vendors matched every selection — try adjusting your activity or event type.
-            </p>
-          </ng-container>
-
-          <ng-container *ngIf="fallbackVendors().length > 0">
-            <h3 class="section-title">More Options</h3>
-            <div class="cards">
-              <button
-                class="card"
-                *ngFor="let v of fallbackVendors()"
-                [class.is-active]="selectedVendorIds().has(v.id)"
-                (click)="toggleVendor(v.id)">
-                <img *ngIf="v.banner" [src]="v.banner" alt="" />
-                <div class="card__body">
-                  <h3>{{ v.name }}</h3>
-                  <p class="muted">{{ v.blurb }}</p>
-                  <p class="price" *ngIf="v.defaultPricePerHead != null">
-                    Base: ${{ v.defaultPricePerHead }} / person
-                  </p>
-                </div>
-              </button>
-            </div>
-          </ng-container>
-        </div>
-
         <!-- REVIEW: Order Summary -->
         <div *ngIf="activeStepKey() === 'review' && reviewView() === 'summary'" class="panel panel--review">
           <h2>Confirm & Reserve</h2>
           <p class="muted">Review your selections below, then proceed to pay your deposit.</p>
 
-          <div class="review-block" *ngFor="let v of selectedVendors()">
+          <!-- One block per vendor that has at least one priced line item -->
+          <div class="review-block" *ngFor="let v of vendorsWithLineItems()">
             <div class="review-vendor">
               <h3>{{ v.name }}</h3>
-              <p class="muted" *ngIf="v.blurb">{{ v.blurb }}</p>
-            </div>
-
-            <ul class="lines">
-              <li *ngFor="let li of getLineItemsForVendor(v.id)">
-                <span>{{ li.label }}</span>
-                <strong>{{ li.amount | currency:'USD':'symbol':'1.2-2' }}</strong>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Product-only vendors (e.g. favors with no activity/vendor selection) -->
-          <div
-            class="review-block"
-            *ngFor="let v of productOnlyVendors()"
-            [style.display]="getLineItemsForVendor(v.id).length ? '' : 'none'"
-          >
-            <div class="review-vendor">
-              <h3>{{ v.name }}</h3>
+              <p class="muted" *ngIf="v.blurb && v.activities.length > 0">{{ v.blurb }}</p>
             </div>
             <ul class="lines">
               <li *ngFor="let li of getLineItemsForVendor(v.id)">
-                <span>{{ li.label }}</span>
-                <strong>{{ li.amount | currency:'USD':'symbol':'1.2-2' }}</strong>
-              </li>
-            </ul>
-          </div>
-
-          <!-- She Gathers catering items (not tied to any one vendor) -->
-          <div class="review-block" *ngIf="getLineItemsForVendor('sg-catering').length > 0">
-            <div class="review-vendor">
-              <h3>She Gathers Catering</h3>
-            </div>
-            <ul class="lines">
-              <li *ngFor="let li of getLineItemsForVendor('sg-catering')">
                 <span>{{ li.label }}</span>
                 <strong>{{ li.amount | currency:'USD':'symbol':'1.2-2' }}</strong>
               </li>
@@ -411,73 +337,132 @@
 
           <div class="actions">
             <button class="btn btn-ghost" (click)="back()">Back</button>
-            <button class="btn btn-primary" (click)="proceedToPayment()">
-              Continue to Payment
+            <button class="btn btn-primary" (click)="proceedToBooking()">
+              Request This Booking
             </button>
           </div>
         </div>
 
-        <!-- REVIEW: Payment -->
-        <div *ngIf="activeStepKey() === 'review' && reviewView() === 'checkout'" class="panel panel--review">
-          <h2>Secure Payment</h2>
-          <p class="muted">
-            Your deposit of <strong>{{ depositAmount() | currency:'USD':'symbol':'1.2-2' }}</strong>
-            will be charged today to hold your reservation.
-          </p>
-
-          <!-- Payment form -->
-          <div *ngIf="paymentStatus() !== 'success'">
+        <!-- REVIEW: Booking Form -->
+        <div *ngIf="activeStepKey() === 'review' && reviewView() === 'booking'" class="panel panel--review">
+          <ng-container *ngIf="bookingStatus() !== 'success'">
+            <h2>Request Your Booking</h2>
+            <p class="muted">Fill in your details and preferred dates. We'll confirm availability and send you a deposit link by email.</p>
 
             <!-- Contact info -->
             <div class="review-contact">
               <div class="contact-field">
-                <label for="customer-name">Your Name <span class="required">*</span></label>
+                <label for="book-name">Your Name <span class="required">*</span></label>
                 <input
-                  id="customer-name"
+                  id="book-name"
                   type="text"
                   placeholder="Full name"
                   [ngModel]="customerName()"
                   (ngModelChange)="customerName.set($event)"
-                  [disabled]="paymentStatus() === 'processing'"
+                  [disabled]="bookingStatus() === 'submitting'"
                 />
               </div>
               <div class="contact-field">
-                <label for="customer-email">Email Address <span class="required">*</span></label>
+                <label for="book-email">Email Address <span class="required">*</span></label>
                 <input
-                  id="customer-email"
+                  id="book-email"
                   type="email"
                   placeholder="you@example.com"
                   [ngModel]="customerEmail()"
                   (ngModelChange)="customerEmail.set($event)"
-                  [disabled]="paymentStatus() === 'processing'"
+                  [disabled]="bookingStatus() === 'submitting'"
+                />
+              </div>
+              <div class="contact-field">
+                <label for="book-phone">Phone Number <span class="required">*</span></label>
+                <input
+                  id="book-phone"
+                  type="tel"
+                  placeholder="(555) 000-0000"
+                  [ngModel]="customerPhone()"
+                  (ngModelChange)="customerPhone.set($event)"
+                  [disabled]="bookingStatus() === 'submitting'"
                 />
               </div>
             </div>
 
-            <div class="payment-error-msg" *ngIf="contactError()">
-              {{ contactError() }}
+            <!-- Preferred dates -->
+            <div class="booking-dates">
+              <p class="booking-dates__label">
+                Preferred Dates
+                <span class="booking-dates__hint">{{ preferredDates().length }}/3 selected</span>
+              </p>
+
+              <div class="contact-field">
+                <label for="book-date-picker">
+                  {{ preferredDates().length < 3 ? 'Add a date' : 'Max 3 dates selected' }}
+                </label>
+                <input
+                  id="book-date-picker"
+                  type="date"
+                  [min]="today"
+                  [disabled]="preferredDates().length >= 3 || bookingStatus() === 'submitting'"
+                  (change)="addPreferredDate($any($event.target).value); $any($event.target).value = ''"
+                />
+              </div>
+
+              <div class="date-chips" *ngIf="preferredDates().length > 0">
+                <span class="date-chip" *ngFor="let d of preferredDates(); let i = index">
+                  {{ formatDate(d) }}
+                  <button
+                    type="button"
+                    class="date-chip__remove"
+                    (click)="removePreferredDate(i)"
+                    [disabled]="bookingStatus() === 'submitting'"
+                    aria-label="Remove date"
+                  >&#x2715;</button>
+                </span>
+              </div>
             </div>
 
-            <div id="card-container" class="sq-card-wrapper"></div>
+            <!-- Notes -->
+            <div class="contact-field">
+              <label for="book-notes">Additional Notes</label>
+              <textarea
+                id="book-notes"
+                rows="3"
+                placeholder="Special requests, dietary needs, questions…"
+                [ngModel]="customerNotes()"
+                (ngModelChange)="customerNotes.set($event)"
+                [disabled]="bookingStatus() === 'submitting'"
+              ></textarea>
+            </div>
 
-            <div class="payment-error-msg" *ngIf="paymentStatus() === 'error'">
-              {{ paymentError() }}
+            <div class="booking-error-msg" *ngIf="contactError()">{{ contactError() }}</div>
+            <div class="booking-error-msg" *ngIf="bookingStatus() === 'error'">{{ bookingError() }}</div>
+
+            <!-- Mini cost recap -->
+            <div class="booking-cost-recap">
+              <div class="recap-row">
+                <span>Event Total</span>
+                <strong>{{ subtotal() | currency:'USD':'symbol':'1.2-2' }}</strong>
+              </div>
+              <div class="recap-row">
+                <span>Deposit Due ({{ (depositPercent() * 100) | number:'1.0-0' }}%)</span>
+                <strong>{{ depositAmount() | currency:'USD':'symbol':'1.2-2' }}</strong>
+              </div>
+              <p class="muted recap-note">She Gathers will be in touch to confirm your date — once confirmed, you'll receive a deposit payment link by email to secure your reservation.</p>
             </div>
 
             <div class="actions">
-              <button class="btn btn-ghost" (click)="reviewView.set('summary')" [disabled]="paymentStatus() === 'processing'">Back</button>
-              <button class="btn btn-primary" (click)="submitPayment()" [disabled]="paymentStatus() === 'processing'">
-                <ng-container *ngIf="paymentStatus() !== 'processing'">Pay Deposit — {{ depositAmount() | currency:'USD':'symbol':'1.2-2' }}</ng-container>
-                <ng-container *ngIf="paymentStatus() === 'processing'">Processing&#8230;</ng-container>
+              <button class="btn btn-ghost" (click)="reviewView.set('summary')" [disabled]="bookingStatus() === 'submitting'">Back</button>
+              <button class="btn btn-primary" (click)="submitBooking()" [disabled]="bookingStatus() === 'submitting'">
+                <ng-container *ngIf="bookingStatus() !== 'submitting'">Send Booking Request</ng-container>
+                <ng-container *ngIf="bookingStatus() === 'submitting'">Sending&#8230;</ng-container>
               </button>
             </div>
-          </div>
+          </ng-container>
 
           <!-- Success state -->
-          <div class="payment-success" *ngIf="paymentStatus() === 'success'">
+          <div class="booking-success" *ngIf="bookingStatus() === 'success'">
             <div class="success-icon">&#10003;</div>
-            <h3>Deposit Received!</h3>
-            <p class="muted">We'll be in touch shortly to confirm your event details.</p>
+            <h3>Request Sent!</h3>
+            <p class="muted">Check your inbox — we've emailed you a full summary of your event. Megan will be in touch to confirm your date and send over your deposit link.</p>
           </div>
         </div>
 
@@ -519,7 +504,7 @@
 
           <div class="summary-row">
             <span class="muted">Experiences</span>
-            <strong>{{ selActivities().size }}</strong>
+            <strong>{{ noExperience() ? 'None' : selActivities().size }}</strong>
           </div>
 
           <div class="summary-row">
@@ -527,11 +512,6 @@
             <strong>
               {{ selFood().size + selDessert().size + selFavors().size }}
             </strong>
-          </div>
-
-          <div class="summary-row">
-            <span class="muted">Vendors</span>
-            <strong>{{ selectedVendorIds().size }}</strong>
           </div>
 
           <div class="summary-divider"></div>

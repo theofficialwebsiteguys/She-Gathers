@@ -179,6 +179,8 @@
 input[type="number"],
 input[type="text"],
 input[type="email"],
+input[type="tel"],
+input[type="date"],
 textarea,
 select {
   width: min(380px, 100%);
@@ -196,6 +198,36 @@ select {
     background: #fff;
     border-color: var(--sg-terracotta);
     box-shadow: 0 0 0 3px rgba(186,127,110,0.18);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+/* Date picker chrome styling */
+input[type="date"] {
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+
+  &::-webkit-calendar-picker-indicator {
+    opacity: 0.6;
+    cursor: pointer;
+    filter: invert(52%) sepia(18%) saturate(800%) hue-rotate(330deg);
+    transition: opacity 0.2s;
+  }
+
+  &:hover::-webkit-calendar-picker-indicator,
+  &:focus::-webkit-calendar-picker-indicator {
+    opacity: 1;
+  }
+
+  /* Prevent empty date showing placeholder-like text in Chrome */
+  &:not([value])::-webkit-datetime-edit,
+  &[value=""]::-webkit-datetime-edit {
+    color: var(--sg-ink-70, #888);
   }
 }
 
@@ -284,6 +316,30 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
     font-weight: 600;
     color: var(--sg-terracotta);
   }
+
+  &--no-experience {
+    border-style: dashed;
+    background: var(--sg-blush-10, #fdf6f4);
+    grid-column: 1 / -1;
+
+    .card__body {
+      padding: 20px;
+
+      h3 { font-size: 1.05rem; }
+    }
+  }
+}
+
+.no-experience-notice {
+  background: var(--sg-blush-10, #fdf6f4);
+  border: 1px solid rgba(186,127,110,0.3);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  font-size: 0.92rem;
+  color: var(--sg-ink-70);
+
+  p { margin: 0; }
 }
 
 /* ─── Food / option cards ──────────────────────────────────────────────── */
@@ -384,6 +440,15 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
   line-height: 1.45;
 }
 
+.option-credit {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--sg-terracotta);
+  margin: 0;
+  padding: 0 0.9rem 0.6rem;
+  letter-spacing: 0.01em;
+}
+
 .option-expanded {
   padding: 12px 12px 10px;
   border-top: 1px solid var(--sg-border);
@@ -472,26 +537,48 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
   color: var(--sg-ink);
 }
 
-/* ─── Contact fields on payment step ───────────────────────────────────── */
+/* ─── Contact / booking fields ──────────────────────────────────────────── */
 .review-contact {
   display: grid;
-  gap: 12px;
-  margin-bottom: 4px;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 20px;
+  margin-bottom: 16px;
+
+  /* Phone field takes its own row */
+  .contact-field:last-child {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 520px) {
+    grid-template-columns: 1fr;
+
+    .contact-field:last-child {
+      grid-column: unset;
+    }
+  }
 }
 
 .contact-field {
   display: grid;
-  gap: 5px;
+  gap: 6px;
 
   label {
-    font-size: 0.88rem;
-    font-weight: 600;
+    font-size: 0.82rem;
+    font-weight: 700;
     color: var(--sg-ink);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
   }
 
-  input {
+  input,
+  textarea {
     width: 100%;
     box-sizing: border-box;
+    max-width: 100%;
+  }
+
+  textarea {
+    min-height: 80px;
   }
 }
 
@@ -593,22 +680,98 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
   }
 }
 
-/* ─── Card input wrapper ───────────────────────────────────────────────── */
-.sq-card-wrapper {
-  min-height: 90px;
-  background: #fff;
-  border: 1px solid var(--sg-border);
-  border-radius: 10px;
-  padding: 4px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+/* ─── Booking form ─────────────────────────────────────────────────────── */
+.booking-dates {
+  margin: 4px 0 16px;
 
-  &:focus-within {
-    border-color: var(--sg-terracotta);
-    box-shadow: 0 0 0 3px rgba(186,127,110,0.15);
+  &__label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--sg-ink);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+
+  &__hint {
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--sg-ink-70, #888);
+    font-size: 0.8rem;
+  }
+
+  .contact-field input[type="date"] {
+    max-width: 260px;
+    @media (max-width: 520px) { max-width: 100%; }
   }
 }
 
-.payment-error-msg {
+.date-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.date-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(186,127,110,0.12);
+  border: 1px solid rgba(186,127,110,0.35);
+  color: var(--sg-ink);
+  border-radius: 999px;
+  padding: 5px 12px 5px 14px;
+  font-size: 0.88rem;
+  font-weight: 600;
+
+  &__remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(186,127,110,0.25);
+    color: var(--sg-terracotta);
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: background 0.15s;
+
+    &:hover { background: rgba(186,127,110,0.5); }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+}
+
+.booking-cost-recap {
+  background: var(--sg-blush-10, #fdf6f4);
+  border: 1px solid rgba(186,127,110,0.2);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 20px 0 4px;
+  display: grid;
+  gap: 8px;
+
+  .recap-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+
+    strong { font-weight: 700; }
+  }
+
+  .recap-note {
+    margin: 4px 0 0;
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+}
+
+.booking-error-msg {
   background: #fef2f2;
   border: 1px solid #fecaca;
   border-radius: 10px;
@@ -618,7 +781,7 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
   line-height: 1.5;
 }
 
-.payment-success {
+.booking-success {
   text-align: center;
   padding: 28px 20px;
   display: grid;

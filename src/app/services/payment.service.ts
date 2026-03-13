@@ -3,22 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EventPlan } from '../models';
 
-export interface CheckoutPayload {
-  sourceId: string;
-  amountMoney: { amount: number; currency: string };
-  eventPlan: EventPlan;
-}
-
-export interface CheckoutResponse {
-  payment?: Record<string, unknown>;
-  orderId?: string;
+export interface BookingResponse {
+  success: boolean;
+  message?: string;
 }
 
 @Injectable({ providedIn: 'root' })
-export class PaymentService {
+export class BookingService {
   private http = inject(HttpClient);
 
-  checkout(backendUrl: string, payload: CheckoutPayload): Observable<CheckoutResponse> {
-    return this.http.post<CheckoutResponse>(`${backendUrl}/payments/checkout`, payload);
+  requestBooking(backendUrl: string, plan: EventPlan): Observable<BookingResponse> {
+    return this.http.post<BookingResponse>(`${backendUrl}/bookings/request`, plan);
   }
 }

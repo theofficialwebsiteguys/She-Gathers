@@ -43,6 +43,9 @@ export interface Option {
   /** Short description shown beneath the label (ingredients, serving info, etc.) */
   description?: string;
 
+  /** Credit line shown beneath the option, e.g. "By Aura Juicery" */
+  vendorCredit?: string;
+
   pricingType: 'flat' | 'perHead' | 'perItem';
 
   price?: number;
@@ -77,8 +80,11 @@ export interface LineItem {
 export interface EventPlan {
   customerName?: string;
   customerEmail?: string;
+  customerPhone?: string;
+  customerNotes?: string;
+  preferredDates?: string[];        // ISO date strings, up to 3
 
-  vendorIds: string[];              // ✅ multi-vendor compare
+  vendorIds: string[];
   vendorNames?: string[];
 
   activities: { id: string; title?: string }[];
