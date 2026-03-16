@@ -7,6 +7,8 @@ export interface Vendor {
   logo?: string;
   banner?: string;
   blurb?: string;
+  /** Shown in wizard activity/vendor steps instead of blurb when present */
+  activityBlurb?: string;
 
   minGuests?: number;
   maxGuests?: number;

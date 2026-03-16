@@ -98,7 +98,7 @@
               <div class="card__body">
                 <h3>{{ group.vendor.name }}</h3>
                 <p class="muted">
-                  {{ group.vendor.blurb }}
+                  {{ group.vendor.activityBlurb || group.vendor.blurb }}
                 </p>
 
                 <p class="price" *ngIf="group.activities.length === 1 && group.activities[0].pricePerHead != null">
@@ -314,7 +314,7 @@
           <div class="review-block" *ngFor="let v of vendorsWithLineItems()">
             <div class="review-vendor">
               <h3>{{ v.name }}</h3>
-              <p class="muted" *ngIf="v.blurb && v.activities.length > 0">{{ v.blurb }}</p>
+              <p class="muted" *ngIf="(v.activityBlurb || v.blurb) && v.activities.length > 0">{{ v.activityBlurb || v.blurb }}</p>
             </div>
             <ul class="lines">
               <li *ngFor="let li of getLineItemsForVendor(v.id)">

@@ -22,7 +22,7 @@ export class ExperiencesComponent {
   /** Derived experiences (single source of truth) */
   experiences = computed(() =>
     this.vendorService.vendors()
-      .filter(vendor => !vendor.isInternal)
+      .filter(vendor => !vendor.isInternal && vendor.activities?.length)
       .map(vendor => ({
         vendorId: vendor.id,
         title: vendor.name,

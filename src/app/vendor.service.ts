@@ -132,14 +132,15 @@ export class VendorService {
     {
       id: 'clean-bee-organics',
       name: 'The Clean Bee Organics',
-      banner: 'assets/vendors/essential-oil.jpg',
-      blurb: `Essential oils interact with your body and mind in different ways and can offer many therapeutic benefits- improve mood, support sleep, reduce stress and tension, promote clarity and aid in healing.`,
-      defaultPricePerHead: 30,
+      banner: 'assets/vendors/clean-bee.jpg',
+      blurb: `The Clean Bee Organics creates skincare with clean ingredients and essential oils that nourish your skin. Be kind to yourself, and to our planet. Made without hormone disruptors or toxic ingredients, these are products that you can feel good about choosing.`,
+      activityBlurb: `Learn the basics of essential oils, and which best align with your needs and preferences. Then, get creative and make two linen sprays with your own customized blends!`,
+      defaultPricePerHead: 35,
       minGuests: 10,
       maxGuests: 30,
       supportedEventTypes: ['Wellness', 'Birthday', 'Bachelorette', 'Other'],
       activities: [
-        { id: 'essential-oils-intro', vendorId: 'clean-bee-organics', title: 'Essential Oils & DIY Roller', image: 'assets/vendors/essential-oil.jpg', durationMinutes: 60, pricePerHead: 30 }
+        { id: 'essential-oils-intro', vendorId: 'clean-bee-organics', title: 'Essential Oils & DIY Roller', image: 'assets/vendors/clean-bee.jpg', durationMinutes: 60, pricePerHead: 35 }
       ],
       foodOptions: [],
       dessertOptions: [],
@@ -181,7 +182,7 @@ export class VendorService {
 
     {
       id: 'cookie-events',
-      name: 'Tierney Town Treats',
+      name: 'Cookie Events',
       banner: 'assets/vendors/tierney.jpg',
       blurb: `Cookie Events offers elevated cookie decorating experiences for kids, teens, and adults—ranging from playful cookie parties to refined hands-on decorating classes and custom edible displays.`,
       defaultPricePerHead: 60,
