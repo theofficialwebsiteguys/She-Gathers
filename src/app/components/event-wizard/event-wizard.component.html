@@ -89,11 +89,9 @@
               [class.is-active]="isGroupSelected(group)"
               (click)="openExperience(group)"
             >
-              <img
-                *ngIf="group.vendor.banner"
-                [src]="group.vendor.banner"
-                alt=""
-              />
+              <div class="card__img" *ngIf="group.vendor.banner">
+                <img [src]="group.vendor.banner" alt="" />
+              </div>
 
               <div class="card__body">
                 <h3>{{ group.vendor.name }}</h3>
@@ -388,35 +386,35 @@
 
             <!-- Preferred dates -->
             <div class="booking-dates">
-              <p class="booking-dates__label">
-                Preferred Dates
-                <span class="booking-dates__hint">{{ preferredDates().length }}/3 selected</span>
-              </p>
+              <p class="booking-dates__label">Preferred Dates</p>
+              <p class="muted booking-dates__sub">Pick up to 3 dates — your 1st choice is required. We'll do our best to accommodate it.</p>
 
-              <div class="contact-field">
-                <label for="book-date-picker">
-                  {{ preferredDates().length < 3 ? 'Add a date' : 'Max 3 dates selected' }}
-                </label>
-                <input
-                  id="book-date-picker"
-                  type="date"
-                  [min]="today"
-                  [disabled]="preferredDates().length >= 3 || bookingStatus() === 'submitting'"
-                  (change)="addPreferredDate($any($event.target).value); $any($event.target).value = ''"
-                />
-              </div>
+              <div class="date-slots">
 
-              <div class="date-chips" *ngIf="preferredDates().length > 0">
-                <span class="date-chip" *ngFor="let d of preferredDates(); let i = index">
-                  {{ formatDate(d) }}
-                  <button
-                    type="button"
-                    class="date-chip__remove"
-                    (click)="removePreferredDate(i)"
-                    [disabled]="bookingStatus() === 'submitting'"
-                    aria-label="Remove date"
-                  >&#x2715;</button>
-                </span>
+                <div class="date-slot" [class.date-slot--filled]="!!preferredDates()[0]" (click)="openDatePicker($event)">
+                  <span class="date-slot__choice">1st Choice <span class="date-slot__required">Required</span></span>
+                  <span class="date-slot__value" *ngIf="preferredDates()[0]">{{ formatDate(preferredDates()[0]) }}</span>
+                  <span class="date-slot__placeholder" *ngIf="!preferredDates()[0]">Tap to pick a date</span>
+                  <button *ngIf="preferredDates()[0]" type="button" class="date-slot__clear" (click)="$event.stopPropagation(); setPreferredDate(0, '')" [disabled]="bookingStatus() === 'submitting'" aria-label="Clear date">&#x2715;</button>
+                  <input class="date-slot__input" type="date" [min]="today" [value]="preferredDates()[0] || ''" (change)="setPreferredDate(0, $any($event.target).value)" [disabled]="bookingStatus() === 'submitting'" />
+                </div>
+
+                <div class="date-slot" [class.date-slot--filled]="!!preferredDates()[1]" [class.date-slot--disabled]="!preferredDates()[0]" (click)="openDatePicker($event)">
+                  <span class="date-slot__choice">2nd Choice <span class="date-slot__optional">Optional</span></span>
+                  <span class="date-slot__value" *ngIf="preferredDates()[1]">{{ formatDate(preferredDates()[1]) }}</span>
+                  <span class="date-slot__placeholder" *ngIf="!preferredDates()[1]">Tap to pick a date</span>
+                  <button *ngIf="preferredDates()[1]" type="button" class="date-slot__clear" (click)="$event.stopPropagation(); setPreferredDate(1, '')" [disabled]="bookingStatus() === 'submitting'" aria-label="Clear date">&#x2715;</button>
+                  <input *ngIf="preferredDates()[0]" class="date-slot__input" type="date" [min]="today" [value]="preferredDates()[1] || ''" (change)="setPreferredDate(1, $any($event.target).value)" [disabled]="bookingStatus() === 'submitting'" />
+                </div>
+
+                <div class="date-slot" [class.date-slot--filled]="!!preferredDates()[2]" [class.date-slot--disabled]="!preferredDates()[1]" (click)="openDatePicker($event)">
+                  <span class="date-slot__choice">3rd Choice <span class="date-slot__optional">Optional</span></span>
+                  <span class="date-slot__value" *ngIf="preferredDates()[2]">{{ formatDate(preferredDates()[2]) }}</span>
+                  <span class="date-slot__placeholder" *ngIf="!preferredDates()[2]">Tap to pick a date</span>
+                  <button *ngIf="preferredDates()[2]" type="button" class="date-slot__clear" (click)="$event.stopPropagation(); setPreferredDate(2, '')" [disabled]="bookingStatus() === 'submitting'" aria-label="Clear date">&#x2715;</button>
+                  <input *ngIf="preferredDates()[1]" class="date-slot__input" type="date" [min]="today" [value]="preferredDates()[2] || ''" (change)="setPreferredDate(2, $any($event.target).value)" [disabled]="bookingStatus() === 'submitting'" />
+                </div>
+
               </div>
             </div>
 
@@ -433,9 +431,6 @@
               ></textarea>
             </div>
 
-            <div class="booking-error-msg" *ngIf="contactError()">{{ contactError() }}</div>
-            <div class="booking-error-msg" *ngIf="bookingStatus() === 'error'">{{ bookingError() }}</div>
-
             <!-- Mini cost recap -->
             <div class="booking-cost-recap">
               <div class="recap-row">
@@ -443,15 +438,29 @@
                 <strong>{{ subtotal() | currency:'USD':'symbol':'1.2-2' }}</strong>
               </div>
               <div class="recap-row">
-                <span>Deposit Due ({{ (depositPercent() * 100) | number:'1.0-0' }}%)</span>
+                <span>Deposit ({{ (depositPercent() * 100) | number:'1.0-0' }}%) — due once date is confirmed</span>
                 <strong>{{ depositAmount() | currency:'USD':'symbol':'1.2-2' }}</strong>
               </div>
-              <p class="muted recap-note">She Gathers will be in touch to confirm your date — once confirmed, you'll receive a deposit payment link by email to secure your reservation.</p>
+              <div class="recap-row recap-row--muted">
+                <span>Remaining balance — due 1 week before event</span>
+                <strong>{{ subtotal() - depositAmount() | currency:'USD':'symbol':'1.2-2' }}</strong>
+              </div>
             </div>
+
+            <div class="booking-error-msg" *ngIf="contactError()">{{ contactError() }}</div>
+            <div class="booking-error-msg" *ngIf="bookingStatus() === 'error'">{{ bookingError() }}</div>
+
+            <!-- Deposit warning -->
+            <!-- <div class="deposit-warning">
+              <p class="deposit-warning__headline">&#9888; Do not pay your deposit until your date is confirmed.</p>
+              <p>After you submit this request, She Gathers will reach out to confirm your date. <strong>Once your date is confirmed, you will receive a deposit link by email.</strong></p>
+              <p>The deposit is <strong>non-refundable</strong>. If you pay before a date is confirmed and that date is not available, we are unable to issue a refund. Please wait for confirmation before paying.</p>
+              <p>Your remaining balance will be due <strong>one week before your event date</strong>.</p>
+            </div> -->
 
             <div class="actions">
               <button class="btn btn-ghost" (click)="reviewView.set('summary')" [disabled]="bookingStatus() === 'submitting'">Back</button>
-              <button class="btn btn-primary" (click)="submitBooking()" [disabled]="bookingStatus() === 'submitting'">
+              <button class="btn btn-primary" (click)="requestBookingConfirm()" [disabled]="bookingStatus() === 'submitting'">
                 <ng-container *ngIf="bookingStatus() !== 'submitting'">Send Booking Request</ng-container>
                 <ng-container *ngIf="bookingStatus() === 'submitting'">Sending&#8230;</ng-container>
               </button>
@@ -462,7 +471,8 @@
           <div class="booking-success" *ngIf="bookingStatus() === 'success'">
             <div class="success-icon">&#10003;</div>
             <h3>Request Sent!</h3>
-            <p class="muted">Check your inbox — we've emailed you a full summary of your event. Megan will be in touch to confirm your date and send over your deposit link.</p>
+            <p class="muted">She Gathers will be in touch to confirm your date. <strong>Do not pay anything yet</strong> — once your date is confirmed, you'll receive a deposit link by email.</p>
+            <p class="muted" style="margin-top: 8px; font-size: 0.85rem;">Reminder: the deposit is non-refundable, and your remaining balance will be due one week before your event.</p>
           </div>
         </div>
 
@@ -531,6 +541,43 @@
 
   </div>
 </section>
+
+<!-- Booking confirmation modal -->
+<div class="modal-backdrop" *ngIf="showBookingConfirm()"></div>
+<div class="modal" *ngIf="showBookingConfirm()">
+  <div class="modal-card booking-confirm-modal" (click)="$event.stopPropagation()">
+    <div class="booking-confirm-modal__icon">&#9888;</div>
+    <h3>Before you submit — please read</h3>
+
+    <div class="booking-confirm-modal__steps">
+      <div class="booking-confirm-step">
+        <span class="booking-confirm-step__num">1</span>
+        <p><strong>You'll receive a confirmation email</strong> with your full event details and a deposit payment link.</p>
+      </div>
+      <div class="booking-confirm-step">
+        <span class="booking-confirm-step__num">2</span>
+        <p><strong>Do not use the payment link yet.</strong> She Gathers will reach out to personally confirm your date before any payment is made.</p>
+      </div>
+      <div class="booking-confirm-step">
+        <span class="booking-confirm-step__num">3</span>
+        <p><strong>Once your date is confirmed</strong> by She Gathers, return to your confirmation email and use the payment link to pay your deposit and lock in your event.</p>
+      </div>
+      <div class="booking-confirm-step">
+        <span class="booking-confirm-step__num">4</span>
+        <p><strong>The deposit is non-refundable.</strong> Paying before your date is confirmed means we cannot issue a refund if that date is unavailable. Please wait for She Gathers to confirm first.</p>
+      </div>
+      <div class="booking-confirm-step">
+        <span class="booking-confirm-step__num">5</span>
+        <p><strong>Remaining balance is due 1 week before your event date.</strong></p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-ghost" (click)="showBookingConfirm.set(false)">Go Back</button>
+      <button class="btn btn-primary" (click)="submitBooking()">Yes, Send My Request</button>
+    </div>
+  </div>
+</div>
 
 <div
   class="modal-backdrop"

@@ -278,15 +278,22 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
   padding: 0;
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 
-  img {
+  .card__img {
     width: 100%;
-    height: 140px;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.35s ease;
+    height: 160px;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
   }
 
-  &:hover img { transform: scale(1.04); }
+  &:hover .card__img img { transform: scale(1.04); }
 
   .card__body {
     padding: 12px 14px;
@@ -296,6 +303,14 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
       font-size: 1rem;
       font-weight: 700;
       color: var(--sg-ink);
+    }
+
+    p.muted {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin: 0;
     }
   }
 
@@ -680,6 +695,58 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
   }
 }
 
+/* ─── Booking confirmation modal ───────────────────────────────────────── */
+.booking-confirm-modal {
+  max-width: 500px;
+
+  &__icon {
+    font-size: 2rem;
+    color: #f59e0b;
+    text-align: center;
+    line-height: 1;
+  }
+
+  h3 {
+    text-align: center;
+    font-size: 1.15rem;
+    margin: 0;
+  }
+
+  &__steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+.booking-confirm-step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+
+  &__num {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--sg-terracotta);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--sg-ink);
+  }
+}
+
 /* ─── Booking form ─────────────────────────────────────────────────────── */
 .booking-dates {
   margin: 4px 0 16px;
@@ -701,49 +768,138 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
     font-size: 0.8rem;
   }
 
+  &__sub {
+    margin: -4px 0 14px;
+    font-size: 0.88rem;
+  }
+
+  &__max {
+    font-size: 0.85rem;
+    margin: 0 0 12px;
+  }
+
   .contact-field input[type="date"] {
     max-width: 260px;
     @media (max-width: 520px) { max-width: 100%; }
   }
 }
 
-.date-chips {
+.date-slots {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
-.date-chip {
-  display: inline-flex;
+.date-slot {
+  display: flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(186,127,110,0.12);
-  border: 1px solid rgba(186,127,110,0.35);
-  color: var(--sg-ink);
-  border-radius: 999px;
-  padding: 5px 12px 5px 14px;
-  font-size: 0.88rem;
-  font-weight: 600;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--sg-border);
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s, background 0.15s;
 
-  &__remove {
+  &:hover:not(.date-slot--disabled) {
+    border-color: var(--sg-terracotta);
+    background: var(--sg-blush-10, #fdf6f4);
+  }
+
+  &--filled {
+    border-color: rgba(186,127,110,0.5);
+    background: rgba(186,127,110,0.06);
+  }
+
+  &--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &__choice {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--sg-ink);
+    white-space: nowrap;
+    min-width: 82px;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__required {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--sg-terracotta);
+    text-transform: none;
+    letter-spacing: 0;
+    margin-left: 3px;
+  }
+
+  &__optional {
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--sg-ink-70, #aaa);
+    text-transform: none;
+    letter-spacing: 0;
+    margin-left: 3px;
+  }
+
+  &__value {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--sg-ink);
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__placeholder {
+    font-size: 0.88rem;
+    color: var(--sg-ink-70, #bbb);
+    flex: 1;
+    font-style: italic;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__clear {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     border: none;
-    background: rgba(186,127,110,0.25);
+    background: rgba(186,127,110,0.18);
     color: var(--sg-terracotta);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     cursor: pointer;
     padding: 0;
     line-height: 1;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
     transition: background 0.15s;
 
-    &:hover { background: rgba(186,127,110,0.5); }
+    &:hover { background: rgba(186,127,110,0.4); }
     &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+
+  &__input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+    border: none;
+    padding: 0;
   }
 }
 
@@ -764,10 +920,37 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
     strong { font-weight: 700; }
   }
 
+  .recap-row--muted {
+    opacity: 0.65;
+    font-size: 0.88rem;
+  }
+
   .recap-note {
     margin: 4px 0 0;
     font-size: 0.8rem;
     line-height: 1.45;
+  }
+}
+
+.deposit-warning {
+  background: #fffbeb;
+  border: 1px solid #f59e0b;
+  border-left: 4px solid #f59e0b;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 14px 0 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: #78350f;
+
+  p { margin: 0; line-height: 1.5; }
+
+  &__headline {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #92400e;
   }
 }
 

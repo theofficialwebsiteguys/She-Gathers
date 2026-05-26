@@ -76,17 +76,72 @@ export class EventWizardComponent implements OnChanges {
   depositPercent = signal(0.5);
 
   /* ---------------- BOOKING ---------------- */
-  reviewView    = signal<'summary' | 'booking'>('summary');
-  bookingStatus = signal<'idle' | 'submitting' | 'success' | 'error'>('idle');
-  bookingError  = signal('');
-  contactError  = signal('');
+  reviewView       = signal<'summary' | 'booking'>('summary');
+  bookingStatus    = signal<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  bookingError     = signal('');
+  contactError     = signal('');
+  showBookingConfirm = signal(false);
 
   customerPhone = signal('');
   customerNotes = signal('');
   preferredDates = signal<string[]>([]);
   readonly today = new Date().toISOString().split('T')[0];
 
-  constructor(private catalog: VendorService, private bookingService: BookingService, private el: ElementRef<HTMLElement>) {}
+  private readonly STORAGE_KEY = 'sg-wizard-state';
+
+  constructor(private catalog: VendorService, private bookingService: BookingService, private el: ElementRef<HTMLElement>) {
+    this.loadState();
+  }
+
+  private loadState() {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      if (!raw) return;
+      const s = JSON.parse(raw);
+      if (s.step != null)             this.step.set(s.step);
+      if (s.attendees != null)        this.attendees.set(s.attendees);
+      if (s.eventType != null)        this.eventType.set(s.eventType);
+      if (s.customerName != null)     this.customerName.set(s.customerName);
+      if (s.customerEmail != null)    this.customerEmail.set(s.customerEmail);
+      if (s.customerPhone != null)    this.customerPhone.set(s.customerPhone);
+      if (s.customerNotes != null)    this.customerNotes.set(s.customerNotes);
+      if (s.preferredDates != null)   this.preferredDates.set(s.preferredDates);
+      if (s.selActivities != null)    this.selActivities.set(new Set(s.selActivities));
+      if (s.noExperience != null)     this.noExperience.set(s.noExperience);
+      if (s.selFood != null)          this.selFood.set(new Set(s.selFood));
+      if (s.selDessert != null)       this.selDessert.set(new Set(s.selDessert));
+      if (s.selFavors != null)        this.selFavors.set(new Set(s.selFavors));
+      if (s.optionQuantities != null) this.optionQuantities.set(s.optionQuantities);
+      if (s.selectedVariants != null) this.selectedVariants.set(s.selectedVariants);
+      if (s.optionNotes != null)      this.optionNotes.set(s.optionNotes);
+    } catch {}
+  }
+
+  clearState() {
+    localStorage.removeItem(this.STORAGE_KEY);
+  }
+
+  saveEffect = effect(() => {
+    const state = {
+      step:             this.step(),
+      attendees:        this.attendees(),
+      eventType:        this.eventType(),
+      customerName:     this.customerName(),
+      customerEmail:    this.customerEmail(),
+      customerPhone:    this.customerPhone(),
+      customerNotes:    this.customerNotes(),
+      preferredDates:   this.preferredDates(),
+      selActivities:    [...this.selActivities()],
+      noExperience:     this.noExperience(),
+      selFood:          [...this.selFood()],
+      selDessert:       [...this.selDessert()],
+      selFavors:        [...this.selFavors()],
+      optionQuantities: this.optionQuantities(),
+      selectedVariants: this.selectedVariants(),
+      optionNotes:      this.optionNotes(),
+    };
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(state));
+  });
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['settings']) {
@@ -357,7 +412,7 @@ export class EventWizardComponent implements OnChanges {
     this.reviewView.set('booking');
   }
 
-  submitBooking() {
+  requestBookingConfirm() {
     const name  = this.customerName().trim();
     const email = this.customerEmail().trim();
     const phone = this.customerPhone().trim();
@@ -375,11 +430,16 @@ export class EventWizardComponent implements OnChanges {
       return;
     }
     this.contactError.set('');
+    this.showBookingConfirm.set(true);
+  }
+
+  submitBooking() {
+    this.showBookingConfirm.set(false);
     this.bookingStatus.set('submitting');
     this.bookingError.set('');
 
     this.bookingService.requestBooking(this.backendUrl, this.buildPlan()).subscribe({
-      next: () => this.bookingStatus.set('success'),
+      next: () => { this.bookingStatus.set('success'); this.clearState(); },
       error: (err) => {
         this.bookingError.set(err.error?.message || 'Booking request could not be sent. Please try again.');
         this.bookingStatus.set('error');
@@ -387,14 +447,23 @@ export class EventWizardComponent implements OnChanges {
     });
   }
 
-  addPreferredDate(value: string) {
-    if (!value || this.preferredDates().length >= 3 || this.preferredDates().includes(value)) return;
-    this.preferredDates.set([...this.preferredDates(), value]);
+  openDatePicker(event: MouseEvent) {
+    const input = (event.currentTarget as HTMLElement).querySelector<HTMLInputElement>('input[type="date"]');
+    if (!input) return;
+    if (typeof (input as any).showPicker === 'function') {
+      (input as any).showPicker();
+    } else {
+      input.click();
+    }
   }
 
-  removePreferredDate(index: number) {
+  setPreferredDate(index: number, value: string) {
     const dates = [...this.preferredDates()];
-    dates.splice(index, 1);
+    if (value) {
+      dates[index] = value;
+    } else {
+      dates.splice(index, 1);
+    }
     this.preferredDates.set(dates);
   }
 

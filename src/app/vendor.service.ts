@@ -181,10 +181,10 @@ export class VendorService {
     },
 
     {
-      id: 'cookie-events',
-      name: 'Cookie Events',
-      banner: 'assets/vendors/tierney.jpg',
-      blurb: `Cookie Events offers elevated cookie decorating experiences for kids, teens, and adults—ranging from playful cookie parties to refined hands-on decorating classes and custom edible displays.`,
+      id: 'tierney-town-treats',
+      name: 'Tierney Town Treats',
+      banner: 'assets/vendors/tierney.jpeg',
+      blurb: `Tierney Town Treats offers elevated cookie decorating experiences for kids, teens, and adults—ranging from playful cookie parties to refined hands-on decorating classes and custom edible displays.`,
       defaultPricePerHead: 60,
       minGuests: 10,
       maxGuests: 50,
@@ -192,7 +192,7 @@ export class VendorService {
       activities: [
         {
           id: 'cookie-party-kids',
-          vendorId: 'cookie-events',
+          vendorId: 'tierney-town-treats',
           title: 'Cookie Decorating Party (Ages 4+)',
           image: 'assets/vendors/store2.jpeg',
           durationMinutes: 60,
@@ -200,7 +200,7 @@ export class VendorService {
         },
         {
           id: 'cookie-decorating-class',
-          vendorId: 'cookie-events',
+          vendorId: 'tierney-town-treats',
           title: 'Cookie Decorating Class (Ages 12+)',
           image: 'assets/vendors/store2.jpeg',
           durationMinutes: 90,
@@ -208,7 +208,7 @@ export class VendorService {
         },
         {
           id: 'custom-cookies',
-          vendorId: 'cookie-events',
+          vendorId: 'tierney-town-treats',
           title: 'Custom Sugar Cookies (per dozen)',
           image: 'assets/vendors/store2.jpeg',
           durationMinutes: 0,
@@ -216,7 +216,7 @@ export class VendorService {
         },
         {
           id: 'flour-bar-rental',
-          vendorId: 'cookie-events',
+          vendorId: 'tierney-town-treats',
           title: 'Flour Bar Rental',
           image: 'assets/vendors/store2.jpeg',
           durationMinutes: 60,
@@ -224,22 +224,53 @@ export class VendorService {
         }
       ],
       foodOptions: [],
-      dessertOptions: [],
+      dessertOptions: [
+        { id: 'cupcakes', label: 'Cupcakes', pricingType: 'perHead', price: 5, vendorCredit: 'Tierney Town Treats' },
+        { id: 'cookies', label: 'Custom Cookies', pricingType: 'flat', price: 60, vendorCredit: 'Tierney Town Treats' }
+      ],
       favorOptions: []
     },
 
 
 
-    // ─── Tierney Town Treats ────────────────────────────────────────────────
-    // Product-only vendor: desserts available for any event, not an experience.
     {
-      id: 'tierney-town-treats',
-      name: 'Tierney Town Treats',
-      activities: [],
-      dessertOptions: [
-        { id: 'cupcakes', label: 'Cupcakes', pricingType: 'perHead', price: 5, vendorCredit: 'Tierney Town Treats' },
-        { id: 'cookies', label: 'Custom Cookies', pricingType: 'flat', price: 60, vendorCredit: 'Tierney Town Treats' }
-      ]
+      id: 'nella-rose-flower-bar',
+      name: 'Nella Rose Flower Bar',
+      banner: 'assets/vendors/nella.jpeg',
+      blurb: `Because every gathering deserves a little something pretty. Guests create their own bouquets at our curated flower bar — we handle everything from flowers and setup to wrapping and guidance, so your guests can simply enjoy the experience and leave with something they love.`,
+      defaultPricePerHead: 10,
+      minGuests: 10,
+      maxGuests: 100,
+      supportedEventTypes: ['Birthday', 'Bachelorette', 'Bridal Shower', 'Tea Social', 'Other'],
+      activities: [
+        {
+          id: 'flower-bar-mini',
+          vendorId: 'nella-rose-flower-bar',
+          title: 'Mini Bouquet Flower Bar',
+          image: 'assets/vendors/nella.jpg',
+          durationMinutes: 60,
+          pricePerHead: 10
+        },
+        {
+          id: 'flower-bar-small',
+          vendorId: 'nella-rose-flower-bar',
+          title: 'Build-Your-Own Flower Bar (Small Bouquet)',
+          image: 'assets/vendors/nella.jpg',
+          durationMinutes: 60,
+          pricePerHead: 30
+        },
+        {
+          id: 'flower-bar-large',
+          vendorId: 'nella-rose-flower-bar',
+          title: 'Build-Your-Own Flower Bar (Large Bouquet)',
+          image: 'assets/vendors/nella.jpg',
+          durationMinutes: 60,
+          pricePerHead: 50
+        }
+      ],
+      foodOptions: [],
+      dessertOptions: [],
+      favorOptions: []
     },
 
     // ─── Aura Juicery Catering ──────────────────────────────────────────────
