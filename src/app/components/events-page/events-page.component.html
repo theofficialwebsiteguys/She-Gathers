@@ -1,0 +1,94 @@
+<!-- <app-hero
+  [imageUrls]="['assets/gallery/70.jpg', 'assets/gallery/65.jpg', 'assets/gallery/63.jpg']"
+  title="Gather with us."
+  subtitle="Upcoming events, tastings, and experiences hosted at She Gathers."
+  variant="sub"
+  [showFade]="false"
+  [showBadge]="false">
+</app-hero> -->
+
+<section class="band band--linen events-section">
+  <div class="container">
+    <div class="events-header">
+      <span class="eyebrow">Upcoming Events</span>
+      <h2>What's Happening at She Gathers</h2>
+      <p class="muted">Reserve your spot and come experience something beautiful.</p>
+    </div>
+
+    <div class="event-cards">
+      <div class="event-card" *ngFor="let event of events">
+
+        <div class="event-card__image-col">
+          <img [src]="event.imageUrl" [alt]="event.name" class="event-card__image" />
+          <div class="event-card__date-badge">
+            <span class="date-badge__month">JUN</span>
+            <span class="date-badge__day">6</span>
+          </div>
+        </div>
+
+        <div class="event-card__content">
+
+          <div class="event-card__meta">
+            <span class="pill">New Summer Menu</span>
+          </div>
+
+          <h3 class="event-card__title">{{ event.name }}</h3>
+          <p class="event-card__subtitle">{{ event.subtitle }}</p>
+
+          <div class="event-card__details">
+            <div class="detail-row">
+              <svg class="detail-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+                <rect x="3" y="4" width="14" height="14" rx="2"/>
+                <path d="M3 8h14M7 2v4M13 2v4"/>
+              </svg>
+              <span>{{ event.date }}</span>
+            </div>
+            <div class="detail-row">
+              <svg class="detail-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+                <circle cx="10" cy="10" r="7"/>
+                <path d="M10 6v4l2.5 2.5"/>
+              </svg>
+              <span>{{ event.time }}</span>
+            </div>
+            <div class="detail-row">
+              <svg class="detail-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M10 2C7.24 2 5 4.24 5 7c0 4.5 5 11 5 11s5-6.5 5-11c0-2.76-2.24-5-5-5z"/>
+                <circle cx="10" cy="7" r="1.8"/>
+              </svg>
+              <span>{{ event.location }}</span>
+            </div>
+            <div class="detail-row">
+              <svg class="detail-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M2 10a8 8 0 1016 0A8 8 0 002 10z"/>
+                <path d="M8 10h4M10 8v4"/>
+              </svg>
+              <span>{{ event.ticketInfo }}</span>
+            </div>
+          </div>
+
+          <p class="event-card__description">{{ event.description }}</p>
+
+          <div class="event-card__actions">
+            <a [href]="event.registerUrl" target="_blank" rel="noopener" class="btn btn-primary">
+              Get Your Tickets
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5"/>
+              </svg>
+            </a>
+            <p class="hint">Opens secure registration form</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<app-banner
+  background="assets/gallery/8.jpg"
+  title="Come Hungry. Stay Awhile."
+  subtitle="This is how we gather — with good food, good company, and a little something for everyone."
+  buttonText="Plan an Event"
+  buttonLink="/plan">
+</app-banner>

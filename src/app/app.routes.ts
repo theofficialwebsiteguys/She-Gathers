@@ -8,11 +8,13 @@ import { WorkshopComponent } from './components/workshop/workshop.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { ExperiencesPageComponent } from './components/experiences-page/experiences-page.component';
 import { AboutPageComponent } from './components/about-page/about-page.component';
+import { EventsPageComponent } from './components/events-page/events-page.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'plan', component: EventPlanComponent },
     { path: 'experiences', component: ExperiencesPageComponent },
+    { path: 'events', component: EventsPageComponent },
     { path: 'about', component: AboutPageComponent }
 ];
 

@@ -12,7 +12,17 @@
       "Bash(node -e \"const { SquareClient, SquareEnvironment } = require\\(''square''\\); const c = new SquareClient\\({ token: ''test'', environment: SquareEnvironment.Sandbox }\\); const pl = c.checkout.paymentLinks\\({}\\); console.log\\(typeof pl, pl\\)\")",
       "Bash(node -e \"const { SquareClient, SquareEnvironment } = require\\(''square''\\); const c = new SquareClient\\({ token: ''test'', environment: SquareEnvironment.Sandbox }\\); const co = c.checkout; console.log\\(typeof co.paymentLinks\\)\")",
       "Bash(node -e \"const { SquareClient, SquareEnvironment } = require\\(''square''\\); const c = new SquareClient\\({ token: ''test'', environment: SquareEnvironment.Sandbox }\\); const pl = c.checkout.paymentLinks; console.log\\(Object.getOwnPropertyNames\\(Object.getPrototypeOf\\(pl\\)\\)\\)\")",
-      "Bash(node -e \"const { SquareClient, SquareEnvironment } = require\\(''square''\\); const c = new SquareClient\\({ token: ''test'', environment: SquareEnvironment.Sandbox }\\); console.log\\(c.checkout.paymentLinks.create.toString\\(\\).slice\\(0, 300\\)\\)\")"
+      "Bash(node -e \"const { SquareClient, SquareEnvironment } = require\\(''square''\\); const c = new SquareClient\\({ token: ''test'', environment: SquareEnvironment.Sandbox }\\); console.log\\(c.checkout.paymentLinks.create.toString\\(\\).slice\\(0, 300\\)\\)\")",
+      "Bash(npx ng *)",
+      "Bash(find /Users/jaredfinn/Website_Guys/Repos -name \"*.ts\" -o -name \"*.js\" | grep -v node_modules | grep -v dist | grep -v \".spec.\" | xargs grep -l \"square\\\\|Square\" 2>/dev/null)",
+      "Read(//Users/jaredfinn/Website_Guys/Repos/**)",
+      "Bash(ls /Users/jaredfinn/Website_Guys/Repos/)",
+      "Bash(curl -s https://she-gathers-server-b060b14f2fdc.herokuapp.com/api)",
+      "Bash(find /Users/jaredfinn/Website_Guys -name \"package.json\" | grep -v node_modules | xargs grep -l \"square\\\\|@square\" 2>/dev/null)",
+      "Read(//Users/jaredfinn/Website_Guys/**)",
+      "Bash(curl -s https://she-gathers-server-b060b14f2fdc.herokuapp.com/api/bookings/request -X POST -H \"Content-Type: application/json\" -d '{}')",
+      "Bash(find /Users/jaredfinn -maxdepth 6 -name \"*.js\" -o -name \"*.ts\" | grep -v node_modules | grep -v \".angular\" | grep -v dist | grep -v \".git\" | xargs grep -l \"she-gathers\\\\|she_gathers\\\\|shegathers\\\\|bookings/request\" 2>/dev/null | grep -v \".spec.\")",
+      "Read(//Users/jaredfinn/**)"
     ]
   }
 }
