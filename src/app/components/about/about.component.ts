@@ -33,7 +33,7 @@ She Gathers is more than a place to shop—it’s a space where women-owned busi
 
 I created She Gathers because I believe women deserve environments where they don’t have to shrink to succeed—and where community matters just as much as commerce.
     `.trim(),
-    imageUrl: 'assets/gallery/12.jpg',
+    imageUrl: 'assets/new-gallery/web/6M5A1793.jpg',
   };
 
   get bioParagraphs(): string[] {

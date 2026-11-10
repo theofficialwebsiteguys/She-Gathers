@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   background-size: cover;
-  background-position: center;
+  background-position: center var(--banner-focal-y, center);
   padding: 80px 24px;
   text-align: center;
   color: #fff;

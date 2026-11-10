@@ -34,19 +34,19 @@ export class VendorService {
     {
       id: 'cup-of-communittea',
       name: 'Cup of Communitea',
-      banner: 'assets/gallery/65.jpg',
+      banner: 'assets/vendors/communitea.jpg',
       blurb: `Step into the delicious world of tea with a guided, one-hour tasting experience hosted by Cup of Communitea.`,
       defaultPricePerHead: 30,
       minGuests: 10,
       maxGuests: 100,
       supportedEventTypes: ['Tea Social', 'Birthday', 'Other'],
       activities: [
-        { id: 'tea-101', vendorId: 'cup-of-communittea', title: 'Tea 101 – Intro to Tea', image: 'assets/gallery/65.jpg', durationMinutes: 60, pricePerHead: 30 },
-        { id: 'tea-world', vendorId: 'cup-of-communittea', title: 'Around the World – Global Teas', image: 'assets/gallery/65.jpg', durationMinutes: 60, pricePerHead: 30 },
-        { id: 'tea-relax', vendorId: 'cup-of-communittea', title: 'Relaxation – Herbal Blends', image: 'assets/gallery/65.jpg', durationMinutes: 60, pricePerHead: 30 },
-        { id: 'tea-dessert', vendorId: 'cup-of-communittea', title: 'Dessert Teas – Sweet Blends', image: 'assets/gallery/65.jpg', durationMinutes: 60, pricePerHead: 30 },
-        { id: 'tea-purpose', vendorId: 'cup-of-communittea', title: 'Tea with a Purpose – Functional Teas', image: 'assets/gallery/65.jpg', durationMinutes: 60, pricePerHead: 30 },
-        { id: 'tea-custom', vendorId: 'cup-of-communittea', title: 'Custom Theme – Your Choice', image: 'assets/gallery/65.jpg', durationMinutes: 60, pricePerHead: 30 }
+        { id: 'tea-101', vendorId: 'cup-of-communittea', title: 'Tea 101 – Intro to Tea', image: 'assets/vendors/communitea.jpg', durationMinutes: 60, pricePerHead: 30 },
+        { id: 'tea-world', vendorId: 'cup-of-communittea', title: 'Around the World – Global Teas', image: 'assets/vendors/communitea.jpg', durationMinutes: 60, pricePerHead: 30 },
+        { id: 'tea-relax', vendorId: 'cup-of-communittea', title: 'Relaxation – Herbal Blends', image: 'assets/vendors/communitea.jpg', durationMinutes: 60, pricePerHead: 30 },
+        { id: 'tea-dessert', vendorId: 'cup-of-communittea', title: 'Dessert Teas – Sweet Blends', image: 'assets/vendors/communitea.jpg', durationMinutes: 60, pricePerHead: 30 },
+        { id: 'tea-purpose', vendorId: 'cup-of-communittea', title: 'Tea with a Purpose – Functional Teas', image: 'assets/vendors/communitea.jpg', durationMinutes: 60, pricePerHead: 30 },
+        { id: 'tea-custom', vendorId: 'cup-of-communittea', title: 'Custom Theme – Your Choice', image: 'assets/vendors/communitea.jpg', durationMinutes: 60, pricePerHead: 30 }
       ],
       foodOptions: [],
       dessertOptions: [],

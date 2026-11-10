@@ -41,3 +41,11 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Separate backend repo (has its own .git and .env)
+/server
+
+# Photographer originals (1.1 GB) — only optimized copies in new-gallery/web are committed
+/src/assets/new-gallery/*.jpg
+# Photos without usage rights — must never be committed or deployed
+/src/assets/unusable-gallery

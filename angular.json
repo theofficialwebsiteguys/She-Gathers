@@ -31,7 +31,12 @@
                 "input": "public"
               },
               "src/favicon.ico",
-              "src/assets"
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets",
+                "ignore": ["new-gallery/*.jpg", "unusable-gallery/**"]
+              }
             ],
             "styles": [
               "src/styles.scss"
