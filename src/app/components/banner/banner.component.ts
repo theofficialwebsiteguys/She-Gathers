@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
 })
 export class BannerComponent {
   /** Background image path */
-  @Input() background = 'assets/new-gallery/web/6M5A1782.jpg';
+  @Input() background = 'assets/usable-images/web/6M5A1782.jpg';
 
   /** Headline */
   @Input() title = 'UNLOCK MORE. SPEND LESS. SAVE BIG!';

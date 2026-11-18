@@ -35,7 +35,15 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets",
-                "ignore": ["new-gallery/*.jpg", "unusable-gallery/**"]
+                "ignore": [
+                  "new-gallery/*.jpg",
+                  "new-gallery/web/**",
+                  "unusable-gallery/**",
+                  "usable-images/*.jpg",
+                  "usable-images/*.JPG",
+                  "store*.jpeg",
+                  "she-gathers-cookies.jpeg"
+                ]
               }
             ],
             "styles": [

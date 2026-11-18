@@ -11,7 +11,7 @@
   .wizard-bg {
     position: absolute;
     inset: 0;
-    background: url('../../../assets/new-gallery/web/6M5A1786.jpg') center/cover no-repeat;
+    background: url('../../../assets/usable-images/web/6M5A1786.jpg') center/cover no-repeat;
     filter: blur(10px);
     transform: scale(1.12);
   }
@@ -631,6 +631,7 @@ textarea { resize: vertical; min-height: 64px; width: 100%; box-sizing: border-b
     width: 100%;
     max-height: 260px;
     object-fit: cover;
+    object-position: center 65%;
     border-radius: 14px;
     box-shadow: var(--sg-shadow-md);
   }

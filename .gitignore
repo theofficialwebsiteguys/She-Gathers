@@ -47,5 +47,8 @@ Thumbs.db
 
 # Photographer originals (1.1 GB) — only optimized copies in new-gallery/web are committed
 /src/assets/new-gallery/*.jpg
+# Approved site photos: originals (~500 MB) stay local, only optimized copies in usable-images/web are committed
+/src/assets/usable-images/*.jpg
+/src/assets/usable-images/*.JPG
 # Photos without usage rights — must never be committed or deployed
 /src/assets/unusable-gallery
