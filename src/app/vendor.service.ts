@@ -7,8 +7,8 @@ export class VendorService {
     {
       id: 'noir-candles',
       name: 'Noir Candles',
-      logo: 'assets/vendors/noir-candles.jpg',
-      banner: 'assets/vendors/noir-candles.jpg',
+      logo: 'assets/usable-images/web/IMG_6033.jpg',
+      banner: 'assets/usable-images/web/IMG_6033.jpg',
       blurb: `Join us for a fun and creative candle making workshop where you'll learn how to craft your own custom soy candles from start to finish.`,
       defaultPricePerHead: 35,
       minGuests: 10,
@@ -19,7 +19,7 @@ export class VendorService {
           id: 'candle-workshop',
           vendorId: 'noir-candles',
           title: 'Candle Making Workshop',
-          image: 'assets/vendors/noir-candles.jpg',
+          image: 'assets/usable-images/web/IMG_6033.jpg',
           durationMinutes: 90,
           pricePerHead: 35
         }
@@ -91,15 +91,15 @@ export class VendorService {
     {
       id: 'green-room-linens',
       name: 'Green Room Linens',
-      banner: 'assets/vendors/green-room-linens.jpg',
+      banner: 'assets/usable-images/web/IMG_6025.jpg',
       blurb: `Lean into a zero waste lifestyle by creating new items from reclaimed and repurposed linens! `,
       defaultPricePerHead: 25,
       minGuests: 10,
       maxGuests: 100,
       supportedEventTypes: ['Tea Social', 'Birthday', 'Bachelorette', 'Other'],
       activities: [
-        { id: 'furoshiki', vendorId: 'green-room-linens', title: 'Gift wrapping with cloth', image: 'assets/vendors/green-room-linens.jpg', durationMinutes: 60, pricePerHead: 25 },
-        { id: 'laundry-bags', vendorId: 'green-room-linens', title: 'No-sew travel laundry bag', image: 'assets/vendors/green-room-linens.jpg', durationMinutes: 60, pricePerHead: 25 }
+        { id: 'furoshiki', vendorId: 'green-room-linens', title: 'Gift wrapping with cloth', image: 'assets/usable-images/web/IMG_6025.jpg', durationMinutes: 60, pricePerHead: 25 },
+        { id: 'laundry-bags', vendorId: 'green-room-linens', title: 'No-sew travel laundry bag', image: 'assets/usable-images/web/IMG_6025.jpg', durationMinutes: 60, pricePerHead: 25 }
       ],
       foodOptions: [],
       dessertOptions: [],
@@ -151,7 +151,7 @@ export class VendorService {
     {
       id: 'read-it-and-eat',
       name: 'Read It & Eat Bookshop',
-      banner: 'assets/vendors/read-it-and-eat.jpg',
+      banner: 'assets/usable-images/web/6M5A1759.jpg',
       blurb: `Read It & Eat Bookshop offers curated private events centered around books, food, and meaningful conversation. From book club collaborations to hands-on cooking classes, each experience is thoughtfully designed to bring people together.`,
       defaultPricePerHead: 45,
       minGuests: 10,
@@ -162,7 +162,7 @@ export class VendorService {
           id: 'book-club-collaboration',
           vendorId: 'read-it-and-eat',
           title: 'Private Book Club & Cookbook Collaboration',
-          image: 'assets/vendors/read-it-and-eat.jpg',
+          image: 'assets/usable-images/web/6M5A1759.jpg',
           durationMinutes: 90,
           pricePerHead: 45
         },
@@ -170,7 +170,7 @@ export class VendorService {
           id: 'private-cooking-class',
           vendorId: 'read-it-and-eat',
           title: 'Private Cooking Class or Supper Club',
-          image: 'assets/vendors/read-it-and-eat.jpg',
+          image: 'assets/usable-images/web/6M5A1759.jpg',
           durationMinutes: 120,
           pricePerHead: 65
         }
@@ -194,7 +194,7 @@ export class VendorService {
           id: 'cookie-party-kids',
           vendorId: 'tierney-town-treats',
           title: 'Cookie Decorating Party (Ages 4+)',
-          image: 'assets/vendors/store2.jpeg',
+          image: 'assets/vendors/tierney.jpeg',
           durationMinutes: 60,
           pricePerHead: 15
         },
@@ -202,7 +202,7 @@ export class VendorService {
           id: 'cookie-decorating-class',
           vendorId: 'tierney-town-treats',
           title: 'Cookie Decorating Class (Ages 12+)',
-          image: 'assets/vendors/store2.jpeg',
+          image: 'assets/vendors/tierney.jpeg',
           durationMinutes: 90,
           pricePerHead: 60
         },
@@ -210,7 +210,7 @@ export class VendorService {
           id: 'custom-cookies',
           vendorId: 'tierney-town-treats',
           title: 'Custom Sugar Cookies (per dozen)',
-          image: 'assets/vendors/store2.jpeg',
+          image: 'assets/vendors/tierney.jpeg',
           durationMinutes: 0,
           priceFlat: 60
         },
@@ -218,7 +218,7 @@ export class VendorService {
           id: 'flour-bar-rental',
           vendorId: 'tierney-town-treats',
           title: 'Flour Bar Rental',
-          image: 'assets/vendors/store2.jpeg',
+          image: 'assets/vendors/tierney.jpeg',
           durationMinutes: 60,
           priceFlat: 350
         }
@@ -247,7 +247,7 @@ export class VendorService {
           id: 'flower-bar-mini',
           vendorId: 'nella-rose-flower-bar',
           title: 'Mini Bouquet Flower Bar',
-          image: 'assets/vendors/nella.jpg',
+          image: 'assets/vendors/nella.jpeg',
           durationMinutes: 60,
           pricePerHead: 10
         },
@@ -255,7 +255,7 @@ export class VendorService {
           id: 'flower-bar-small',
           vendorId: 'nella-rose-flower-bar',
           title: 'Build-Your-Own Flower Bar (Small Bouquet)',
-          image: 'assets/vendors/nella.jpg',
+          image: 'assets/vendors/nella.jpeg',
           durationMinutes: 60,
           pricePerHead: 30
         },
@@ -263,7 +263,7 @@ export class VendorService {
           id: 'flower-bar-large',
           vendorId: 'nella-rose-flower-bar',
           title: 'Build-Your-Own Flower Bar (Large Bouquet)',
-          image: 'assets/vendors/nella.jpg',
+          image: 'assets/vendors/nella.jpeg',
           durationMinutes: 60,
           pricePerHead: 50
         }
